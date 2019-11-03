@@ -149,8 +149,7 @@ public enum RaceCourseCode implements CodeEnum<String, RaceCourseCode> {
 
     public static RaceCourseCode of(String code) {
         Objects.requireNonNull(code);
-
-        if ("00".equals(code)) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, RaceCourseCode.class);

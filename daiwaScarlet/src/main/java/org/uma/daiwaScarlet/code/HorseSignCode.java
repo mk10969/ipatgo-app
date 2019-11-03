@@ -62,7 +62,7 @@ public enum HorseSignCode implements CodeEnum<String, HorseSignCode> {
 
     public static HorseSignCode of(String code) {
         Objects.requireNonNull(code);
-        if ("00".equals(code)) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, HorseSignCode.class);

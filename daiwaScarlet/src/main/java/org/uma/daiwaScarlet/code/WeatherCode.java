@@ -41,7 +41,7 @@ public enum WeatherCode implements CodeEnum<Integer, WeatherCode> {
 
     public static WeatherCode of(Integer code) {
         Objects.requireNonNull(code);
-        if (0 == code) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, WeatherCode.class);

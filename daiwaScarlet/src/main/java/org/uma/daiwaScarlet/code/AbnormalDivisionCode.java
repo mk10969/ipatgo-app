@@ -49,7 +49,7 @@ public enum AbnormalDivisionCode implements CodeEnum<Integer, AbnormalDivisionCo
 
     public static AbnormalDivisionCode of(Integer code) {
         Objects.requireNonNull(code);
-        if (0 == code) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, AbnormalDivisionCode.class);

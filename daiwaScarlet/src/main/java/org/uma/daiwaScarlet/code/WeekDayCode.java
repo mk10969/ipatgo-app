@@ -49,8 +49,7 @@ public enum WeekDayCode implements CodeEnum<String, WeekDayCode> {
 
     public static WeekDayCode of(String code) {
         Objects.requireNonNull(code);
-
-        if ("0".equals(code)) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, WeekDayCode.class);

@@ -45,7 +45,6 @@ public enum RaceGradeCode implements CodeEnum<String, RaceGradeCode> {
 
     public static RaceGradeCode of(String code) {
         Objects.requireNonNull(code);
-
         if (StringUtils.isBlank(code)) {
             return DEFAULT;
         }

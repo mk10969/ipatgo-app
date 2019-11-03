@@ -38,7 +38,7 @@ public enum JockeyLicenseCode implements CodeEnum<Integer, JockeyLicenseCode> {
 
     public static JockeyLicenseCode of(Integer code) {
         Objects.requireNonNull(code);
-        if (0 == code) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, JockeyLicenseCode.class);

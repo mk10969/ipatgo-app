@@ -36,7 +36,7 @@ public enum JockeyApprenticeCode implements CodeEnum<Integer, JockeyApprenticeCo
 
     public static JockeyApprenticeCode of(Integer code) {
         Objects.requireNonNull(code);
-        if (0 == code) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, JockeyApprenticeCode.class);

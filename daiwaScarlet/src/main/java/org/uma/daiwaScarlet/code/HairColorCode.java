@@ -45,7 +45,7 @@ public enum HairColorCode implements CodeEnum<String, HairColorCode> {
 
     public static HairColorCode of(String code) {
         Objects.requireNonNull(code);
-        if ("00".equals(code)) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, HairColorCode.class);

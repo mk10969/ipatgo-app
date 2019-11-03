@@ -39,7 +39,7 @@ public enum WeightTypeCode implements CodeEnum<Integer, WeightTypeCode> {
 
     public static WeightTypeCode of(Integer code) {
         Objects.requireNonNull(code);
-        if (0 == code) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, WeightTypeCode.class);

@@ -39,7 +39,7 @@ public enum EastOrWestBelongCode implements CodeEnum<Integer, EastOrWestBelongCo
 
     public static EastOrWestBelongCode of(Integer code) {
         Objects.requireNonNull(code);
-        if (0 == code) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, EastOrWestBelongCode.class);

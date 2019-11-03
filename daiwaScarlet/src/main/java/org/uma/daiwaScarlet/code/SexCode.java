@@ -17,7 +17,6 @@ public enum SexCode implements CodeEnum<Integer, SexCode> {
     STALLION(1, "牡馬"),
     MARE(2, "牝馬"),
     GELDING(3, "騸馬"),
-
     ;
 
     private Integer code;
@@ -39,7 +38,7 @@ public enum SexCode implements CodeEnum<Integer, SexCode> {
 
     public static SexCode of(Integer code) {
         Objects.requireNonNull(code);
-        if (0 == code) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, SexCode.class);

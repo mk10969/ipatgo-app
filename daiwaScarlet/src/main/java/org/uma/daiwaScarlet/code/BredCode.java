@@ -44,7 +44,7 @@ public enum BredCode implements CodeEnum<Integer, BredCode> {
 
     public static BredCode of(Integer code) {
         Objects.requireNonNull(code);
-        if (0 == code) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, BredCode.class);
