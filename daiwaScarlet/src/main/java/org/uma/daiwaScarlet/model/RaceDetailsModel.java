@@ -40,11 +40,13 @@ public class RaceDetailsModel {
     private RaceTypeCode raceTypeCd;
     private RaceSignCode raceSignCd;
     private WeightTypeCode weightTypeCd;
-    private RaceConditionCode raceConditionCdOld2;
-    private RaceConditionCode raceConditionCdOld3;
-    private RaceConditionCode raceConditionCdOld4;
-    private RaceConditionCode raceConditionCdOld5;
-    private RaceConditionCode raceConditionCdYoungest;
+
+    private String raceConditionCdOld2;
+    private String raceConditionCdOld3;
+    private String raceConditionCdOld4;
+    private String raceConditionCdOld5;
+    private String raceConditionCdYoungest;
+    
     private String raceConditionName;
     private String distance;
     private String distanceBefore;

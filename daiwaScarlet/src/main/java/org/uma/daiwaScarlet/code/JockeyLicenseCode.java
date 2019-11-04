@@ -44,5 +44,4 @@ public enum JockeyLicenseCode implements CodeEnum<Integer, JockeyLicenseCode> {
         return CodeEnum.reversibleFindOne(code, JockeyLicenseCode.class);
     }
 
-
 }

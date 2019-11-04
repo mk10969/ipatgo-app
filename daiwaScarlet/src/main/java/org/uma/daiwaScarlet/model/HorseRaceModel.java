@@ -54,9 +54,9 @@ public class HorseRaceModel {
     private Integer deadHeadDiv;
     private Integer deadHeadCount;
     private String runningTime;
-    private at.jvbeans.jvlink.definitions.code.MarginCd marginCd;
-    private at.jvbeans.jvlink.definitions.code.MarginCd marginCd2;
-    private at.jvbeans.jvlink.definitions.code.MarginCd marginCd3;
+    private MarginCode marginCd;
+    private MarginCode marginCd2;
+    private MarginCode marginCd3;
     private Integer rankCorner1;
     private Integer rankCorner2;
     private Integer rankCorner3;
