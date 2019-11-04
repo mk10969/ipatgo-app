@@ -6,6 +6,7 @@ import org.uma.daiwaScarlet.code.*;
 import org.uma.vodka.config.spec.RecordSpec;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class HorseRaceModel {
@@ -21,7 +22,7 @@ public class HorseRaceModel {
     private Integer raceNo;
     private Integer bracketNo;
     private String horseNo;
-    private String bloodRegistNo;
+    private String bloodRegistrationNo;
     private String horseName;
     private HorseSignCode horseSignCd;
     private SexCode sexCd;
@@ -63,23 +64,27 @@ public class HorseRaceModel {
     private Integer rankCorner4;
     private String oddsWin;
     private Integer betRankWin;
-    private Long aquirementAddedMoney;
-    private Long aquirementStakesMoney;
+    private Long acquirementAddedMoney;
+    private Long acquirementStakesMoney;
     private String spare4;
     private String spare5;
     private Float lastFurlong4;
     private Float lastFurlong3;
-    private at.jvbeans.jvlink.definitions.dto.child.ContenderInfoDto contenderInfoItems;
-    private String bloodRegistNo;
-    private String horseName;
-    private String timeMergin;
-    private Integer recordBeakeDiv;
+    private List<Contender> contenders;
+    private String timeMargin;
+    private Integer recordUpdateDiv;
     private Integer miningDiv;
     private String miningExpectationRunningTime;
     private String miningExpectationErrorPlus;
     private String miningExpectationErrorMinus;
     private Integer miningExpectationRank;
-    private Integer tacticInclination;
+    private Integer runningStyle;
+
+    @Data
+    private static class Contender {
+        private String bloodRegistrationNo;
+        private String horseName;
+    }
 
 
 }

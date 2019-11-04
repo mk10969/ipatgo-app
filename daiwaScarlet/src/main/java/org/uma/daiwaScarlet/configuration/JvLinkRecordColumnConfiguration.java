@@ -9,7 +9,7 @@ import org.uma.daiwaScarlet.context.RecordSpecItems;
 
 
 @Configuration
-@PropertySource(value = "classpath:JvLink.properties")
+@PropertySource(value = "classpath:JvLinkRecord.properties")
 public class JvLinkRecordColumnConfiguration {
 
     /**

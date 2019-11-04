@@ -10,9 +10,6 @@ import java.util.List;
 @Data
 public class RaceDetailsModel {
 
-    /**
-     * なんちゃらCdは、Enumの方がいいかも。
-     */
     private RecordSpec recordTypeId;
     private String dataDiv;
     private LocalDate dataCreateDate;
@@ -41,11 +38,15 @@ public class RaceDetailsModel {
     private RaceSignCode raceSignCd;
     private WeightTypeCode weightTypeCd;
 
-    private String raceConditionCdOld2;
-    private String raceConditionCdOld3;
-    private String raceConditionCdOld4;
-    private String raceConditionCdOld5;
-    private String raceConditionCdYoungest;
+    /**
+     * 2007.競走条件コード
+     * は、特定のCodeクラスの型にせず、Integerとして格納する。
+     */
+    private Integer raceConditionCdOld2;
+    private Integer raceConditionCdOld3;
+    private Integer raceConditionCdOld4;
+    private Integer raceConditionCdOld5;
+    private Integer raceConditionCdYoungest;
     
     private String raceConditionName;
     private String distance;
@@ -72,11 +73,11 @@ public class RaceDetailsModel {
     private Float firstFurlong4;
     private Float lastFurlong3;
     private Float lastFurlong4;
-    private List<CornerPassageRankItem> cornerPassageRankItems;
-    private String recordBreakDiv;
+    private List<CornerPassageRank> cornerPassageRanks;
+    private String recordUpdateDiv;
 
     @Data
-    private static class CornerPassageRankItem {
+    private static class CornerPassageRank {
         private Integer corner;
         private Integer aroundCount;
         private String passageRank;

@@ -43,7 +43,7 @@ public class HelloMapper {
 
 
     private List<String> test1() throws IOException {
-        Path path = Paths.get("/Users/m-kakiuchi/myApp/testUma/daiwaScarlet/src/test/java/org/uma/daiwaScarlet/test/ra_data.txt");
+        Path path = Paths.get("/Users/m-kakiuchi/myApp/UmaApplication/daiwaScarlet/src/test/java/org/uma/daiwaScarlet/test/ra_data.txt");
         return readAllLines(path, Charset.forName("SHIFT-JIS"));
     }
 
@@ -55,7 +55,7 @@ public class HelloMapper {
     }
 
     @Test
-    void test_mapper() throws IOException {
+    void test_RAモデルマッパー_データは単一ファイル() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
         test1().stream()
@@ -171,49 +171,9 @@ public class HelloMapper {
     }
 
 
-    @Test
-    void testtest() throws IOException {
-
-        Path path = Paths.get("/Users/m-kakiuchi/myApp/testUma/daiwaScarlet/src/test/java/org/uma/daiwaScarlet/test/once.txt");
-        List<String> stringList = Files.readAllLines(path);
-
-
-        List<Header> once = stringList.stream()
-                .filter(Objects::nonNull)
-                .map(i -> i.split("\t"))
-                .map(i -> new Header(i[0], i[1], i[2], i[3]))
-                .collect(Collectors.toList());
-
-        List<String> result = new ArrayList<>();
-        IntStream.range(0, once.size()).forEach(i -> {
-            String aaaa = "ra.recordItems[" + i + "].column=" + once.get(i).getColumn();
-            String bbbb = "ra.recordItems[" + i + "].start=" + once.get(i).getStart();
-            String cccc = "ra.recordItems[" + i + "].Length=" + once.get(i).getLength();
-            String dddd = "ra.recordItems[" + i + "].repeat=" + once.get(i).getRepeat();
-
-            result.add(aaaa);
-            result.add(bbbb);
-            result.add(cccc);
-            result.add(dddd);
-        });
-
-        result.forEach(System.out::println);
-
-    }
-
-    @Data
-    @AllArgsConstructor
-    public static class Header {
-        private String column;
-        private String start;
-        private String Length;
-        private String repeat;
-
-    }
-
 
     @Test
-    void testestest() throws IOException {
+    void test_JsonStringうまくパースできるか() throws IOException {
 
         String str = "cornerPassageRankItems={\"corner\":1,\"aroundCount\":1,\"passageRank\":70}";
         String json = str.substring(str.indexOf("=") + 1);
