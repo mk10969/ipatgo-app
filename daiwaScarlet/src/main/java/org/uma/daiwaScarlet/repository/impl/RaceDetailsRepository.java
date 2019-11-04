@@ -27,15 +27,8 @@ public class RaceDetailsRepository implements JvLinkStoredRepository<RaceDetails
 
     public List<RaceDetailsModel> findAll(ZonedDateTime dateTime, Option option) {
         return JvLink.lines(storedOpenCondition, dateTime, option)
-                .map(jvContent ->
-                        jvLinkModelMapper.deserialize(
-                                jvContent.getLine(),
-                                storedOpenCondition.getRecordType(),
-                                RaceDetailsModel.class
-                        )
-                )
+                .map(jvContent -> jvLinkModelMapper.deserialize(jvContent.getLine(), RaceDetailsModel.class))
                 .collect(ImmutableList.toImmutableList());
-
     }
 
 

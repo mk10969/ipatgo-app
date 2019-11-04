@@ -32,5 +32,9 @@ public class TestJavaBean {
     @NotNull
     private TestEnum testEnum;
 
-
+    public enum TestEnum {
+        GOOD, BAD;
+        TestEnum() {
+        }
+    }
 }

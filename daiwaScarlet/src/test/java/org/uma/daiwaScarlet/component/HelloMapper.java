@@ -1,4 +1,4 @@
-package org.uma.daiwaScarlet.test;
+package org.uma.daiwaScarlet.component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

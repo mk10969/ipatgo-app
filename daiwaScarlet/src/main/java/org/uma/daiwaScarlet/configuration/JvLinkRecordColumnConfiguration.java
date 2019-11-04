@@ -40,7 +40,7 @@ public class JvLinkRecordColumnConfiguration {
     }
 
     /**
-     * @return 産駒血統マスタ
+     * @return 産駒マスタ
      */
     @Bean(name = "SK")
     @ConfigurationProperties(prefix = "sk")
@@ -120,6 +120,5 @@ public class JvLinkRecordColumnConfiguration {
     RecordSpecItems configBN() {
         return new RecordSpecItems();
     }
-
 
 }

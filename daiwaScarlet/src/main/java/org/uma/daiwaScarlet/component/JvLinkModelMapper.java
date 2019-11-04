@@ -16,9 +16,20 @@ import java.util.Map;
 @Component
 public class JvLinkModelMapper {
 
+    /**
+     * {@link org.uma.daiwaScarlet.configuration.JvLinkModelMapperConfiguration}
+     */
     private final ModelMapper modelMapper;
 
+    /**
+     * BeanのMapオブジェクト
+     * {@link org.uma.daiwaScarlet.configuration.JvLinkRecordColumnConfiguration}
+     */
     private final Map<String, RecordSpecItems> recordSpecItemsMap;
+
+
+
+
 
     @Autowired
     public JvLinkModelMapper(ModelMapper modelMapper, Map<String, RecordSpecItems> recordSpecItemsMap) {
@@ -35,10 +46,12 @@ public class JvLinkModelMapper {
                 .orElseThrow(IllegalArgumentException::new);
     }
 
-    public <T> T deserialize(String line, RecordSpec recordSpec, Class<T> clazz) {
+    public <T> T deserialize(String line, Class<T> clazz) {
         Map<String, Object> deSerialMap = new HashMap<>();
         final byte[] byteArrayLine = JvLinkStringUtil.stringToByte(line);
 
+        //その場しのぎ
+        RecordSpec recordSpec = RecordSpec.RA;
         findOne(recordSpec).getRecordItems().forEach(record -> {
             // 繰り返しあり。
             if (record.getRepeat() != 0) {

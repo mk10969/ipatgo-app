@@ -16,7 +16,7 @@ public class TestModelMapper {
 
     @Test
     void tetest() {
-        TestEnum testEnum = TestEnum.GOOD;
+        TestJavaBean.TestEnum testEnum = TestJavaBean.TestEnum.GOOD;
         Assertions.assertEquals("GOOD", testEnum.name());
 
     }
