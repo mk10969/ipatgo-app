@@ -56,7 +56,6 @@ final public class JvLinkStringUtil {
                     .toString();
         } catch (CharacterCodingException e) {
             e.printStackTrace();
-            // Runtimeに変えること
             throw new RuntimeException();
         }
     }

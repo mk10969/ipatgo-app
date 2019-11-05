@@ -4,6 +4,7 @@ package org.uma.daiwaScarlet.component;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.uma.daiwaScarlet.configuration.JvLinkRecordSpecConfiguration;
 import org.uma.daiwaScarlet.context.RecordSpecItems;
 import org.uma.daiwaScarlet.util.JvLinkStringUtil;
 import org.uma.vodka.config.spec.RecordSpec;
@@ -13,20 +14,13 @@ import java.util.*;
 @Component
 public class JvLinkModelMapper {
 
-    /**
-     * {@link org.uma.daiwaScarlet.configuration.JvLinkModelMapperConfiguration}
-     */
     private final ModelMapper modelMapper;
 
-    /**
-     * BeanのEnumMapオブジェクト
-     * {@link org.uma.daiwaScarlet.configuration.JvLinkModelMapperConfiguration}
-     */
     private final EnumMap<RecordSpec, Class<?>> recordSpecClass;
 
     /**
-     * BeanのMapオブジェクト
-     * {@link org.uma.daiwaScarlet.configuration.JvLinkRecordColumnConfiguration}
+     * 同一型のBeanをMap化
+     * {@link JvLinkRecordSpecConfiguration}
      */
     private final Map<String, RecordSpecItems> recordSpecItems;
 

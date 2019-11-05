@@ -7,6 +7,11 @@ import org.uma.vodka.config.spec.RecordSpec;
 import java.time.LocalDate;
 import java.util.List;
 
+
+/**
+ * {@link org.uma.vodka.config.spec.RecordSpec.RA}
+ */
+
 @Data
 public class RacingDetailsModel {
 

@@ -16,7 +16,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Repository
-public class RaceDetailsRepository implements JvLinkStoredRepository<RacingDetailsModel> {
+public class RacingDetailsRepository implements JvLinkStoredRepository<RacingDetailsModel> {
 
     @Autowired
     private JvLinkModelMapper jvLinkModelMapper;

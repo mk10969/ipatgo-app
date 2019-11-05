@@ -47,10 +47,11 @@ class JvLinkModelMapperTest {
         Arrays.stream(jvLinkModelMapper.getClass().getDeclaredMethods())
                 .filter(i -> i.getName().equals("findOne"))
                 .peek(i -> i.setAccessible(true))
-                .flatMap(mathod -> ReflectionUtils.getClassesFrom(packageName)
+                .flatMap(method -> ReflectionUtils.getClassesFrom(packageName)
                         .stream()
                         .filter(j -> !j.getName().contains("Test"))
-                        .map(clazz -> invoke(jvLinkModelMapper, mathod, clazz)))
+                        .map(clazz -> invoke(jvLinkModelMapper, method, clazz))
+                )
                 .forEach(System.out::println);
 
     }
@@ -64,5 +65,18 @@ class JvLinkModelMapperTest {
             return new IllegalArgumentException();
         }
     }
+
+    @Test
+    void testa_モデルクラス名表示() {
+        String packageName = "org.uma.daiwaScarlet.model";
+        ReflectionUtils.getClassesFrom(packageName)
+                .stream()
+                .map(Class::getName)
+                .map(i -> i.replace("Model", "")
+                        .replace("org.uma.daiwaScarlet.model.", ""))
+                .forEach(System.out::println);
+
+    }
+
 
 }
