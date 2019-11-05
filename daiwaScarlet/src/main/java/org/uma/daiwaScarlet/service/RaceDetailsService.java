@@ -1,7 +1,7 @@
 package org.uma.daiwaScarlet.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.uma.daiwaScarlet.model.RaceDetailsModel;
+import org.uma.daiwaScarlet.model.RacingDetailsModel;
 import org.uma.daiwaScarlet.repository.impl.RaceDetailsRepository;
 import org.uma.vodka.config.Option;
 
@@ -13,15 +13,15 @@ public class RaceDetailsService {
     @Autowired
     private RaceDetailsRepository repository;
 
-    public List<RaceDetailsModel> findAllOnThisWeek(ZonedDateTime dateTime){
+    public List<RacingDetailsModel> findAllOnThisWeek(ZonedDateTime dateTime){
         return repository.findAll(dateTime, Option.THIS_WEEK);
     }
 
-    public List<RaceDetailsModel> findAllOnStandard(ZonedDateTime dateTime){
+    public List<RacingDetailsModel> findAllOnStandard(ZonedDateTime dateTime){
         return repository.findAll(dateTime, Option.STANDARD);
     }
 
-    public List<RaceDetailsModel> findAllOnSetUpWithoutDialog(ZonedDateTime dateTime){
+    public List<RacingDetailsModel> findAllOnSetUpWithoutDialog(ZonedDateTime dateTime){
         return repository.findAll(dateTime, Option.SETUP_WITHOUT_DIALOG);
     }
 

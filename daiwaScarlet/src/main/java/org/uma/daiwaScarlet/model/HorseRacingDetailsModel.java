@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class HorseRaceDetailsModel {
+public class HorseRacingDetailsModel {
 
     private RecordSpec recordTypeId;
     private String dataDiv;

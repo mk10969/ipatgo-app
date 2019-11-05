@@ -3,8 +3,6 @@ package org.uma.daiwaScarlet.component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.modelmapper.ModelMapper;
@@ -13,19 +11,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.uma.daiwaScarlet.context.RecordSpecItems;
-import org.uma.daiwaScarlet.model.RaceDetailsModel;
+import org.uma.daiwaScarlet.model.RacingDetailsModel;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static java.nio.file.Files.readAllLines;
 
@@ -59,7 +54,7 @@ public class HelloMapper {
         ObjectMapper objectMapper = new ObjectMapper();
 
         test1().stream()
-                .map(line -> mapper(line, RaceDetailsModel.class))
+                .map(line -> mapper(line, RacingDetailsModel.class))
                 .map(model -> {
                     try {
                         return objectMapper.writeValueAsString(model);

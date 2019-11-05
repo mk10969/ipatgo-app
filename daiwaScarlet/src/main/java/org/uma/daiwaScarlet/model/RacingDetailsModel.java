@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class RaceDetailsModel {
+public class RacingDetailsModel {
 
     private RecordSpec recordTypeId;
     private String dataDiv;

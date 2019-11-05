@@ -1,10 +1,14 @@
 package org.uma.daiwaScarlet.configuration;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.uma.daiwaScarlet.context.RecordSpecItems;
 import org.uma.vodka.config.condition.RealTimeOpenCondition;
 import org.uma.vodka.config.condition.StoredOpenCondition;
+
+import java.util.Map;
 
 import static org.uma.vodka.config.spec.RealTimeDataSpec.*;
 import static org.uma.vodka.config.spec.RecordSpec.*;

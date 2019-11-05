@@ -6,9 +6,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.uma.daiwaScarlet.code.*;
+import org.uma.daiwaScarlet.model.*;
+import org.uma.vodka.config.spec.RecordSpec;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.EnumMap;
 
 
 @Configuration
@@ -160,6 +163,24 @@ public class JvLinkModelMapperConfiguration {
         }
     };
 
+
+    @Bean
+    public EnumMap<RecordSpec, Class<?>> recordSpecPairEnumMap() {
+        EnumMap<RecordSpec, Class<?>> enumMap = new EnumMap<>(RecordSpec.class);
+        enumMap.put(RecordSpec.RA, RacingDetailsModel.class);
+        enumMap.put(RecordSpec.SE, HorseRacingDetailsModel.class);
+        enumMap.put(RecordSpec.HR, RaceRefundModel.class);
+        enumMap.put(RecordSpec.SK, OffspringModel.class);
+        enumMap.put(RecordSpec.BT, AncestryModel.class);
+        enumMap.put(RecordSpec.HN, BreedingHorseModel.class);
+        enumMap.put(RecordSpec.CS, CourseModel.class);
+        enumMap.put(RecordSpec.UM, RaceHorseModel.class);
+        enumMap.put(RecordSpec.KS, JockeyModel.class);
+        enumMap.put(RecordSpec.CH, TrainerModel.class);
+        enumMap.put(RecordSpec.BR, BreederModel.class);
+        enumMap.put(RecordSpec.BN, OwnerModel.class);
+        return enumMap;
+    }
 
     @Bean
     public ModelMapper modelMapper() {

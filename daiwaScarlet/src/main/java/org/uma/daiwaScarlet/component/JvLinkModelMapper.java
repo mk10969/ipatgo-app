@@ -8,10 +8,7 @@ import org.uma.daiwaScarlet.context.RecordSpecItems;
 import org.uma.daiwaScarlet.util.JvLinkStringUtil;
 import org.uma.vodka.config.spec.RecordSpec;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class JvLinkModelMapper {
@@ -22,37 +19,55 @@ public class JvLinkModelMapper {
     private final ModelMapper modelMapper;
 
     /**
+     * BeanのEnumMapオブジェクト
+     * {@link org.uma.daiwaScarlet.configuration.JvLinkModelMapperConfiguration}
+     */
+    private final EnumMap<RecordSpec, Class<?>> recordSpecClass;
+
+    /**
      * BeanのMapオブジェクト
      * {@link org.uma.daiwaScarlet.configuration.JvLinkRecordColumnConfiguration}
      */
-    private final Map<String, RecordSpecItems> recordSpecItemsMap;
-
-
-
+    private final Map<String, RecordSpecItems> recordSpecItems;
 
 
     @Autowired
-    public JvLinkModelMapper(ModelMapper modelMapper, Map<String, RecordSpecItems> recordSpecItemsMap) {
+    public JvLinkModelMapper(ModelMapper modelMapper, EnumMap<RecordSpec, Class<?>> recordSpecClass, Map<String, RecordSpecItems> recordSpecItems) {
         this.modelMapper = modelMapper;
-        this.recordSpecItemsMap = recordSpecItemsMap;
+        this.recordSpecClass = recordSpecClass;
+        this.recordSpecItems = recordSpecItems;
     }
 
-    private RecordSpecItems findOne(RecordSpec recordSpec) {
-        return recordSpecItemsMap.entrySet()
+    /**
+     * clazzから、RecordSpecを抽出し、flatMapをつかって、RecordSpecから、RecordSpecItemsを抽出する。
+     * @param clazz
+     * @return RecordSpecItems
+     */
+    private RecordSpecItems findOne(Class<?> clazz) {
+        return recordSpecClass.entrySet()
                 .stream()
-                .filter(e -> e.getKey().equals(recordSpec.getCode()))
-                .map(Map.Entry::getValue)
+                .filter(i -> Objects.equals(i.getValue(), clazz))
+                .map(Map.Entry::getKey)
+                .flatMap(i -> recordSpecItems.entrySet()
+                        .stream()
+                        .filter(e -> Objects.equals(e.getKey(), i.getCode()))
+                        .map(Map.Entry::getValue))
                 .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(IllegalStateException::new);
     }
 
+    /**
+     *
+     * @param line    JvLinkから得られるデータ1行
+     * @param clazz   Modelクラス
+     * @param <T>     Modelクラスの型
+     * @return        deserialized model クラス
+     */
     public <T> T deserialize(String line, Class<T> clazz) {
         Map<String, Object> deSerialMap = new HashMap<>();
         final byte[] byteArrayLine = JvLinkStringUtil.stringToByte(line);
 
-        //その場しのぎ
-        RecordSpec recordSpec = RecordSpec.RA;
-        findOne(recordSpec).getRecordItems().forEach(record -> {
+        findOne(clazz).getRecordItems().forEach(record -> {
             // 繰り返しあり。
             if (record.getRepeat() != 0) {
                 int start = record.getStart();
