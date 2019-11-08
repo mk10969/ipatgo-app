@@ -1,4 +1,4 @@
-package org.uma.daiwaScarlet.component;
+package org.uma.daiwaScarlet.repository.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.uma.daiwaScarlet.context.RecordSpecItems;
+import org.uma.daiwaScarlet.configuration.JvLinkRecordSpecConfiguration.RecordSpecItems;
 import org.uma.daiwaScarlet.model.RacingDetailsModel;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ import static java.nio.file.Files.readAllLines;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class HelloMapper {
+public class JvLInkDataMappingTest {
 
     @Autowired
     private ModelMapper modelMapper;

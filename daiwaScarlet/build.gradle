@@ -12,12 +12,9 @@ dependencies {
 
     // map to javaBean library
     implementation 'org.modelmapper:modelmapper:2.3.5'
-//    implementation 'org.mapstruct:mapstruct:1.3.0.Final'
-
     // 便利ライブラリ
     implementation 'com.google.guava:guava:27.1-jre'
-    implementation 'org.apache.commons:commons-lang3:3.9'
-
+    // implementation 'org.apache.commons:commons-lang3:3.9'
 
 //    runtimeOnly 'mysql:mysql-connector-java'
 

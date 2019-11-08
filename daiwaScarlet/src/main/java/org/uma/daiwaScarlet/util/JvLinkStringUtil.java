@@ -46,6 +46,8 @@ final public class JvLinkStringUtil {
     }
 
     public static String byteToStringOnSlice(byte[] array, int start, int end) {
+        try{
+
         final byte[] slice = Arrays.copyOfRange(array, start, end);
         final ByteBuffer byteBuffer = ByteBuffer.wrap(slice);
 
@@ -58,6 +60,12 @@ final public class JvLinkStringUtil {
             e.printStackTrace();
             throw new RuntimeException();
         }
+        } catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("start:" +start + "end:" + end);
+            throw e;
+
+        }
+
     }
 
 

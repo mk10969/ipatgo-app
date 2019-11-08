@@ -9,15 +9,13 @@ import org.uma.vodka.response.JvStringContent;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,10 +40,13 @@ public class JvLink {
 
     // delegate
     public static <T extends JvContent> Stream<T> builder(final Function<JvLinkWrapper, Stream<T>> function) {
+        Objects.requireNonNull(function);
         return function.apply(jvLinkWrapper).onClose(jvLinkWrapper::close);
     }
 
-    public static Stream<JvStringContent> lines(final StoredOpenCondition condition, final ZonedDateTime fromTime, final Option option) {
+    public static Stream<JvStringContent> lines(final StoredOpenCondition condition,
+                                                final ZonedDateTime fromTime,
+                                                final Option option) {
         return builder(jvLink ->
                 jvLink.init()
                         .open(condition, fromTime, option)
@@ -57,7 +58,8 @@ public class JvLink {
         );
     }
 
-    public static Stream<JvStringContent> lines(final RealTimeOpenCondition condition, final RealTimeKey rtKey) {
+    public static Stream<JvStringContent> lines(final RealTimeOpenCondition condition,
+                                                final RealTimeKey rtKey) {
         return builder(jvLink ->
                 jvLink.init()
                         .rtOpen(condition, rtKey)
@@ -69,15 +71,18 @@ public class JvLink {
         );
     }
 
-    public static List<JvStringContent> readAllLines(final StoredOpenCondition condition, final ZonedDateTime fromTime, final Option option) {
+    public static List<JvStringContent> readAllLines(final StoredOpenCondition condition,
+                                                     final ZonedDateTime fromTime,
+                                                     final Option option) {
         return lines(condition, fromTime, option).collect(Collectors.toList());
     }
 
-    public static List<JvStringContent> readAllLines(final RealTimeOpenCondition condition, final RealTimeKey rtKey) {
+    public static List<JvStringContent> readAllLines(final RealTimeOpenCondition condition,
+                                                     final RealTimeKey rtKey) {
         return lines(condition, rtKey).collect(Collectors.toList());
     }
 
-    public static void writer(final Path filePath, final String line) {
+    public static void writer(final Path filePath, final Charset cs, final String line) {
         if (!Files.exists(filePath)) {
             try {
                 Files.createFile(filePath);
@@ -87,7 +92,7 @@ public class JvLink {
         }
         Objects.requireNonNull(line);
 
-        try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardOpenOption.APPEND)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(filePath, cs, StandardOpenOption.APPEND)) {
             writer.write(line, 0, line.length());
             writer.newLine();
         } catch (IOException x) {

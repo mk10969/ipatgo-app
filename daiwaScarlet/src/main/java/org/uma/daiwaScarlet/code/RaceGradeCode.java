@@ -1,6 +1,5 @@
 package org.uma.daiwaScarlet.code;
 
-import org.apache.commons.lang3.StringUtils;
 import org.uma.vodka.common.constants.CodeEnum;
 
 import java.util.Objects;
@@ -13,7 +12,7 @@ public enum RaceGradeCode implements CodeEnum<String, RaceGradeCode> {
     /**
      * 未設備時のデフォルト値
      */
-    DEFAULT("_", "一般競走"),
+    DEFAULT(" ", "一般競走"),
     G1("A", "G1（平地競走）"),
     G2("B", "G2（平地競走）"),
     G3("C", "G3（平地競走）"),
@@ -45,7 +44,7 @@ public enum RaceGradeCode implements CodeEnum<String, RaceGradeCode> {
 
     public static RaceGradeCode of(String code) {
         Objects.requireNonNull(code);
-        if (StringUtils.isBlank(code)) {
+        if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
         return CodeEnum.reversibleFindOne(code, RaceGradeCode.class);

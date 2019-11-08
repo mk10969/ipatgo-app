@@ -21,7 +21,7 @@ public class createRecordFormat {
 
     @Test
     void test_Format作成() throws IOException {
-        createRecordFormat("se.txt");
+        createRecordFormat("hr.txt");
 
     }
 

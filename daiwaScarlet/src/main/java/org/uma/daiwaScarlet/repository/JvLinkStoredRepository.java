@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface JvLinkStoredRepository<T> {
 
-    List<T> findAll(ZonedDateTime time, Option option);
+    List<T> findAll(ZonedDateTime dateTime, Option option);
 
 
 }

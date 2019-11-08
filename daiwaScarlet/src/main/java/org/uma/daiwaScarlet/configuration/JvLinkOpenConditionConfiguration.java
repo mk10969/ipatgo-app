@@ -1,14 +1,10 @@
 package org.uma.daiwaScarlet.configuration;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.uma.daiwaScarlet.context.RecordSpecItems;
 import org.uma.vodka.config.condition.RealTimeOpenCondition;
 import org.uma.vodka.config.condition.StoredOpenCondition;
-
-import java.util.Map;
 
 import static org.uma.vodka.config.spec.RealTimeDataSpec.*;
 import static org.uma.vodka.config.spec.RecordSpec.*;
@@ -17,10 +13,7 @@ import static org.uma.vodka.config.spec.StoredDataSpec.*;
 @Configuration
 public class JvLinkOpenConditionConfiguration {
 
-    /**
-     * 蓄積系データ
-     */
-
+    /** 蓄積系データ*/
     /**
      * @return レース詳細
      */
@@ -249,10 +242,7 @@ public class JvLinkOpenConditionConfiguration {
     }
 
 
-    /**
-     * リアルタイム系データ
-     */
-
+    /** リアルタイム系データ */
     /**
      * @return 成績確定後 レース詳細
      */

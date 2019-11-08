@@ -1,7 +1,7 @@
 package org.uma.daiwaScarlet.test;
 
 import org.junit.jupiter.api.Test;
-import org.uma.daiwaScarlet.context.RecordSpecItems;
+import org.uma.daiwaScarlet.configuration.JvLinkRecordSpecConfiguration.RecordSpecItems;
 import org.uma.daiwaScarlet.model.RacingDetailsModel;
 import org.uma.vodka.config.spec.RecordSpec;
 

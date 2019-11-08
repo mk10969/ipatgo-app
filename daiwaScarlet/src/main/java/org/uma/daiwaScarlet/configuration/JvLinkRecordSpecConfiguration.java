@@ -1,11 +1,16 @@
 package org.uma.daiwaScarlet.configuration;
 
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.uma.daiwaScarlet.context.RecordSpecItems;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Configuration
@@ -119,6 +124,33 @@ public class JvLinkRecordSpecConfiguration {
     @ConfigurationProperties(prefix = "bn")
     RecordSpecItems configBN() {
         return new RecordSpecItems();
+    }
+
+
+    /**
+     * シリアライズデータを、
+     * Javaオブジェクト化するためのフォーマットクラス
+     *
+     * カラム名、開始位置、データ長さ、繰り返しフラグ
+     */
+    @Getter
+    @ToString
+    public static class RecordSpecItems {
+
+        private List<RecordItem> recordItems = new ArrayList<>();
+
+        @Data
+        public static class RecordItem {
+
+            private String column;
+
+            private int start;
+
+            private int Length;
+
+            private int repeat;
+
+        }
     }
 
 }

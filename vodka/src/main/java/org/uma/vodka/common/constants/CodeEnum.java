@@ -35,7 +35,7 @@ public interface CodeEnum<T, E extends Enum<E>> {
                 .findFirst()
                 .map(CodeEnum::toEnum)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "[引数のコード : " + code + "] " + enumClazz + " に引数のコードが、存在しません。"
+                        "[引数のコード :" + code + "] " + enumClazz + " に引数のコードが、存在しません。"
                 ));
     }
 
