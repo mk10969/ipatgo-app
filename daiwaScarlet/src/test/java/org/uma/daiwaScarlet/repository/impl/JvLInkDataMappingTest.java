@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.uma.daiwaScarlet.configuration.JvLinkRecordSpecConfiguration.RecordSpecItems;
-import org.uma.daiwaScarlet.model.RacingDetailsModel;
+import org.uma.daiwaScarlet.model.RacingDetails;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -54,7 +54,7 @@ public class JvLInkDataMappingTest {
         ObjectMapper objectMapper = new ObjectMapper();
 
         test1().stream()
-                .map(line -> mapper(line, RacingDetailsModel.class))
+                .map(line -> mapper(line, RacingDetails.class))
                 .map(model -> {
                     try {
                         return objectMapper.writeValueAsString(model);

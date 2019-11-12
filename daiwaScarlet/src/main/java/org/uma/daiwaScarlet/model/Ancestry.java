@@ -7,7 +7,7 @@ import lombok.Data;
  */
 
 @Data
-public class AncestryModel {
+public class Ancestry {
 
 
 }

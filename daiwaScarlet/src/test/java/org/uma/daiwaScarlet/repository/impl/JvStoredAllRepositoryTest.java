@@ -8,13 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.uma.daiwaScarlet.component.JvLinkModelMapper;
-import org.uma.daiwaScarlet.model.HorseRacingDetailsModel;
-import org.uma.daiwaScarlet.model.RaceRefundModel;
-import org.uma.daiwaScarlet.model.RacingDetailsModel;
+import org.uma.daiwaScarlet.model.HorseRacingDetails;
+import org.uma.daiwaScarlet.model.RaceRefund;
+import org.uma.daiwaScarlet.model.RacingDetails;
 import org.uma.vodka.config.spec.RecordSpec;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,7 +24,7 @@ import static java.nio.file.Files.readAllLines;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class RacingDetailsRepositoryTest {
+class JvStoredAllRepositoryTest {
 
     @Autowired
     private JvLinkModelMapper jvLinkModelMapper;
@@ -51,7 +50,7 @@ class RacingDetailsRepositoryTest {
     void test_RAモデルマッパー_データは単一ファイル() throws IOException {
         findByRecordSpec(RecordSpec.RA)
                 .stream()
-                .map(line -> jvLinkModelMapper.deserialize(line, RacingDetailsModel.class))
+                .map(line -> jvLinkModelMapper.deserialize(line, RacingDetails.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
     }
@@ -60,7 +59,7 @@ class RacingDetailsRepositoryTest {
     void test_SEモデルマッパー_データは単一ファイル() throws IOException {
         findByRecordSpec(RecordSpec.SE)
                 .stream()
-                .map(line -> jvLinkModelMapper.deserialize(line, HorseRacingDetailsModel.class))
+                .map(line -> jvLinkModelMapper.deserialize(line, HorseRacingDetails.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
     }
@@ -69,7 +68,7 @@ class RacingDetailsRepositoryTest {
     void test_HRモデルマッパー_データは単一ファイル() throws IOException {
         findByRecordSpec(RecordSpec.HR)
                 .stream()
-                .map(line -> jvLinkModelMapper.deserialize(line, RaceRefundModel.class))
+                .map(line -> jvLinkModelMapper.deserialize(line, RaceRefund.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
     }

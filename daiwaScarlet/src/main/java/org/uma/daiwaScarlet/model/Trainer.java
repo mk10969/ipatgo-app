@@ -7,7 +7,7 @@ import lombok.Data;
  */
 
 @Data
-public class TrainerModel {
+public class Trainer {
 
 
 

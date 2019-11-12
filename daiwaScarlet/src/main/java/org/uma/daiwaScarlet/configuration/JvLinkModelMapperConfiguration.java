@@ -167,18 +167,18 @@ public class JvLinkModelMapperConfiguration {
     @Bean
     public EnumMap<RecordSpec, Class<?>> recordSpecPairEnumMap() {
         EnumMap<RecordSpec, Class<?>> enumMap = new EnumMap<>(RecordSpec.class);
-        enumMap.put(RecordSpec.RA, RacingDetailsModel.class);
-        enumMap.put(RecordSpec.SE, HorseRacingDetailsModel.class);
-        enumMap.put(RecordSpec.HR, RaceRefundModel.class);
-        enumMap.put(RecordSpec.SK, OffspringModel.class);
-        enumMap.put(RecordSpec.BT, AncestryModel.class);
-        enumMap.put(RecordSpec.HN, BreedingHorseModel.class);
-        enumMap.put(RecordSpec.CS, CourseModel.class);
-        enumMap.put(RecordSpec.UM, RaceHorseModel.class);
-        enumMap.put(RecordSpec.KS, JockeyModel.class);
-        enumMap.put(RecordSpec.CH, TrainerModel.class);
-        enumMap.put(RecordSpec.BR, BreederModel.class);
-        enumMap.put(RecordSpec.BN, OwnerModel.class);
+        enumMap.put(RecordSpec.RA, RacingDetails.class);
+        enumMap.put(RecordSpec.SE, HorseRacingDetails.class);
+        enumMap.put(RecordSpec.HR, RaceRefund.class);
+        enumMap.put(RecordSpec.SK, Offspring.class);
+        enumMap.put(RecordSpec.BT, Ancestry.class);
+        enumMap.put(RecordSpec.HN, BreedingHorse.class);
+        enumMap.put(RecordSpec.CS, Course.class);
+        enumMap.put(RecordSpec.UM, RaceHorse.class);
+        enumMap.put(RecordSpec.KS, Jockey.class);
+        enumMap.put(RecordSpec.CH, Trainer.class);
+        enumMap.put(RecordSpec.BR, Breeder.class);
+        enumMap.put(RecordSpec.BN, Owner.class);
         return enumMap;
     }
 

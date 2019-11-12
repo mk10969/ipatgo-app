@@ -2,7 +2,7 @@ package org.uma.daiwaScarlet.test;
 
 import org.junit.jupiter.api.Test;
 import org.uma.daiwaScarlet.configuration.JvLinkRecordSpecConfiguration.RecordSpecItems;
-import org.uma.daiwaScarlet.model.RacingDetailsModel;
+import org.uma.daiwaScarlet.model.RacingDetails;
 import org.uma.vodka.config.spec.RecordSpec;
 
 import java.time.DayOfWeek;
@@ -31,7 +31,7 @@ public class TestEnumMap {
     void test_RecordSpecをEnumMap化してみる() {
 
         Map<Class<?>, RecordSpecItems> map = new HashMap<>();
-        map.put(RacingDetailsModel.class, ra());
+        map.put(RacingDetails.class, ra());
 
         EnumMap<RecordSpec, Map<Class<?>, RecordSpecItems>> activityMap = new EnumMap<>(RecordSpec.class);
         activityMap.put(RecordSpec.RA, map);

@@ -1,29 +1,27 @@
 plugins {
-    id 'org.springframework.boot' version '2.1.8.RELEASE'
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
 dependencies {
-//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    implementation 'org.springframework.boot:spring-boot-starter-quartz'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-//    implementation 'org.springframework.kafka:spring-kafka'
+    // reactive library
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
     implementation project(':vodka')
 
     // map to javaBean library
     implementation 'org.modelmapper:modelmapper:2.3.5'
     // 便利ライブラリ
     implementation 'com.google.guava:guava:27.1-jre'
-    // implementation 'org.apache.commons:commons-lang3:3.9'
-
-//    runtimeOnly 'mysql:mysql-connector-java'
 
 
     // use JUnit 5
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude module: "junit"
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-//    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+    testImplementation 'io.projectreactor:reactor-test'
 
 
 }

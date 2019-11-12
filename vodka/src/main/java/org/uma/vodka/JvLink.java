@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 public class JvLink {
 
-    private static final JvLinkWrapper jvLinkWrapper = new JvLinkWrapper();
+    private static final JvLinkWrapper jvlink = new JvLinkWrapper();
 
     private JvLink() {
     }
@@ -38,10 +38,21 @@ public class JvLink {
 //        private static final JvLink INSTANCE = new JvLink();
 //    }
 
-    // delegate
+    /**
+     * JvLinK側がマルチスレッドによる同時アクセスに対応していないため、
+     * クライアント側（このクラス）で、ロックをかけて直列に処理を実行する。
+     * また、このクラスを利用する側では、必ずtry-resource文を用いて、
+     * close処理を忘れないようにすること。
+     *
+     * @param function
+     * @param <T>
+     * @return
+     */
     public static <T extends JvContent> Stream<T> builder(final Function<JvLinkWrapper, Stream<T>> function) {
         Objects.requireNonNull(function);
-        return function.apply(jvLinkWrapper).onClose(jvLinkWrapper::close);
+        synchronized (jvlink) {
+            return function.apply(jvlink).onClose(jvlink::close);
+        }
     }
 
     public static Stream<JvStringContent> lines(final StoredOpenCondition condition,

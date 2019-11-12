@@ -1,6 +1,6 @@
 allprojects {
     group 'org.uma'
-    version '0.0.1-SNAPSHOT'
+    version '0.3.1-SNAPSHOT'
 
     repositories {
         jcenter()
@@ -26,7 +26,7 @@ subprojects {
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
 
         // test library
-        testCompile 'org.jmockit:jmockit:1.48'
+        // testCompile 'org.jmockit:jmockit:1.48'
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.0'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.0'
 

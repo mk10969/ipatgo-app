@@ -7,7 +7,7 @@ import lombok.Data;
  */
 
 @Data
-public class CourseModel {
+public class Course {
 
 
 }

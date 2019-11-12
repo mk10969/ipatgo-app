@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 @Data
-public class RaceRefundModel {
+public class RaceRefund {
 
     private RecordSpec recordTypeId;
     private String dataDiv;

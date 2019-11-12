@@ -7,7 +7,7 @@ import lombok.Data;
  */
 
 @Data
-public class BreedingHorseModel {
+public class BreedingHorse {
 
 
 

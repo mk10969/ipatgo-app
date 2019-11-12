@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.uma.daiwaScarlet.model.HorseRacingDetailsModel;
+import org.uma.daiwaScarlet.model.HorseRacingDetails;
 import org.uma.daiwaScarlet.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -36,7 +36,7 @@ class JvLinkModelMapperTest {
                 .orElseThrow(IllegalStateException::new);
 
         method.setAccessible(true);
-        Object a = method.invoke(jvLinkModelMapper, HorseRacingDetailsModel.class);
+        Object a = method.invoke(jvLinkModelMapper, HorseRacingDetails.class);
         System.out.println(a);
     }
 
@@ -78,5 +78,16 @@ class JvLinkModelMapperTest {
 
     }
 
+    @Test
+    void test_パッケージ表示() {
+        String packageName = "org.uma.daiwaScarlet.repository.impl";
+        ReflectionUtils.getClassesFrom(packageName)
+                .stream()
+                .map(Class::getName)
+                .filter(i -> !i.contains("Test"))
+                .map(i -> i.replace("JvStored", "")
+                        .replace(packageName + ".", ""))
+                .forEach(System.out::println);
+    }
 
 }

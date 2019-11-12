@@ -1,12 +1,8 @@
 package org.uma.daiwaScarlet.code;
 
-import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang3.StringUtils;
 import org.uma.vodka.common.constants.CodeEnum;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 
 /**
@@ -162,11 +158,11 @@ public enum RaceCourseCode implements CodeEnum<String, RaceCourseCode> {
 //                .collect(ImmutableList.toImmutableList());
 //    }
 
-    public static List<RaceCourseCode> getCentralHorseRaceCodes() {
-        return Stream.of(RaceCourseCode.values())
-                .filter(i -> StringUtils.isNumeric(i.getCode()))
-                .collect(ImmutableList.toImmutableList());
-    }
+//    public static List<RaceCourseCode> getCentralHorseRaceCodes() {
+//        return Stream.of(RaceCourseCode.values())
+//                .filter(i -> StringUtils.isNumeric(i.getCode()))
+//                .collect(ImmutableList.toImmutableList());
+//    }
 
 
 }

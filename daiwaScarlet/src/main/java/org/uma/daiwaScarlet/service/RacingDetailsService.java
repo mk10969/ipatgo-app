@@ -2,9 +2,11 @@ package org.uma.daiwaScarlet.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.uma.daiwaScarlet.model.RacingDetailsModel;
-import org.uma.daiwaScarlet.repository.impl.RacingDetailsRepository;
+import org.uma.daiwaScarlet.model.RacingDetails;
+import org.uma.daiwaScarlet.repository.ReactiveRacingDetailsRepository;
+import org.uma.daiwaScarlet.repository.impl.JvStoredRacingDetailsRepository;
 import org.uma.vodka.config.Option;
+import reactor.core.publisher.Flux;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -14,24 +16,26 @@ import java.util.List;
 public class RacingDetailsService {
 
     @Autowired
-    private RacingDetailsRepository repository;
+    private JvStoredRacingDetailsRepository jvRepository;
 
-    public List<RacingDetailsModel> findAllOnThisWeek(ZonedDateTime dateTime) {
-        return repository.findAll(dateTime, Option.THIS_WEEK);
+    @Autowired
+    private ReactiveRacingDetailsRepository mongoRepository;
+
+    public List<RacingDetails> findAllOnThisWeek(ZonedDateTime dateTime) {
+        return jvRepository.findAll(dateTime, Option.THIS_WEEK);
     }
 
-    public List<RacingDetailsModel> findAllOnStandard(ZonedDateTime dateTime) {
-        return repository.findAll(dateTime, Option.STANDARD);
+    public List<RacingDetails> findAllOnStandard(ZonedDateTime dateTime) {
+        return jvRepository.findAll(dateTime, Option.STANDARD);
     }
 
-    public List<RacingDetailsModel> findAllOnSetUpWithoutDialog(ZonedDateTime dateTime) {
-        return repository.findAll(dateTime, Option.SETUP_WITHOUT_DIALOG);
+    public List<RacingDetails> findAllOnSetUpWithoutDialog(ZonedDateTime dateTime) {
+        return jvRepository.findAll(dateTime, Option.SETUP_WITHOUT_DIALOG);
     }
 
-
-    /**
-     * ここから本気のコードですね。
-     */
+    public Flux<RacingDetails> doInsertBatch(ZonedDateTime dateTime) {
+        return mongoRepository.insert(findAllOnThisWeek(dateTime));
+    }
 
 
 }

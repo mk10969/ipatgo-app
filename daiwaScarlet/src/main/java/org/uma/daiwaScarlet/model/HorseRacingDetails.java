@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Data
-public class HorseRacingDetailsModel {
+public class HorseRacingDetails {
 
     private RecordSpec recordTypeId;
     private String dataDiv;
