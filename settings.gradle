@@ -1,7 +1,4 @@
 include 'uma-bean'
 include 'uma-common'
-include 'daiwaScarlet'
-//include 'uma-bean'
-//include 'uma-bean'
-//include 'uma-bean'
-
+include 'uma-feed-app'
+include 'uma-reactive-app'
