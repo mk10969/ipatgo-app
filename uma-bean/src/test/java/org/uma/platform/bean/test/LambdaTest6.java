@@ -1,7 +1,7 @@
 package org.uma.platform.bean.test;
 
 import org.junit.jupiter.api.Test;
-import org.uma.platform.common.common.lang.ThreadUtil;
+import org.uma.platform.common.utils.lang.ThreadUtil;
 
 import java.util.Arrays;
 import java.util.List;

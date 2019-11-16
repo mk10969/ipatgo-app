@@ -5,11 +5,9 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.uma.daiwaScarlet.code.*;
-import org.uma.daiwaScarlet.model.*;
-import org.uma.platform.bean.config.spec.RecordSpec;
-import org.uma.platform.feed.application.code.*;
-import org.uma.platform.feed.application.model.*;
+import org.uma.platform.common.code.*;
+import org.uma.platform.common.config.spec.RecordSpec;
+import org.uma.platform.common.model.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

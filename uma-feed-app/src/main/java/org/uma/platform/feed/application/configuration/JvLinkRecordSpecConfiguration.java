@@ -1,6 +1,5 @@
 package org.uma.platform.feed.application.configuration;
 
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
@@ -130,7 +129,7 @@ public class JvLinkRecordSpecConfiguration {
     /**
      * シリアライズデータを、
      * Javaオブジェクト化するためのフォーマットクラス
-     *
+     * <p>
      * カラム名、開始位置、データ長さ、繰り返しフラグ
      */
     @Getter

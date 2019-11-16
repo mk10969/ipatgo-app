@@ -20,7 +20,6 @@ class TestControllerTest {
 
     @Test
     void test_RA() {
-
         service.findAllOnThisWeek(dateTime);
 
     }

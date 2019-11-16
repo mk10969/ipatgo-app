@@ -1,18 +1,18 @@
 package org.uma.platform.feed.application.component;
 
-
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.feed.application.configuration.JvLinkModelMapperConfiguration;
 import org.uma.platform.feed.application.configuration.JvLinkRecordSpecConfiguration;
 import org.uma.platform.feed.application.configuration.JvLinkRecordSpecConfiguration.RecordSpecItems;
 import org.uma.platform.feed.application.util.JvLinkStringUtil;
-import org.uma.platform.bean.config.spec.RecordSpec;
 
 import java.util.*;
 
 @Component
+@RequiredArgsConstructor
 public class JvLinkModelMapper {
 
     private final ModelMapper modelMapper;
@@ -28,13 +28,6 @@ public class JvLinkModelMapper {
      */
     private final Map<String, RecordSpecItems> recordSpecItems;
 
-
-    @Autowired
-    public JvLinkModelMapper(ModelMapper modelMapper, EnumMap<RecordSpec, Class<?>> recordSpecClass, Map<String, RecordSpecItems> recordSpecItems) {
-        this.modelMapper = modelMapper;
-        this.recordSpecClass = recordSpecClass;
-        this.recordSpecItems = recordSpecItems;
-    }
 
     /**
      * clazzから、RecordSpecを抽出し、flatMapをつかって、RecordSpecから、RecordSpecItemsを抽出する。

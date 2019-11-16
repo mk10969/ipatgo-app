@@ -1,30 +1,31 @@
 package org.uma.platform.feed.application.repository.impl;
 
 import com.google.common.collect.ImmutableList;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.uma.platform.feed.application.component.JvLinkModelMapper;
-import org.uma.platform.feed.application.model.RaceRefund;
-import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 import org.uma.platform.bean.JvLink;
-import org.uma.platform.bean.config.Option;
-import org.uma.platform.bean.config.condition.StoredOpenCondition;
 import org.uma.platform.bean.response.JvStringContent;
+import org.uma.platform.common.config.Option;
+import org.uma.platform.common.config.condition.StoredOpenCondition;
+import org.uma.platform.common.model.RaceRefund;
+import org.uma.platform.feed.application.component.JvLinkModelMapper;
+import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
 @Repository
+@RequiredArgsConstructor
 public class JvStoredRaceRefundRepository implements JvLinkStoredRepository<RaceRefund> {
 
-    @Autowired
-    private JvLinkModelMapper jvLinkModelMapper;
+    private final JvLinkModelMapper jvLinkModelMapper;
 
-    @Autowired
     @Qualifier("RACE_HR")
-    private StoredOpenCondition storedOpenCondition;
+    private final StoredOpenCondition storedOpenCondition;
+
 
     @Override
     public List<RaceRefund> findAll(ZonedDateTime dateTime, Option option) {

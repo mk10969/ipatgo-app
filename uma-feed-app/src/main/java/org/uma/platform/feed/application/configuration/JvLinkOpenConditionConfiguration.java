@@ -3,8 +3,12 @@ package org.uma.platform.feed.application.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.uma.platform.bean.config.condition.RealTimeOpenCondition;
-import org.uma.platform.bean.config.condition.StoredOpenCondition;
+import org.uma.platform.common.config.condition.RealTimeOpenCondition;
+import org.uma.platform.common.config.condition.StoredOpenCondition;
+
+import static org.uma.platform.common.config.spec.RealTimeDataSpec.*;
+import static org.uma.platform.common.config.spec.RecordSpec.*;
+import static org.uma.platform.common.config.spec.StoredDataSpec.*;
 
 @Configuration
 public class JvLinkOpenConditionConfiguration {

@@ -1,6 +1,6 @@
 package org.uma.platform.feed.application.repository;
 
-import org.uma.platform.bean.config.RealTimeKey;
+import org.uma.platform.common.config.RealTimeKey;
 
 import java.util.List;
 

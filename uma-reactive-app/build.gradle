@@ -1,12 +1,10 @@
-sourceCompatibility = '11'
-targetCompatibility = '11'
-
 configurations {
     developmentOnly
     runtimeClasspath {
         extendsFrom developmentOnly
     }
 }
+
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
