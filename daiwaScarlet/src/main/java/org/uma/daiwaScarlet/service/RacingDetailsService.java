@@ -18,8 +18,8 @@ public class RacingDetailsService {
     @Autowired
     private JvStoredRacingDetailsRepository jvRepository;
 
-    @Autowired
-    private ReactiveRacingDetailsRepository mongoRepository;
+//    @Autowired
+//    private ReactiveRacingDetailsRepository mongoRepository;
 
     public List<RacingDetails> findAllOnThisWeek(ZonedDateTime dateTime) {
         return jvRepository.findAll(dateTime, Option.THIS_WEEK);
@@ -33,9 +33,9 @@ public class RacingDetailsService {
         return jvRepository.findAll(dateTime, Option.SETUP_WITHOUT_DIALOG);
     }
 
-    public Flux<RacingDetails> doInsertBatch(ZonedDateTime dateTime) {
-        return mongoRepository.insert(findAllOnThisWeek(dateTime));
-    }
+//    public Flux<RacingDetails> doInsertBatch(ZonedDateTime dateTime) {
+//        return mongoRepository.insert(findAllOnThisWeek(dateTime));
+//    }
 
 
 }

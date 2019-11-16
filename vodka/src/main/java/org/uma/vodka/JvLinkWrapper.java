@@ -135,6 +135,7 @@ public class JvLinkWrapper {
     }
 
     public void close() {
+        System.out.println("close");
         JvLinkHandler.handle(jvLinkDataLab::jvClose);
     }
 

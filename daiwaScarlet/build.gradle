@@ -4,10 +4,8 @@ plugins {
 }
 
 dependencies {
-    // reactive library
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-
+    // Blocking
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation project(':vodka')
 
     // map to javaBean library
@@ -15,13 +13,9 @@ dependencies {
     // 便利ライブラリ
     implementation 'com.google.guava:guava:27.1-jre'
 
-
     // use JUnit 5
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
-    testImplementation 'io.projectreactor:reactor-test'
-
 
 }

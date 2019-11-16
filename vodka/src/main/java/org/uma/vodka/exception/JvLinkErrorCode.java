@@ -5,6 +5,10 @@ import org.uma.vodka.common.constants.CodeEnum;
 
 public enum JvLinkErrorCode implements CodeEnum<Integer, JvLinkErrorCode> {
     /**
+     * -1: Open時、該当データなし。
+     */
+    _1(-1, "該当データなし"),
+    /**
      * -100:パラメータが不正あるいはレジストリへの保存に失敗
      */
     _100(-100, "パラメータが不正あるいはレジストリへの保存に失敗"),
