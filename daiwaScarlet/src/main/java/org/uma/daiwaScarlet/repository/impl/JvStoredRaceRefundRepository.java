@@ -31,9 +31,8 @@ public class JvStoredRaceRefundRepository implements JvLinkStoredRepository<Race
 
         try (Stream<JvStringContent> lines = JvLink.lines(storedOpenCondition, dateTime, option)) {
             return lines
-                    .map(jvContent ->
-                            jvLinkModelMapper.deserialize(jvContent.getLine(), RaceRefund.class)
-                    )
+                    .map(jvContent -> jvLinkModelMapper
+                            .deserialize(jvContent.getLine(), RaceRefund.class))
                     .collect(ImmutableList.toImmutableList());
         }
     }

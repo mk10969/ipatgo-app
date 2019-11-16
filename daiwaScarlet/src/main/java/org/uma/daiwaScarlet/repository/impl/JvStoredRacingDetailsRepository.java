@@ -28,15 +28,12 @@ public class JvStoredRacingDetailsRepository implements JvLinkStoredRepository<R
 
     @Override
     public List<RacingDetails> findAll(ZonedDateTime dateTime, Option option) {
-
         try (Stream<JvStringContent> lines = JvLink.lines(storedOpenCondition, dateTime, option)) {
             return lines
-                    .map(jvContent ->
-                            jvLinkModelMapper.deserialize(jvContent.getLine(), RacingDetails.class)
-                    )
+                    .map(jvContent -> jvLinkModelMapper
+                            .deserialize(jvContent.getLine(), RacingDetails.class))
                     .collect(ImmutableList.toImmutableList());
         }
-
     }
 
 

@@ -31,9 +31,8 @@ public class JvStoredHorseRacingDetailsRepository implements JvLinkStoredReposit
 
         try (Stream<JvStringContent> lines = JvLink.lines(storedOpenCondition, dateTime, option)) {
             return lines
-                    .map(jvContent ->
-                            jvLinkModelMapper.deserialize(jvContent.getLine(), HorseRacingDetails.class)
-                    )
+                    .map(jvContent -> jvLinkModelMapper
+                            .deserialize(jvContent.getLine(), HorseRacingDetails.class))
                     .collect(ImmutableList.toImmutableList());
 
         }

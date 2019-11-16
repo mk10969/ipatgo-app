@@ -4,6 +4,7 @@ package org.uma.daiwaScarlet.component;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.uma.daiwaScarlet.configuration.JvLinkModelMapperConfiguration;
 import org.uma.daiwaScarlet.configuration.JvLinkRecordSpecConfiguration;
 import org.uma.daiwaScarlet.configuration.JvLinkRecordSpecConfiguration.RecordSpecItems;
 import org.uma.daiwaScarlet.util.JvLinkStringUtil;
@@ -16,6 +17,9 @@ public class JvLinkModelMapper {
 
     private final ModelMapper modelMapper;
 
+    /**
+     * {@link JvLinkModelMapperConfiguration#recordSpecPairEnumMap()}
+     */
     private final EnumMap<RecordSpec, Class<?>> recordSpecClass;
 
     /**
@@ -72,8 +76,10 @@ public class JvLinkModelMapper {
                     String[] columnNameAndJsonString = record.getColumn().split("=");
                     for (int i = 0; i < record.getRepeat(); i++) {
                         Map<String, Object> tmpMap = new HashMap<>(); //ループ毎に初期化
-                        for (Map.Entry<String, Integer> entry : JvLinkStringUtil.jsonStringToMap(columnNameAndJsonString[1]).entrySet()) {
-                            String tmpString = JvLinkStringUtil.byteToStringOnSlice(byteArrayLine, start, start + entry.getValue());
+                        for (Map.Entry<String, Integer> entry : JvLinkStringUtil
+                                .jsonStringToMap(columnNameAndJsonString[1]).entrySet()) {
+                            String tmpString = JvLinkStringUtil
+                                    .byteToStringOnSlice(byteArrayLine, start, start + entry.getValue());
                             tmpMap.put(entry.getKey(), tmpString);
                             start = start + entry.getValue();
                         }
