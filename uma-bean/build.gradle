@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':uma-common')
+    // Use activeXComponent
+    implementation 'com.hynnet:jacob:1.18'
+}

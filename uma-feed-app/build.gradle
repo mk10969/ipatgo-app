@@ -1,0 +1,12 @@
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation project(':uma-bean')
+
+    // map to javaBean library
+    implementation 'org.modelmapper:modelmapper:2.3.5'
+    implementation 'com.google.guava:guava:27.1-jre'
+
+}

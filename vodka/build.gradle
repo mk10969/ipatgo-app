@@ -1,8 +1,0 @@
-plugins {
-    id 'java-library'
-}
-
-dependencies {
-    // Use activeXComponent
-    implementation 'com.hynnet:jacob:1.18'
-}

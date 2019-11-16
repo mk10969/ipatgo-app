@@ -1,5 +1,9 @@
+plugins {
+    id "io.spring.dependency-management" version "1.0.8.RELEASE"
+}
+
 allprojects {
-    group 'org.uma'
+    group 'org.uma.platfrom'
     version '0.3.1-SNAPSHOT'
 
     repositories {
@@ -8,15 +12,16 @@ allprojects {
     }
 }
 
-
 subprojects {
     apply plugin: "java"
+    apply plugin: 'java-library'
     apply plugin: 'idea'
 
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
-    compileJava.options.encoding = 'UTF-8'
-
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:2.1.9.RELEASE")
+        }
+    }
 
     dependencies {
         // lombok
@@ -24,17 +29,13 @@ subprojects {
         annotationProcessor 'org.projectlombok:lombok:1.18.10'
         testCompileOnly 'org.projectlombok:lombok:1.18.10'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
-
-        // test library
-        // testCompile 'org.jmockit:jmockit:1.48'
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.0'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.0'
-
     }
 
     test {
-        // Use junit platform for unit tests
         useJUnitPlatform()
     }
+
+    compileJava.options.encoding = 'UTF-8'
+
 }
 

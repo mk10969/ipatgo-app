@@ -1,1 +1,7 @@
-include 'vodka', 'daiwaScarlet', 'gentildonna'
+include 'uma-bean'
+include 'uma-common'
+include 'daiwaScarlet'
+//include 'uma-bean'
+//include 'uma-bean'
+//include 'uma-bean'
+
