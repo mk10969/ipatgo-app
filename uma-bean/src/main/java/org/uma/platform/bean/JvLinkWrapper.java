@@ -1,20 +1,20 @@
 package org.uma.platform.bean;
 
-import org.uma.platform.common.utils.lang.DateUtil;
-import org.uma.platform.common.utils.lang.StringUtil;
+import org.uma.platform.bean.response.JvByteContent;
+import org.uma.platform.bean.response.JvSimpleResult;
+import org.uma.platform.bean.response.JvStringContent;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.RealTimeKey;
 import org.uma.platform.common.config.condition.OpenCondition;
 import org.uma.platform.common.config.condition.RealTimeOpenCondition;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
-import org.uma.platform.bean.response.JvByteContent;
-import org.uma.platform.bean.response.JvSimpleResult;
-import org.uma.platform.bean.response.JvStringContent;
+import org.uma.platform.common.utils.lang.DateUtil;
+import org.uma.platform.common.utils.lang.StringUtil;
 
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -91,7 +91,7 @@ public class JvLinkWrapper {
         return this;
     }
 
-    public JvLinkWrapper open(StoredOpenCondition condition, ZonedDateTime fromTime, Option option) {
+    public JvLinkWrapper open(StoredOpenCondition condition, LocalDateTime fromTime, Option option) {
         return open(condition, DateUtil.format(JV_DATE_FORMAT, fromTime), option);
     }
 

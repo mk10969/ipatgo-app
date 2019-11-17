@@ -1,0 +1,41 @@
+package org.uma.platform.feed.application.controller;
+
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.uma.platform.common.config.Option;
+import org.uma.platform.common.model.Ancestry;
+import org.uma.platform.common.utils.lang.DateUtil;
+import org.uma.platform.feed.application.repository.impl.JvStoredAncestryRepository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api")
+public class AncestryController {
+
+    private final JvStoredAncestryRepository jvRepository;
+
+    public AncestryController(JvStoredAncestryRepository jvRepository) {
+        this.jvRepository = jvRepository;
+    }
+
+    @GetMapping("/ancestry")
+    public List<Ancestry> findAllOnThisWeek() {
+        // たぶんこんくらいで、大丈夫なはず。
+        LocalDateTime dateTime = LocalDateTime.now().minusWeeks(1L).minusDays(1L);
+        return jvRepository.findAll(dateTime, Option.THIS_WEEK);
+    }
+
+    @GetMapping("/ancestry/{epochSecond}")
+    public List<Ancestry> findAllOnStandard(@PathVariable(value = "epochSecond") Long epochSecond) {
+        // 上限、下限を設定しましょう。バリデーション
+
+        return jvRepository.findAll(DateUtil.tolocalDateTime(epochSecond), Option.STANDARD);
+    }
+
+
+}

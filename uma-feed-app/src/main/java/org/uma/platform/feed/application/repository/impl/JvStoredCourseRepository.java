@@ -11,7 +11,7 @@ import org.uma.platform.common.model.Course;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -29,7 +29,7 @@ public class JvStoredCourseRepository implements JvLinkStoredRepository<Course> 
     }
 
     @Override
-    public List<Course> findAll(ZonedDateTime dateTime, Option option) {
+    public List<Course> findAll(LocalDateTime dateTime, Option option) {
 
         try (Stream<JvStringContent> lines = JvLink.lines(storedOpenCondition, dateTime, option)) {
             return lines

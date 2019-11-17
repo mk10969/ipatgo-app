@@ -1,11 +1,11 @@
 package org.uma.platform.bean;
 
+import org.uma.platform.bean.response.JvContent;
+import org.uma.platform.bean.response.JvStringContent;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.RealTimeKey;
 import org.uma.platform.common.config.condition.RealTimeOpenCondition;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
-import org.uma.platform.bean.response.JvContent;
-import org.uma.platform.bean.response.JvStringContent;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -56,7 +56,7 @@ public class JvLink {
     }
 
     public static Stream<JvStringContent> lines(final StoredOpenCondition condition,
-                                                final ZonedDateTime fromTime,
+                                                final LocalDateTime fromTime,
                                                 final Option option) {
         return builder(jvLink ->
                 jvLink.init()
@@ -83,7 +83,7 @@ public class JvLink {
     }
 
     public static List<JvStringContent> readAllLines(final StoredOpenCondition condition,
-                                                     final ZonedDateTime fromTime,
+                                                     final LocalDateTime fromTime,
                                                      final Option option) {
         return lines(condition, fromTime, option).collect(Collectors.toList());
     }

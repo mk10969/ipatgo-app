@@ -11,7 +11,7 @@ import org.uma.platform.common.model.Trainer;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -29,7 +29,7 @@ public class JvStoredTrainerRepository implements JvLinkStoredRepository<Trainer
     }
 
     @Override
-    public List<Trainer> findAll(ZonedDateTime dateTime, Option option) {
+    public List<Trainer> findAll(LocalDateTime dateTime, Option option) {
 
         try (Stream<JvStringContent> lines = JvLink.lines(storedOpenCondition, dateTime, option)) {
             return lines

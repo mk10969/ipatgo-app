@@ -1,7 +1,6 @@
 package org.uma.platform.feed.application.repository.impl;
 
 import com.google.common.collect.ImmutableList;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.uma.platform.bean.JvLink;
@@ -12,7 +11,7 @@ import org.uma.platform.common.model.RacingDetails;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -30,7 +29,8 @@ public class JvStoredRacingDetailsRepository implements JvLinkStoredRepository<R
     }
 
     @Override
-    public List<RacingDetails> findAll(ZonedDateTime dateTime, Option option) {
+    public List<RacingDetails> findAll(LocalDateTime dateTime, Option option) {
+        
         try (Stream<JvStringContent> lines = JvLink.lines(storedOpenCondition, dateTime, option)) {
             return lines
                     .map(jvContent -> jvLinkModelMapper
