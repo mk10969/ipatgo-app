@@ -18,14 +18,17 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Repository
-@RequiredArgsConstructor
 public class JvStoredRaceRefundRepository implements JvLinkStoredRepository<RaceRefund> {
 
     private final JvLinkModelMapper jvLinkModelMapper;
 
-    @Qualifier("RACE_HR")
     private final StoredOpenCondition storedOpenCondition;
 
+    public JvStoredRaceRefundRepository(JvLinkModelMapper jvLinkModelMapper,
+                                        @Qualifier("RACE_HR") StoredOpenCondition storedOpenCondition) {
+        this.jvLinkModelMapper = jvLinkModelMapper;
+        this.storedOpenCondition = storedOpenCondition;
+    }
 
     @Override
     public List<RaceRefund> findAll(ZonedDateTime dateTime, Option option) {

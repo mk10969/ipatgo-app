@@ -1,8 +1,6 @@
 package org.uma.platform.feed.application.repository.impl;
 
 import com.google.common.collect.ImmutableList;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.uma.platform.bean.JvLink;
@@ -18,14 +16,17 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Repository
-@RequiredArgsConstructor
 public class JvStoredHorseRacingDetailsRepository implements JvLinkStoredRepository<HorseRacingDetails> {
 
     private final JvLinkModelMapper jvLinkModelMapper;
 
-    @Qualifier("RACE_SE")
     private final StoredOpenCondition storedOpenCondition;
 
+    public JvStoredHorseRacingDetailsRepository(JvLinkModelMapper jvLinkModelMapper,
+                                                @Qualifier("RACE_SE") StoredOpenCondition storedOpenCondition) {
+        this.jvLinkModelMapper = jvLinkModelMapper;
+        this.storedOpenCondition = storedOpenCondition;
+    }
 
     @Override
     public List<HorseRacingDetails> findAll(ZonedDateTime dateTime, Option option) {
@@ -39,6 +40,4 @@ public class JvStoredHorseRacingDetailsRepository implements JvLinkStoredReposit
         }
     }
 
-
 }
-

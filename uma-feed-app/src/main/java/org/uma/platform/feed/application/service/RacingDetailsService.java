@@ -9,7 +9,6 @@ import org.uma.platform.feed.application.repository.impl.JvStoredRacingDetailsRe
 import java.time.ZonedDateTime;
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 public class RacingDetailsService {
@@ -24,10 +23,5 @@ public class RacingDetailsService {
     public List<RacingDetails> findAllOnStandard(ZonedDateTime dateTime) {
         return jvRepository.findAll(dateTime, Option.STANDARD);
     }
-
-    public List<RacingDetails> findAllOnSetUpWithoutDialog(ZonedDateTime dateTime) {
-        return jvRepository.findAll(dateTime, Option.SETUP_WITHOUT_DIALOG);
-    }
-
 
 }

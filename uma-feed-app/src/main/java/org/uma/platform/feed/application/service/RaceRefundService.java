@@ -13,20 +13,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RaceRefundService {
 
-    private final JvStoredRaceRefundRepository refundRepository;
+    private final JvStoredRaceRefundRepository jvRepository;
 
 
     public List<RaceRefund> findAllOnThisWeek(ZonedDateTime dateTime) {
-        return refundRepository.findAll(dateTime, Option.THIS_WEEK);
+        return jvRepository.findAll(dateTime, Option.THIS_WEEK);
     }
 
     public List<RaceRefund> findAllOnStandard(ZonedDateTime dateTime) {
-        return refundRepository.findAll(dateTime, Option.STANDARD);
+        return jvRepository.findAll(dateTime, Option.STANDARD);
     }
-
-    public List<RaceRefund> findAllOnSetUpWithoutDialog(ZonedDateTime dateTime) {
-        return refundRepository.findAll(dateTime, Option.SETUP_WITHOUT_DIALOG);
-    }
-
 
 }

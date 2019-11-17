@@ -17,14 +17,17 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Repository
-@RequiredArgsConstructor
 public class JvStoredRacingDetailsRepository implements JvLinkStoredRepository<RacingDetails> {
 
     private final JvLinkModelMapper jvLinkModelMapper;
 
-    @Qualifier("RACE_RA")
     private final StoredOpenCondition storedOpenCondition;
 
+    public JvStoredRacingDetailsRepository(JvLinkModelMapper jvLinkModelMapper,
+                                           @Qualifier("RACE_RA") StoredOpenCondition storedOpenCondition) {
+        this.jvLinkModelMapper = jvLinkModelMapper;
+        this.storedOpenCondition = storedOpenCondition;
+    }
 
     @Override
     public List<RacingDetails> findAll(ZonedDateTime dateTime, Option option) {
