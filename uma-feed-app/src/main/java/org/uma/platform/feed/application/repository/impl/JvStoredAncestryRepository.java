@@ -3,13 +3,15 @@ package org.uma.platform.feed.application.repository.impl;
 import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.uma.platform.bean.JvLink;
-import org.uma.platform.bean.response.JvStringContent;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
 import org.uma.platform.common.model.Ancestry;
+import org.uma.platform.common.model.RaceHorse;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
+import org.uma.platform.feed.application.jvlink.JvLink;
+import org.uma.platform.feed.application.jvlink.response.JvStringContent;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
+import reactor.core.publisher.Flux;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,4 +41,10 @@ public class JvStoredAncestryRepository implements JvLinkStoredRepository<Ancest
         }
     }
 
+    @Override
+    public Flux<Ancestry> readFlux(LocalDateTime dateTime, Option option) {
+        return JvLink.fetch(storedOpenCondition, dateTime, option)
+                .map(jvStringContent -> jvLinkModelMapper
+                        .deserialize(jvStringContent.getLine(), Ancestry.class));
+    }
 }

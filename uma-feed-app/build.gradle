@@ -1,10 +1,19 @@
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation project(':uma-bean')
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
     implementation project(':uma-common')
 
     // map to javaBean library
     implementation 'org.modelmapper:modelmapper:2.3.5'
     implementation 'com.google.guava:guava:27.1-jre'
+
+    // Use activeXComponent
+    implementation 'com.hynnet:jacob:1.18'
+
+
+    // test tools
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+    testImplementation 'io.projectreactor:reactor-test'
 
 }

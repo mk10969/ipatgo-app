@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DateUtilTest {
 
@@ -26,10 +27,14 @@ class DateUtilTest {
     }
 
     @Test
-    void testtest(){
-        DateUtil.tolocalDateTime(null);
+    void test_日付比較() {
+        LocalDateTime dateTime = LocalDateTime.of(2017, 1, 1, 1, 1, 1);
 
-
+        // 今から３年より昔であるかどうか。
+        // ３年より昔ではない！
+        assertTrue(LocalDateTime.now().minusYears(3L).isBefore(dateTime));
 
     }
+
+
 }

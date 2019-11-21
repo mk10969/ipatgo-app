@@ -1,4 +1,3 @@
-include 'uma-bean'
 include 'uma-common'
 include 'uma-feed-app'
 include 'uma-reactive-app'

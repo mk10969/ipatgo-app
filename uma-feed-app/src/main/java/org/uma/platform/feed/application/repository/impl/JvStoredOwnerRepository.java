@@ -3,13 +3,14 @@ package org.uma.platform.feed.application.repository.impl;
 import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.uma.platform.bean.JvLink;
-import org.uma.platform.bean.response.JvStringContent;
+import org.uma.platform.feed.application.jvlink.JvLink;
+import org.uma.platform.feed.application.jvlink.response.JvStringContent;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
 import org.uma.platform.common.model.Owner;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
+import reactor.core.publisher.Flux;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,6 +38,11 @@ public class JvStoredOwnerRepository implements JvLinkStoredRepository<Owner> {
                             .deserialize(jvContent.getLine(), Owner.class))
                     .collect(ImmutableList.toImmutableList());
         }
+    }
+
+    @Override
+    public Flux<Owner> readFlux(LocalDateTime dateTime, Option option) {
+        return null;
     }
 
 }
