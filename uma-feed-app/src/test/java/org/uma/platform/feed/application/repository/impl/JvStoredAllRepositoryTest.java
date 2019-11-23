@@ -6,18 +6,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.common.model.HorseRacingDetails;
 import org.uma.platform.common.model.RaceRefund;
 import org.uma.platform.common.model.RacingDetails;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
+import org.uma.platform.feed.application.util.JvLinkStringUtil;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 import static java.nio.file.Files.readAllLines;
 
@@ -29,11 +31,16 @@ class JvStoredAllRepositoryTest {
     @Autowired
     private JvLinkModelMapper jvLinkModelMapper;
 
-    private List<String> findByRecordSpec(RecordSpec recordSpec) throws IOException {
-        Path path = Paths.get("/Users/m-kakiuchi/myApp/UmaApplication/daiwaScarlet/src/test/java/org/uma/daiwaScarlet/repository/impl/"
-                + recordSpec.getCode().toLowerCase()
-                + "_data.txt");
-        return readAllLines(path, Charset.forName("SHIFT-JIS"));
+    @Autowired
+    private ResourceLoader resourceLoader;
+
+
+    private List<String> readJvlinkData(String filename) throws IOException {
+        Path filePath = resourceLoader
+                .getResource("classpath:test-data/" + filename)
+                .getFile()
+                .toPath();
+        return readAllLines(filePath, StandardCharsets.US_ASCII);
     }
 
     private String toJson(Object model) {
@@ -46,10 +53,12 @@ class JvStoredAllRepositoryTest {
         }
     }
 
+
     @Test
     void test_RAモデルマッパー_データは単一ファイル() throws IOException {
-        findByRecordSpec(RecordSpec.RA)
+        readJvlinkData("RACE_RA.txt")
                 .stream()
+                .peek(i -> i.length())
                 .map(line -> jvLinkModelMapper.deserialize(line, RacingDetails.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
@@ -57,8 +66,9 @@ class JvStoredAllRepositoryTest {
 
     @Test
     void test_SEモデルマッパー_データは単一ファイル() throws IOException {
-        findByRecordSpec(RecordSpec.SE)
+        readJvlinkData("RACE_SE.txt")
                 .stream()
+                .peek(i -> i.length())
                 .map(line -> jvLinkModelMapper.deserialize(line, HorseRacingDetails.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
@@ -66,11 +76,22 @@ class JvStoredAllRepositoryTest {
 
     @Test
     void test_HRモデルマッパー_データは単一ファイル() throws IOException {
-        findByRecordSpec(RecordSpec.HR)
+        readJvlinkData("RACE_HR.txt")
                 .stream()
+                .peek(i -> i.length())
                 .map(line -> jvLinkModelMapper.deserialize(line, RaceRefund.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
     }
+
+
+    @Test
+    void test_ファイルの中身のデータの長さ確認() throws IOException {
+        readJvlinkData("RACE_HR.txt")
+                .stream()
+                .map(i -> JvLinkStringUtil.stringToByte(i))
+                .forEach(i -> System.out.println(i.length));
+    }
+
 
 }

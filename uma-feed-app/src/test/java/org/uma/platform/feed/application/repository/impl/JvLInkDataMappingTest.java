@@ -13,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.uma.platform.common.model.RacingDetails;
 import org.uma.platform.feed.application.configuration.JvLinkRecordSpecConfiguration;
 
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -30,6 +29,8 @@ import static java.nio.file.Files.readAllLines;
 @SpringBootTest
 public class JvLInkDataMappingTest {
 
+    private static final String directory = "/Users/m-kakiuchi/myApp/UmaApplication/uma-feed-app/src/test/java/org/uma/platform/feed/application/repository/impl";
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -38,8 +39,8 @@ public class JvLInkDataMappingTest {
     private JvLinkRecordSpecConfiguration.RecordSpecItems recordSpecItems;
 
 
-    private List<String> test1() throws IOException {
-        Path path = Paths.get("/Users/m-kakiuchi/myApp/UmaApplication/daiwaScarlet/src/test/java/org/uma/daiwaScarlet/test/ra_data.txt");
+    private List<String> readJvlinkData(String filename) throws IOException {
+        Path path = Paths.get(directory + filename);
         return readAllLines(path, Charset.forName("SHIFT-JIS"));
     }
 
@@ -54,7 +55,7 @@ public class JvLInkDataMappingTest {
     void test_RAモデルマッパー_データは単一ファイル() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        test1().stream()
+        readJvlinkData("RACE_RA.txt").stream()
                 .map(line -> mapper(line, RacingDetails.class))
                 .map(model -> {
                     try {
@@ -165,7 +166,6 @@ public class JvLInkDataMappingTest {
             }
         }
     }
-
 
 
     @Test
