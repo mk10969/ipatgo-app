@@ -43,7 +43,7 @@ public enum RealTimeDataSpec implements DataEnum<String, RealTimeDataSpec> {
         return this.name;
     }
 
-    public RealTimeDataSpec findByDataSpec(String dataSpec) {
+    public static RealTimeDataSpec of(String dataSpec) {
         Objects.requireNonNull(dataSpec);
         return CodeEnum.reversibleFindOne(dataSpec, RealTimeDataSpec.class);
     }

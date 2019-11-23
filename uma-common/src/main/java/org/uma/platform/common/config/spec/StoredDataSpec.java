@@ -38,7 +38,7 @@ public enum StoredDataSpec implements DataEnum<String, StoredDataSpec> {
         return this.name;
     }
 
-    public StoredDataSpec findByDataSpec(String dataSpec) {
+    public static StoredDataSpec of(String dataSpec) {
         Objects.requireNonNull(dataSpec);
         return CodeEnum.reversibleFindOne(dataSpec, StoredDataSpec.class);
     }

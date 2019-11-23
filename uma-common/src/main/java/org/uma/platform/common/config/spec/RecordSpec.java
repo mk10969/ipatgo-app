@@ -69,7 +69,7 @@ public enum RecordSpec implements RecordEnum<String, RecordSpec> {
         return this.length;
     }
 
-    public RecordSpec finfByRecordSpec(String recordSpec) {
+    public static RecordSpec of(String recordSpec) {
         Objects.requireNonNull(recordSpec);
         return CodeEnum.reversibleFindOne(recordSpec, RecordSpec.class);
     }

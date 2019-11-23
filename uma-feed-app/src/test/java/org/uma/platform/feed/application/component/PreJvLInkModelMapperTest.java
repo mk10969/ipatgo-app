@@ -1,4 +1,4 @@
-package org.uma.platform.feed.application.repository.impl;
+package org.uma.platform.feed.application.component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -27,7 +27,7 @@ import static java.nio.file.Files.readAllLines;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class JvLInkDataMappingTest {
+public class PreJvLInkModelMapperTest {
 
     private static final String directory = "/Users/m-kakiuchi/myApp/UmaApplication/uma-feed-app/src/test/java/org/uma/platform/feed/application/repository/impl";
 
@@ -55,7 +55,7 @@ public class JvLInkDataMappingTest {
     void test_RAモデルマッパー_データは単一ファイル() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        readJvlinkData("RACE_RA.txt").stream()
+        readJvlinkData("RA").stream()
                 .map(line -> mapper(line, RacingDetails.class))
                 .map(model -> {
                     try {

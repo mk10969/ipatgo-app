@@ -3,30 +3,31 @@ package org.uma.platform.feed.application.repository.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.common.model.HorseRacingDetails;
 import org.uma.platform.common.model.RaceRefund;
 import org.uma.platform.common.model.RacingDetails;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.util.JvLinkStringUtil;
+import reactor.util.function.Tuples;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
+import java.util.stream.Stream;
 
-import static java.nio.file.Files.readAllLines;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
-class JvStoredAllRepositoryTest {
+class JvStoredRepositoryModelMapperTest {
 
     @Autowired
     private JvLinkModelMapper jvLinkModelMapper;
@@ -40,8 +41,26 @@ class JvStoredAllRepositoryTest {
                 .getResource("classpath:test-data/" + filename)
                 .getFile()
                 .toPath();
-        return readAllLines(filePath, StandardCharsets.US_ASCII);
+        return Files.readAllLines(filePath, StandardCharsets.US_ASCII);
     }
+
+    private Stream<String> readLines(Path filePath) {
+        try {
+            return Files.lines(filePath, Charset.forName("SHIFT-JIS"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("ファイルが存在しませんでした");
+        }
+    }
+
+    private Path getDirectoryPath() throws IOException {
+        return resourceLoader
+                .getResource("classpath:test-data/")
+                .getFile()
+                .toPath();
+
+    }
+
 
     private String toJson(Object model) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -56,7 +75,7 @@ class JvStoredAllRepositoryTest {
 
     @Test
     void test_RAモデルマッパー_データは単一ファイル() throws IOException {
-        readJvlinkData("RACE_RA.txt")
+        readJvlinkData("RA")
                 .stream()
                 .peek(i -> i.length())
                 .map(line -> jvLinkModelMapper.deserialize(line, RacingDetails.class))
@@ -66,7 +85,7 @@ class JvStoredAllRepositoryTest {
 
     @Test
     void test_SEモデルマッパー_データは単一ファイル() throws IOException {
-        readJvlinkData("RACE_SE.txt")
+        readJvlinkData("SE")
                 .stream()
                 .peek(i -> i.length())
                 .map(line -> jvLinkModelMapper.deserialize(line, HorseRacingDetails.class))
@@ -76,7 +95,7 @@ class JvStoredAllRepositoryTest {
 
     @Test
     void test_HRモデルマッパー_データは単一ファイル() throws IOException {
-        readJvlinkData("RACE_HR.txt")
+        readJvlinkData("HR")
                 .stream()
                 .peek(i -> i.length())
                 .map(line -> jvLinkModelMapper.deserialize(line, RaceRefund.class))
@@ -87,11 +106,24 @@ class JvStoredAllRepositoryTest {
 
     @Test
     void test_ファイルの中身のデータの長さ確認() throws IOException {
-        readJvlinkData("RACE_HR.txt")
+        readJvlinkData("HR")
                 .stream()
                 .map(i -> JvLinkStringUtil.stringToByte(i))
                 .forEach(i -> System.out.println(i.length));
     }
 
+    @Test
+    void test_ディレクトリ配下のファイルたちのデータの長さ確認() throws IOException {
+        Files.list(getDirectoryPath())
+                .flatMap(filePath -> readLines(filePath)
+                        .filter(Objects::nonNull)
+                        .map(i -> i.replace("\\n", "")) // 仮おきデータを除外
+                        .map(line -> JvLinkStringUtil.stringToByte(line).length)
+                        .map(i -> Tuples.of(filePath.toFile().getName(), i)))
+                .forEach(i ->
+                        assertEquals(i.getT2() + 2, RecordSpec.of(i.getT1()).getLength())
+                );
+
+    }
 
 }
