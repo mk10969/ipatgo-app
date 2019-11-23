@@ -1,4 +1,4 @@
-package org.uma.platform.feed.application.jvlink.neta;
+package org.uma.platform.feed.application.jvlink.test;
 
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.Dispatch;

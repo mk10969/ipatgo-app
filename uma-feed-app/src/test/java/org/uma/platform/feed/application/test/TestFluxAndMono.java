@@ -1,11 +1,11 @@
-package org.uma.platform.feed.application.jvlink;
+package org.uma.platform.feed.application.test;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-public class JvLinkTest2 {
+public class TestFluxAndMono {
 
     @Test
     void test_Mono_create() {

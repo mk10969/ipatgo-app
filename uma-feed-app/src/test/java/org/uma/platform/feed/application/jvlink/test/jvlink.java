@@ -1,4 +1,4 @@
-package org.uma.platform.feed.application.jvlink.neta;
+package org.uma.platform.feed.application.jvlink.test;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

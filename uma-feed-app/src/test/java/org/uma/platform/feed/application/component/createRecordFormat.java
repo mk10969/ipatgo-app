@@ -1,4 +1,4 @@
-package org.uma.platform.feed.application.tmp;
+package org.uma.platform.feed.application.component;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

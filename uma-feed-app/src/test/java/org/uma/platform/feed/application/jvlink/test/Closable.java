@@ -1,4 +1,4 @@
-package org.uma.platform.feed.application.jvlink.neta;
+package org.uma.platform.feed.application.jvlink.test;
 
 public class Closable implements AutoCloseable {
 
