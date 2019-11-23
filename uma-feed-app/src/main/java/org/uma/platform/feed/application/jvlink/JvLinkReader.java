@@ -1,11 +1,10 @@
 package org.uma.platform.feed.application.jvlink;
 
+import org.uma.platform.common.utils.lang.ThreadUtil;
 import org.uma.platform.feed.application.jvlink.exception.JvLinkErrorCode;
 import org.uma.platform.feed.application.jvlink.exception.JvLinkRuntimeException;
 import org.uma.platform.feed.application.jvlink.response.JvResult;
-import org.uma.platform.common.utils.lang.ThreadUtil;
 import reactor.core.publisher.Flux;
-
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -22,6 +21,7 @@ class JvLinkReader<T extends JvResult> implements Iterable<T> {
 
     /**
      * Iterator to Stream
+     *
      * @return Stream オブジェクト
      */
     Stream<T> stream() {
@@ -29,11 +29,12 @@ class JvLinkReader<T extends JvResult> implements Iterable<T> {
     }
 
     /**
-     * Iterable to Flux
+     * Iterator to Flux
+     *
      * @return Flux(Publisher) オブジェクト
      */
-    Flux<T> publish(){
-        return Flux.fromIterable(this);
+    Flux<T> publish() {
+        return Flux.fromStream(this::stream);
     }
 
     @Override

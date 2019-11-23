@@ -3,12 +3,12 @@ package org.uma.platform.feed.application.repository.impl;
 import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.uma.platform.feed.application.jvlink.JvLink;
-import org.uma.platform.feed.application.jvlink.response.JvStringContent;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
 import org.uma.platform.common.model.RacingDetails;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
+import org.uma.platform.feed.application.jvlink.JvLink;
+import org.uma.platform.feed.application.jvlink.response.JvStringContent;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 import reactor.core.publisher.Flux;
 
@@ -31,7 +31,7 @@ public class JvStoredRacingDetailsRepository implements JvLinkStoredRepository<R
 
     @Override
     public List<RacingDetails> findAll(LocalDateTime dateTime, Option option) {
-        
+
         try (Stream<JvStringContent> lines = JvLink.lines(storedOpenCondition, dateTime, option)) {
             return lines
                     .map(jvContent -> jvLinkModelMapper
@@ -42,8 +42,9 @@ public class JvStoredRacingDetailsRepository implements JvLinkStoredRepository<R
 
     @Override
     public Flux<RacingDetails> readFlux(LocalDateTime dateTime, Option option) {
-        return null;
+        return JvLink.readFlux(storedOpenCondition, dateTime, option)
+                .map(jvStringContent -> jvLinkModelMapper
+                        .deserialize(jvStringContent.getLine(), RacingDetails.class));
     }
-
 
 }

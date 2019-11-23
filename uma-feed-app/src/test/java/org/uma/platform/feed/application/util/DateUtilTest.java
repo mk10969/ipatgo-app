@@ -1,4 +1,4 @@
-package org.uma.platform.common.utils.lang;
+package org.uma.platform.feed.application.util;
 
 import org.junit.jupiter.api.Test;
 

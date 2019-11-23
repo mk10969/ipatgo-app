@@ -234,7 +234,7 @@ public class JvLinkOpenConditionConfiguration {
     }
 
     /**
-     * @return コード情報
+     * @return コース情報
      */
     @Bean(name = "COMM_CS")
     StoredOpenCondition config_COMM_CS() {
