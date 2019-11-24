@@ -27,7 +27,7 @@ public class createRecordFormat {
 
     @Test
     void test_Format作成() throws IOException {
-        createRecordFormat("hr.txt");
+        createRecordFormat("cs.txt");
     }
 
     private void createRecordFormat(String filename) throws IOException {

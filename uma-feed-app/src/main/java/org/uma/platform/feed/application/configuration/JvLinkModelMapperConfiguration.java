@@ -63,11 +63,11 @@ public class JvLinkModelMapperConfiguration {
         }
     };
 
-    private static final Converter<String, BredCode> toBredCode = new AbstractConverter<String, BredCode>() {
+    private static final Converter<String, BreedCode> toBredCode = new AbstractConverter<String, BreedCode>() {
         @Override
-        protected BredCode convert(String source) {
+        protected BreedCode convert(String source) {
             Integer code = Integer.valueOf(source);
-            return BredCode.of(code);
+            return BreedCode.of(code);
         }
     };
 
@@ -167,12 +167,17 @@ public class JvLinkModelMapperConfiguration {
     @Bean
     public EnumMap<RecordSpec, Class<?>> recordSpecPairEnumMap() {
         EnumMap<RecordSpec, Class<?>> enumMap = new EnumMap<>(RecordSpec.class);
+        // RACE
         enumMap.put(RecordSpec.RA, RacingDetails.class);
         enumMap.put(RecordSpec.SE, HorseRacingDetails.class);
         enumMap.put(RecordSpec.HR, RaceRefund.class);
+        enumMap.put(RecordSpec.H1, VoteCount.class);
+
+        // BLOD
         enumMap.put(RecordSpec.SK, Offspring.class);
         enumMap.put(RecordSpec.BT, Ancestry.class);
         enumMap.put(RecordSpec.HN, BreedingHorse.class);
+
         enumMap.put(RecordSpec.CS, Course.class);
         enumMap.put(RecordSpec.UM, RaceHorse.class);
         enumMap.put(RecordSpec.KS, Jockey.class);

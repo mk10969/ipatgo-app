@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 public class HorseRacingDetails {
 
-    private RecordSpec recordTypeId;
+    private RecordSpec recordType;
     private String dataDiv;
     private LocalDate dataCreateDate;
     private Integer holdingYear;
@@ -24,12 +24,21 @@ public class HorseRacingDetails {
     private Integer holdingDay;
     private Integer raceNo;
     private Integer bracketNo;
+
+    /**
+     * 馬番は、払戻、票数のフィールドと合わせて、String型とする。
+     * 01, 02...とデータが、保持されてほしいため。
+     */
     private String horseNo;
-    private String bloodRegistrationNo;
+
+    /**
+     * {@link Offspring.bloodlineNo}
+     */
+    private Integer bloodlineNo;
     private String horseName;
     private HorseSignCode horseSignCd;
     private SexCode sexCd;
-    private BredCode bredCd;
+    private BreedCode bredCd;
     private HairColorCode hairColorCd;
     private Integer age;
     private EastOrWestBelongCode ewBelongCd;
@@ -85,7 +94,7 @@ public class HorseRacingDetails {
 
     @Data
     private static class Contender {
-        private String bloodRegistrationNo;
+        private Integer bloodRegistrationNo;
         private String horseName;
     }
 

@@ -3,20 +3,22 @@ package org.uma.platform.feed.application.repository.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.common.model.HorseRacingDetails;
 import org.uma.platform.common.model.RaceRefund;
 import org.uma.platform.common.model.RacingDetails;
+import org.uma.platform.common.model.VoteCount;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.util.JvLinkStringUtil;
 import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 class JvStoredRepositoryModelMapperTest {
 
@@ -41,7 +44,7 @@ class JvStoredRepositoryModelMapperTest {
                 .getResource("classpath:test-data/" + filename)
                 .getFile()
                 .toPath();
-        return Files.readAllLines(filePath, StandardCharsets.US_ASCII);
+        return Files.readAllLines(filePath, Charset.forName("SHIFT-JIS"));
     }
 
     private Stream<String> readLines(Path filePath) {
@@ -103,14 +106,32 @@ class JvStoredRepositoryModelMapperTest {
                 .forEach(System.out::println);
     }
 
-
     @Test
-    void test_ファイルの中身のデータの長さ確認() throws IOException {
-        readJvlinkData("HR")
+    void test_H1モデルマッパー_データは単一ファイル() throws IOException {
+        readJvlinkData("H1")
                 .stream()
-                .map(i -> JvLinkStringUtil.stringToByte(i))
-                .forEach(i -> System.out.println(i.length));
+                .peek(i -> i.length())
+                .map(line -> jvLinkModelMapper.deserialize(line, VoteCount.class))
+                .map(model -> toJson(model))
+                .forEach(System.out::println);
     }
+
+
+    /**
+     * 未実施
+     *
+     * @throws IOException
+     */
+    @Test
+    void test_CSモデルマッパー_データは単一ファイル() throws IOException {
+        readJvlinkData("CS")
+                .stream()
+                .peek(i -> i.length())
+                .map(line -> jvLinkModelMapper.deserialize(line, VoteCount.class))
+                .map(model -> toJson(model))
+                .forEach(System.out::println);
+    }
+
 
     @Test
     void test_ディレクトリ配下のファイルたちのデータの長さ確認() throws IOException {
@@ -123,7 +144,7 @@ class JvStoredRepositoryModelMapperTest {
                 .forEach(i ->
                         assertEquals(i.getT2() + 2, RecordSpec.of(i.getT1()).getLength())
                 );
-
     }
+
 
 }

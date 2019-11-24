@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * 2201.品種コード
  */
-public enum BredCode implements CodeEnum<Integer, BredCode> {
+public enum BreedCode implements CodeEnum<Integer, BreedCode> {
 
     /**
      * 未設備時のデフォルト値
@@ -27,7 +27,7 @@ public enum BredCode implements CodeEnum<Integer, BredCode> {
     private Integer code;
     private String codeName;
 
-    BredCode(Integer code, String codeName) {
+    BreedCode(Integer code, String codeName) {
         this.code = code;
         this.codeName = codeName;
     }
@@ -41,12 +41,12 @@ public enum BredCode implements CodeEnum<Integer, BredCode> {
         return this.codeName;
     }
 
-    public static BredCode of(Integer code) {
+    public static BreedCode of(Integer code) {
         Objects.requireNonNull(code);
         if (DEFAULT.getCode().equals(code)) {
             return DEFAULT;
         }
-        return CodeEnum.reversibleFindOne(code, BredCode.class);
+        return CodeEnum.reversibleFindOne(code, BreedCode.class);
     }
 
 }

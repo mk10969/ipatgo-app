@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 public class RacingDetails {
 
-    private RecordSpec recordTypeId;
+    private RecordSpec recordType;
     private String dataDiv;
     private LocalDate dataCreateDate;
     private Integer holdingYear;

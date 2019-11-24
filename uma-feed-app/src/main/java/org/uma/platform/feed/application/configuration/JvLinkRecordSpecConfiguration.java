@@ -44,6 +44,15 @@ public class JvLinkRecordSpecConfiguration {
     }
 
     /**
+     * @return レース票数
+     */
+    @Bean(name = "H1")
+    @ConfigurationProperties(prefix = "h1")
+    RecordSpecItems configH1() {
+        return new RecordSpecItems();
+    }
+
+    /**
      * @return 産駒マスタ
      */
     @Bean(name = "SK")
