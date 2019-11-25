@@ -1,3 +1,4 @@
 include 'uma-common'
+include 'uma-jvlink'
 include 'uma-feed-app'
 include 'uma-reactive-app'

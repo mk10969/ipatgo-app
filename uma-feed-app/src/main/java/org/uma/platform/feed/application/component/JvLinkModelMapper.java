@@ -7,7 +7,6 @@ import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.feed.application.configuration.JvLinkModelMapperConfiguration;
 import org.uma.platform.feed.application.configuration.JvLinkRecordSpecConfiguration;
 import org.uma.platform.feed.application.configuration.JvLinkRecordSpecConfiguration.RecordSpecItems;
-import org.uma.platform.feed.application.util.JvLinkStringUtil;
 
 import java.util.*;
 

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.uma.platform.feed.application.util.DateUtil;
+import org.uma.platform.common.utils.lang.DateUtil;
 
 import java.time.LocalDateTime;
 

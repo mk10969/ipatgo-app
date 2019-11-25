@@ -9,12 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.uma.platform.common.config.spec.RecordSpec;
-import org.uma.platform.common.model.HorseRacingDetails;
-import org.uma.platform.common.model.RaceRefund;
-import org.uma.platform.common.model.RacingDetails;
-import org.uma.platform.common.model.VoteCount;
+import org.uma.platform.common.model.*;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
-import org.uma.platform.feed.application.util.JvLinkStringUtil;
+import org.uma.platform.feed.application.component.JvLinkStringUtil;
 import reactor.util.function.Tuples;
 
 import java.io.IOException;
@@ -80,7 +77,6 @@ class JvStoredRepositoryModelMapperTest {
     void test_RAモデルマッパー_データは単一ファイル() throws IOException {
         readJvlinkData("RA")
                 .stream()
-                .peek(i -> i.length())
                 .map(line -> jvLinkModelMapper.deserialize(line, RacingDetails.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
@@ -90,7 +86,6 @@ class JvStoredRepositoryModelMapperTest {
     void test_SEモデルマッパー_データは単一ファイル() throws IOException {
         readJvlinkData("SE")
                 .stream()
-                .peek(i -> i.length())
                 .map(line -> jvLinkModelMapper.deserialize(line, HorseRacingDetails.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
@@ -100,7 +95,6 @@ class JvStoredRepositoryModelMapperTest {
     void test_HRモデルマッパー_データは単一ファイル() throws IOException {
         readJvlinkData("HR")
                 .stream()
-                .peek(i -> i.length())
                 .map(line -> jvLinkModelMapper.deserialize(line, RaceRefund.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
@@ -110,12 +104,10 @@ class JvStoredRepositoryModelMapperTest {
     void test_H1モデルマッパー_データは単一ファイル() throws IOException {
         readJvlinkData("H1")
                 .stream()
-                .peek(i -> i.length())
                 .map(line -> jvLinkModelMapper.deserialize(line, VoteCount.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
     }
-
 
     /**
      * 未実施
@@ -126,8 +118,34 @@ class JvStoredRepositoryModelMapperTest {
     void test_CSモデルマッパー_データは単一ファイル() throws IOException {
         readJvlinkData("CS")
                 .stream()
-                .peek(i -> i.length())
-                .map(line -> jvLinkModelMapper.deserialize(line, VoteCount.class))
+                .map(line -> jvLinkModelMapper.deserialize(line, Course.class))
+                .map(model -> toJson(model))
+                .forEach(System.out::println);
+    }
+
+    @Test
+    void test_SKモデルマッパー_データは単一ファイル() throws IOException {
+        readJvlinkData("SK")
+                .stream()
+                .map(line -> jvLinkModelMapper.deserialize(line, Offspring.class))
+                .map(model -> toJson(model))
+                .forEach(System.out::println);
+    }
+
+    @Test
+    void test_HNモデルマッパー_データは単一ファイル() throws IOException {
+        readJvlinkData("HN")
+                .stream()
+                .map(line -> jvLinkModelMapper.deserialize(line, BreedingHorse.class))
+                .map(model -> toJson(model))
+                .forEach(System.out::println);
+    }
+
+    @Test
+    void test_BTモデルマッパー_データは単一ファイル() throws IOException {
+        readJvlinkData("BT")
+                .stream()
+                .map(line -> jvLinkModelMapper.deserialize(line, Ancestry.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
     }

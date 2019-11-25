@@ -5,17 +5,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.uma.platform.common.config.Option;
-import org.uma.platform.common.model.Ancestry;
 import org.uma.platform.common.model.RacingDetails;
 import org.uma.platform.feed.application.repository.impl.JvStoredRacingDetailsRepository;
-import org.uma.platform.feed.application.util.DateUtil;
+import org.uma.platform.common.utils.lang.DateUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.uma.platform.feed.application.util.DateUtil.tolocalDateTime;
+import static org.uma.platform.common.utils.lang.DateUtil.tolocalDateTime;
 
 @RestController
 @RequestMapping("/api/bt")

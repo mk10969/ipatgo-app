@@ -1,0 +1,7 @@
+dependencies {
+    implementation project(':uma-common')
+
+    // reactor 対応
+    implementation 'io.projectreactor:reactor-core:3.3.0.RELEASE'
+
+}

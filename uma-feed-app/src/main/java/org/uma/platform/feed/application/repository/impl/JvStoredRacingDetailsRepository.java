@@ -7,8 +7,8 @@ import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
 import org.uma.platform.common.model.RacingDetails;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
-import org.uma.platform.feed.application.jvlink.JvLink;
-import org.uma.platform.feed.application.jvlink.response.JvStringContent;
+import org.uma.platform.jvlink.JvLink;
+import org.uma.platform.jvlink.response.JvStringContent;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 import reactor.core.publisher.Flux;
 

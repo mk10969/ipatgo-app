@@ -1,7 +1,7 @@
 package org.uma.platform.feed.application.controller;
 
 import org.junit.jupiter.api.Test;
-import org.uma.platform.feed.application.util.ReflectionUtils;
+import org.uma.platform.feed.application.component.ReflectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
