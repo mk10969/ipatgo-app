@@ -43,7 +43,7 @@ public class AncestryController {
     @GetMapping("/ancestry")
     public Flux<Ancestry> readFluxOnThisWeek() {
         return Mono
-                .defer(DateUtil::lastWeek)
+                .defer(() -> Mono.just(DateUtil.lastWeek()))
                 .flatMapMany(i -> jvRepository
                         .readFlux(i, Option.THIS_WEEK));
     }

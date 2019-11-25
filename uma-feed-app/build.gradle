@@ -5,13 +5,9 @@ dependencies {
     implementation project(':uma-common')
     implementation project(':uma-jvlink')
 
-
     // map to javaBean library
     implementation 'org.modelmapper:modelmapper:2.3.5'
     implementation 'com.google.guava:guava:27.1-jre'
-
-    // Use activeXComponent
-    implementation 'com.hynnet:jacob:1.18'
 
 
     // test tools

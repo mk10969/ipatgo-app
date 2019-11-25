@@ -1,6 +1,7 @@
 dependencies {
     implementation project(':uma-common')
-
+    // Use activeXComponent
+    implementation 'com.hynnet:jacob:1.18'
     // reactor 対応
     implementation 'io.projectreactor:reactor-core:3.3.0.RELEASE'
 

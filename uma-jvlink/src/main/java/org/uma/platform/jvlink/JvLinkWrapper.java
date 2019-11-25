@@ -1,16 +1,15 @@
 package org.uma.platform.jvlink;
 
-import org.uma.platform.jvlink.response.JvByteContent;
-import org.uma.platform.jvlink.response.JvSimpleResult;
-import org.uma.platform.jvlink.response.JvStringContent;
-import lombok.extern.slf4j.Slf4j;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.RealTimeKey;
 import org.uma.platform.common.config.condition.OpenCondition;
 import org.uma.platform.common.config.condition.RealTimeOpenCondition;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
-import org.uma.platform.feed.application.util.DateUtil;
+import org.uma.platform.common.utils.lang.DateUtil;
 import org.uma.platform.common.utils.lang.StringUtil;
+import org.uma.platform.jvlink.response.JvByteContent;
+import org.uma.platform.jvlink.response.JvSimpleResult;
+import org.uma.platform.jvlink.response.JvStringContent;
 
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-@Slf4j
+
 public class JvLinkWrapper {
     /**
      * UserAgentの最大バイト長です。
@@ -106,9 +105,6 @@ public class JvLinkWrapper {
                 () -> jvLinkDataLab.jvOpen(condition.getDataSpec().getCode(), fromTime, option.getCode())
         );
 
-        if (log.isDebugEnabled()) {
-            log.debug("openしました。");
-        }
         return this;
     }
 
@@ -143,10 +139,6 @@ public class JvLinkWrapper {
 
     public void close() {
         JvLinkHandler.handle(jvLinkDataLab::jvClose);
-        if (log.isDebugEnabled()) {
-            log.debug("closeしました。");
-        }
-
     }
 
 }

@@ -36,7 +36,7 @@ public class RacingDetailsController {
     @GetMapping("/racingDetails")
     public Flux<RacingDetails> readFluxOnThisWeek() {
         return Mono
-                .defer(DateUtil::lastWeek)
+                .defer(() -> Mono.just(DateUtil.lastWeek()))
                 .flatMapMany(i -> jvRepository
                         .readFlux(i, Option.THIS_WEEK));
     }
