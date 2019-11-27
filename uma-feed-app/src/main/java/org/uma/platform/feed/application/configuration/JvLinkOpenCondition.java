@@ -13,7 +13,8 @@ import static org.uma.platform.common.config.spec.StoredDataSpec.*;
 @Configuration
 public class JvLinkOpenCondition {
 
-    /** 蓄積系データ*/
+    ///// 蓄積系データ /////
+
     /**
      * @return レース詳細
      */
@@ -242,7 +243,8 @@ public class JvLinkOpenCondition {
     }
 
 
-    /** リアルタイム系データ */
+    ///// リアルタイム系データ /////
+
     /**
      * @return 成績確定後 レース詳細
      */
@@ -252,7 +254,7 @@ public class JvLinkOpenCondition {
     }
 
     /**
-     * @return 成績確定後 馬毎レース上納
+     * @return 成績確定後 馬毎レース情報
      */
     @Bean(name = "0B12_SE")
     RealTimeOpenCondition config_0B12_SE() {
@@ -267,7 +269,6 @@ public class JvLinkOpenCondition {
         return new RealTimeOpenCondition(OB12, HR);
     }
 
-
     /**
      * @return 出走馬名表 レース詳細
      */
@@ -277,7 +278,7 @@ public class JvLinkOpenCondition {
     }
 
     /**
-     * @return 出走馬名表 馬毎レース上納
+     * @return 出走馬名表 馬毎レース情報
      */
     @Bean(name = "0B15_SE")
     RealTimeOpenCondition config_0B15_SE() {
@@ -299,7 +300,6 @@ public class JvLinkOpenCondition {
     RealTimeOpenCondition config_0B31_O1() {
         return new RealTimeOpenCondition(OB31, O1);
     }
-
 
     /**
      * @return 速報オッズ（馬連）
@@ -366,6 +366,33 @@ public class JvLinkOpenCondition {
     }
 
     /**
+     * @return 時系列オッズ（単複枠）
+     */
+    @Bean(name = "0B41_O1")
+    RealTimeOpenCondition config_0B41_O1() {
+        return new RealTimeOpenCondition(OB41, O1);
+    }
+
+    /**
+     * @return 時系列オッズ（馬連）
+     */
+    @Bean(name = "0B42_O2")
+    RealTimeOpenCondition config_0B42_O2() {
+        return new RealTimeOpenCondition(OB42, O2);
+    }
+
+    /**
+     * @return WIN5
+     */
+    @Bean(name = "0B51_WF")
+    RealTimeOpenCondition config_0B51_WF() {
+        return new RealTimeOpenCondition(OB51, WF);
+    }
+
+
+    ///// イベント通知系データ /////
+
+    /**
      * @return 天候馬場状態
      */
     @Bean(name = "0B16_WE")
@@ -403,30 +430,6 @@ public class JvLinkOpenCondition {
     @Bean(name = "0B16_CC")
     RealTimeOpenCondition config_0B16_CC() {
         return new RealTimeOpenCondition(OB16, CC);
-    }
-
-    /**
-     * @return 時系列オッズ（単複枠）
-     */
-    @Bean(name = "0B41_O1")
-    RealTimeOpenCondition config_0B41_O1() {
-        return new RealTimeOpenCondition(OB41, O1);
-    }
-
-    /**
-     * @return 時系列オッズ（馬連）
-     */
-    @Bean(name = "0B42_O2")
-    RealTimeOpenCondition config_0B42_O2() {
-        return new RealTimeOpenCondition(OB42, O2);
-    }
-
-    /**
-     * @return WIN5
-     */
-    @Bean(name = "0B51_WF")
-    RealTimeOpenCondition config_0B51_WF() {
-        return new RealTimeOpenCondition(OB51, WF);
     }
 
 

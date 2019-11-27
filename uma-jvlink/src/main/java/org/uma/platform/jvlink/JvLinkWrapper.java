@@ -112,7 +112,7 @@ public class JvLinkWrapper {
         Objects.requireNonNull(condition, "データ検索条件がnullになっています。");
         Objects.requireNonNull(rtKey, "keyがnullになっています。");
         JvLinkHandler.handle(
-                () -> jvLinkDataLab.jvRtOpen(condition.getDataSpec().getCode(), rtKey.toString())
+                () -> jvLinkDataLab.jvRtOpen(condition.getDataSpec().getCode(), rtKey.get())
         );
         return this;
     }

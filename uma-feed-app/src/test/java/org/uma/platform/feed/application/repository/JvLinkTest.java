@@ -52,7 +52,6 @@ class JvLinkTest {
     @Qualifier("BLOD_HN")
     private StoredOpenCondition conditionHN;
 
-
     @Autowired
     @Qualifier("RACE_H1")
     private StoredOpenCondition conditionH1;
@@ -60,7 +59,6 @@ class JvLinkTest {
     @Autowired
     @Qualifier("RACE_JG")
     private StoredOpenCondition conditionJG;
-
 
     @Autowired
     @Qualifier("RACE_O1")

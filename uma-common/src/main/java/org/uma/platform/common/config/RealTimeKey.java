@@ -1,9 +1,9 @@
 package org.uma.platform.common.config;
 
+
+@FunctionalInterface
 public interface RealTimeKey {
 
-    String getKey();
-
-    void setKey();
+    String get();
 
 }

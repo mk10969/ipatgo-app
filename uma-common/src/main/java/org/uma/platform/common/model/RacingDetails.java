@@ -2,6 +2,7 @@ package org.uma.platform.common.model;
 
 import lombok.Data;
 import org.uma.platform.common.code.*;
+import org.uma.platform.common.config.RealTimeKey;
 import org.uma.platform.common.config.spec.RecordSpec;
 
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Data
 public class RacingDetails {
-
+    //TODO: holdingYear + holdingDate で日付型にする
     private RecordSpec recordType;
     private String dataDiv;
     private LocalDate dataCreateDate;
@@ -87,4 +88,8 @@ public class RacingDetails {
         private String passageRank;
     }
 
+    // TODO: impl
+    public RealTimeKey getRealTimeKey() {
+        return null;
+    }
 }
