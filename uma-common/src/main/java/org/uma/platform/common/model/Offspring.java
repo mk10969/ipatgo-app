@@ -23,7 +23,6 @@ public class Offspring {
     /**
      * {@link HorseRacingDetails.bloodlineNo}
      * {@link BreedingHorse.bloodlineNo}
-
      */
     private Integer bloodlineNo;
 
@@ -42,7 +41,7 @@ public class Offspring {
 
     /**
      * ３代血統 繁殖登録番号
-     *
+     * <p>
      * 父･母･
      * 父父･父母･母父･母母･
      * 父父父･父父母･父母父･父母母･母父父･母父母･母母父･母母母
@@ -50,7 +49,6 @@ public class Offspring {
      * {@link Ancestry.BreedingNo}
      */
     private List<Integer> BreedingNo3rd;
-
 
 
 }

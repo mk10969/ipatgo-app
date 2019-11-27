@@ -158,7 +158,7 @@ public abstract class JvLink {
     public static void writer(
             final Path filePath,
             final Charset cs,
-            final String line) throws IOException {
+            final String line) {
         Objects.requireNonNull(line);
         try (BufferedWriter writer = Files.newBufferedWriter(filePath, cs, StandardOpenOption.APPEND)) {
             writer.write(line, 0, line.length());

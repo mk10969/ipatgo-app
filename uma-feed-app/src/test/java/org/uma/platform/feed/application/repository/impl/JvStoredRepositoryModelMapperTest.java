@@ -36,12 +36,12 @@ class JvStoredRepositoryModelMapperTest {
     private ResourceLoader resourceLoader;
 
 
-    private List<String> readJvlinkData(String filename) throws IOException {
-        Path filePath = resourceLoader
-                .getResource("classpath:test-data/" + filename)
-                .getFile()
-                .toPath();
-        return Files.readAllLines(filePath, Charset.forName("SHIFT-JIS"));
+    private List<String> readTestData(String filename) throws IOException {
+        return Files.readAllLines(resourceLoader
+                        .getResource("classpath:test-data/" + filename)
+                        .getFile()
+                        .toPath(),
+                Charset.forName("SHIFT-JIS"));
     }
 
     private Stream<String> readLines(Path filePath) {
@@ -61,7 +61,6 @@ class JvStoredRepositoryModelMapperTest {
 
     }
 
-
     private String toJson(Object model) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -75,7 +74,7 @@ class JvStoredRepositoryModelMapperTest {
 
     @Test
     void test_RAモデルマッパー_データは単一ファイル() throws IOException {
-        readJvlinkData("RA")
+        readTestData("RA")
                 .stream()
                 .map(line -> jvLinkModelMapper.deserialize(line, RacingDetails.class))
                 .map(model -> toJson(model))
@@ -84,7 +83,7 @@ class JvStoredRepositoryModelMapperTest {
 
     @Test
     void test_SEモデルマッパー_データは単一ファイル() throws IOException {
-        readJvlinkData("SE")
+        readTestData("SE")
                 .stream()
                 .map(line -> jvLinkModelMapper.deserialize(line, HorseRacingDetails.class))
                 .map(model -> toJson(model))
@@ -93,7 +92,7 @@ class JvStoredRepositoryModelMapperTest {
 
     @Test
     void test_HRモデルマッパー_データは単一ファイル() throws IOException {
-        readJvlinkData("HR")
+        readTestData("HR")
                 .stream()
                 .map(line -> jvLinkModelMapper.deserialize(line, RaceRefund.class))
                 .map(model -> toJson(model))
@@ -102,21 +101,17 @@ class JvStoredRepositoryModelMapperTest {
 
     @Test
     void test_H1モデルマッパー_データは単一ファイル() throws IOException {
-        readJvlinkData("H1")
+        readTestData("H1")
                 .stream()
                 .map(line -> jvLinkModelMapper.deserialize(line, VoteCount.class))
                 .map(model -> toJson(model))
                 .forEach(System.out::println);
     }
 
-    /**
-     * 未実施
-     *
-     * @throws IOException
-     */
+
     @Test
     void test_CSモデルマッパー_データは単一ファイル() throws IOException {
-        readJvlinkData("CS")
+        readTestData("CS")
                 .stream()
                 .map(line -> jvLinkModelMapper.deserialize(line, Course.class))
                 .map(model -> toJson(model))
@@ -125,7 +120,7 @@ class JvStoredRepositoryModelMapperTest {
 
     @Test
     void test_SKモデルマッパー_データは単一ファイル() throws IOException {
-        readJvlinkData("SK")
+        readTestData("SK")
                 .stream()
                 .map(line -> jvLinkModelMapper.deserialize(line, Offspring.class))
                 .map(model -> toJson(model))
@@ -134,7 +129,7 @@ class JvStoredRepositoryModelMapperTest {
 
     @Test
     void test_HNモデルマッパー_データは単一ファイル() throws IOException {
-        readJvlinkData("HN")
+        readTestData("HN")
                 .stream()
                 .map(line -> jvLinkModelMapper.deserialize(line, BreedingHorse.class))
                 .map(model -> toJson(model))
@@ -143,7 +138,7 @@ class JvStoredRepositoryModelMapperTest {
 
     @Test
     void test_BTモデルマッパー_データは単一ファイル() throws IOException {
-        readJvlinkData("BT")
+        readTestData("BT")
                 .stream()
                 .map(line -> jvLinkModelMapper.deserialize(line, Ancestry.class))
                 .map(model -> toJson(model))

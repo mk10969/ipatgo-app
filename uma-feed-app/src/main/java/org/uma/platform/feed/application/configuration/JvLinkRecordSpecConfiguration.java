@@ -20,7 +20,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return レース詳細
      */
     @Bean(name = "RA")
-    @ConfigurationProperties(prefix = "RA")
+    @ConfigurationProperties(prefix = "ra")
     RecordSpecItems configRA() {
         return new RecordSpecItems();
     }
@@ -29,7 +29,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 出走馬詳細
      */
     @Bean(name = "SE")
-    @ConfigurationProperties(prefix = "SE")
+    @ConfigurationProperties(prefix = "se")
     RecordSpecItems configSE() {
         return new RecordSpecItems();
     }
@@ -38,7 +38,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return レース払戻
      */
     @Bean(name = "HR")
-    @ConfigurationProperties(prefix = "HR")
+    @ConfigurationProperties(prefix = "hr")
     RecordSpecItems configHR() {
         return new RecordSpecItems();
     }
@@ -47,7 +47,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return レース票数（単勝・複勝・枠連・馬連・ワイド・馬単・三連複）
      */
     @Bean(name = "H1")
-    @ConfigurationProperties(prefix = "H1")
+    @ConfigurationProperties(prefix = "h1")
     RecordSpecItems configH1() {
         return new RecordSpecItems();
     }
@@ -56,7 +56,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 競走馬除外情報
      */
     @Bean(name = "JG")
-    @ConfigurationProperties(prefix = "JG")
+    @ConfigurationProperties(prefix = "jg")
     RecordSpecItems configJG() {
         return new RecordSpecItems();
     }
@@ -65,7 +65,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 産駒マスタ
      */
     @Bean(name = "SK")
-    @ConfigurationProperties(prefix = "SK")
+    @ConfigurationProperties(prefix = "sk")
     RecordSpecItems configSK() {
         return new RecordSpecItems();
     }
@@ -74,7 +74,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 系統情報
      */
     @Bean(name = "BT")
-    @ConfigurationProperties(prefix = "BT")
+    @ConfigurationProperties(prefix = "bt")
     RecordSpecItems configBT() {
         return new RecordSpecItems();
     }
@@ -83,7 +83,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 繁殖馬マスタ
      */
     @Bean(name = "HN")
-    @ConfigurationProperties(prefix = "HN")
+    @ConfigurationProperties(prefix = "hn")
     RecordSpecItems configHN() {
         return new RecordSpecItems();
     }
@@ -92,7 +92,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return コース情報
      */
     @Bean(name = "CS")
-    @ConfigurationProperties(prefix = "CS")
+    @ConfigurationProperties(prefix = "cs")
     RecordSpecItems configCS() {
         return new RecordSpecItems();
     }
@@ -102,7 +102,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 競走馬マスタ
      */
     @Bean(name = "UM")
-    @ConfigurationProperties(prefix = "UM")
+    @ConfigurationProperties(prefix = "um")
     RecordSpecItems configUM() {
         return new RecordSpecItems();
     }
@@ -111,7 +111,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 騎手マスタ
      */
     @Bean(name = "KS")
-    @ConfigurationProperties(prefix = "KS")
+    @ConfigurationProperties(prefix = "ks")
     RecordSpecItems configKS() {
         return new RecordSpecItems();
     }
@@ -120,7 +120,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 調教師マスタ
      */
     @Bean(name = "CH")
-    @ConfigurationProperties(prefix = "CH")
+    @ConfigurationProperties(prefix = "ch")
     RecordSpecItems configCH() {
         return new RecordSpecItems();
     }
@@ -129,7 +129,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 生産者マスタ
      */
     @Bean(name = "BR")
-    @ConfigurationProperties(prefix = "BR")
+    @ConfigurationProperties(prefix = "br")
     RecordSpecItems configBR() {
         return new RecordSpecItems();
     }
@@ -138,7 +138,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 馬主マスタ
      */
     @Bean(name = "BN")
-    @ConfigurationProperties(prefix = "BN")
+    @ConfigurationProperties(prefix = "bn")
     RecordSpecItems configBN() {
         return new RecordSpecItems();
     }
@@ -150,7 +150,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 馬体重情報
      */
     @Bean(name = "WH")
-    @ConfigurationProperties(prefix = "WH")
+    @ConfigurationProperties(prefix = "wh")
     RecordSpecItems configWH() {
         return new RecordSpecItems();
     }
@@ -159,7 +159,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 天候馬場状態
      */
     @Bean(name = "WE")
-    @ConfigurationProperties(prefix = "WE")
+    @ConfigurationProperties(prefix = "we")
     RecordSpecItems configWE() {
         return new RecordSpecItems();
     }
@@ -168,7 +168,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 出走取消競争除外
      */
     @Bean(name = "AV")
-    @ConfigurationProperties(prefix = "AV")
+    @ConfigurationProperties(prefix = "av")
     RecordSpecItems configAV() {
         return new RecordSpecItems();
     }
@@ -177,7 +177,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 騎手変更
      */
     @Bean(name = "JC")
-    @ConfigurationProperties(prefix = "JC")
+    @ConfigurationProperties(prefix = "jc")
     RecordSpecItems configJC() {
         return new RecordSpecItems();
     }
@@ -186,7 +186,7 @@ public class JvLinkRecordSpecConfiguration {
      * @return 発走時刻変更
      */
     @Bean(name = "TC")
-    @ConfigurationProperties(prefix = "TC")
+    @ConfigurationProperties(prefix = "tc")
     RecordSpecItems configTC() {
         return new RecordSpecItems();
     }
@@ -211,7 +211,7 @@ public class JvLinkRecordSpecConfiguration {
 
             private int start;
 
-            private int Length;
+            private int length;
 
             private int repeat;
 
