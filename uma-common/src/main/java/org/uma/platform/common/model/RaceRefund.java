@@ -17,8 +17,7 @@ public class RaceRefund {
     private RecordSpec recordType;
     private String dataDiv;
     private LocalDate dataCreateDate;
-    private Integer holdingYear;
-    private String holdingDate;
+    private LocalDate holdingDate;
     private RaceCourseCode courseCd;
     private Integer holdingNo;
     private Integer holdingDay;

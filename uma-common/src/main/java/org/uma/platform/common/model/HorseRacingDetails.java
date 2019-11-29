@@ -13,12 +13,11 @@ import java.util.List;
 
 @Data
 public class HorseRacingDetails {
-    //TODO: holdingYear + holdingDate で日付型にする
+
     private RecordSpec recordType;
     private String dataDiv;
     private LocalDate dataCreateDate;
-    private Integer holdingYear;
-    private String holdingDate;
+    private LocalDate holdingDate;
     private RaceCourseCode courseCd;
     private Integer holdingNo;
     private Integer holdingDay;
