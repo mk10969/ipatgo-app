@@ -45,7 +45,7 @@ public class Offspring {
      * の順
      * {@link BreedingHorse.breedingNo}
      */
-    private List<Integer> BreedingNo3rd;
+    private List<Integer> Breeding3rd;
 
 
 }

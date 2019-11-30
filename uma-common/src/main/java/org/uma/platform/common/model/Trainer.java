@@ -21,7 +21,7 @@ public class Trainer {
      * 調教師コード 5桁
      */
     private Integer trainerCd;
-    private String trainerEraseDiv;
+    private Boolean isTrainerErase;
     private LocalDate trainerLicenseIssueDate;
     private LocalDate trainerLicenseEraseDate;
     private LocalDate birthDate;
@@ -30,7 +30,7 @@ public class Trainer {
     private String trainerNameShort;
     private String trainerNameEng;
     private Integer trainerSex;
-    private EastOrWestBelongCode trainerEWBelongCd;
+    private EastOrWestBelongCode ewBelongCd;
     private String invitationAreaName;
 
 }

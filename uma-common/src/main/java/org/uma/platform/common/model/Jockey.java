@@ -35,7 +35,7 @@ public class Jockey {
     private Integer jockeySex;
     private JockeyLicenseCode jockeyLicenseCd;
     private JockeyApprenticeCode jockeyApprenticeCd;
-    private EastOrWestBelongCode jockeyEWBelongCd;
+    private EastOrWestBelongCode ewBelongCd;
     private String invitationAreaName;
     private String belongingTrainerCd;
     private String belongingTrainerNameShort;

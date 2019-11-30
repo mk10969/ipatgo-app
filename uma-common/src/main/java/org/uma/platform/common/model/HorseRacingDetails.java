@@ -46,6 +46,7 @@ public class HorseRacingDetails {
     private BreedCode bredCd;
     private HairColorCode hairColorCd;
     private Integer age;
+    // 競走馬の東西
     private EastOrWestBelongCode ewBelongCd;
     private Integer trainerCd;
     private String trainerNameShort;

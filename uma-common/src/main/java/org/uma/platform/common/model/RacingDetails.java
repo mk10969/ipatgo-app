@@ -80,7 +80,7 @@ public class RacingDetails {
     private TurfOrDirtConditionCode turfConditionCd;
     private TurfOrDirtConditionCode dirtConditionCd;
     private List<Float> lapTimeItems;
-    private String obstacleMileTime;
+    private String jumpMileTime;
     private Float firstFurlong3;
     private Float firstFurlong4;
     private Float lastFurlong3;
