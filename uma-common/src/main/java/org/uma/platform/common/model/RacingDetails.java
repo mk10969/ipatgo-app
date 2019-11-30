@@ -18,6 +18,14 @@ public class RacingDetails {
     private RecordSpec recordType;
     private String dataDiv;
     private LocalDate dataCreateDate;
+
+    /**
+     * Unique
+     * {@link HorseRacingDetails.raceId}
+     * {@link RaceRefund.raceId}
+     * {@link VoteCount.raceId}
+     */
+    private Long raceId;
     private LocalDate holdingDate;
     private RaceCourseCode courseCd;
     private Integer holdingNo;
@@ -87,8 +95,4 @@ public class RacingDetails {
         private String passageRank;
     }
 
-    // TODO: impl
-    public RealTimeKey getRealTimeKey() {
-        return null;
-    }
 }

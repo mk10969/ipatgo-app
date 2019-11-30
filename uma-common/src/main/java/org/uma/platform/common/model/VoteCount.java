@@ -18,6 +18,11 @@ public class VoteCount {
     private RecordSpec recordType;
     private String dataDiv;
     private LocalDate dataCreateDate;
+
+    /**
+     * {@link RacingDetails.raceId}
+     */
+    private Long raceId;
     private LocalDate holdingDate;
     private RaceCourseCode courseCd;
     private Integer holdingNo;
@@ -79,15 +84,15 @@ public class VoteCount {
         private String horseNo;
 
         /**
-         * ALL0:発売前取消し or 発売票数なし => null に変換される。
-         * スペース:登録なし                => null に変換される。
+         * ALL 0   :発売前取消し or 発売票数なし => null に変換される。
+         * スペース :登録なし                   => null に変換される。
          */
         private Long voteCount;
 
         /**
-         * スペース:登録なし => null に変換される。
-         * '---':発売前取消 => null に変換される。
-         * '***':発売後取消 => null に変換される。
+         * スペース :登録なし   => null に変換される。
+         * '---'   :発売前取消 => null に変換される。
+         * '***'   :発売後取消 => null に変換される。
          */
         private Integer betRank;
     }

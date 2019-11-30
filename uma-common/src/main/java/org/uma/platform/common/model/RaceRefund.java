@@ -17,6 +17,12 @@ public class RaceRefund {
     private RecordSpec recordType;
     private String dataDiv;
     private LocalDate dataCreateDate;
+
+    /**
+     * Unique
+     * {@link RacingDetails.raceId}
+     */
+    private Long raceId;
     private LocalDate holdingDate;
     private RaceCourseCode courseCd;
     private Integer holdingNo;

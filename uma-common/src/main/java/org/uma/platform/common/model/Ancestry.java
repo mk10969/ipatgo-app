@@ -17,9 +17,9 @@ public class Ancestry {
     private LocalDate dataCreateDate;
 
     /**
-     * 繁殖登録番号
+     * 繁殖登録番号 8桁
      */
-    private Integer BreedingNo;
+    private Integer breedingNo;
 
     private String ancestryId;
     private String ancestryName;

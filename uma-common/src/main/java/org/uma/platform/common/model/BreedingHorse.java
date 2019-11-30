@@ -20,15 +20,16 @@ public class BreedingHorse {
     private LocalDate dataCreateDate;
 
     /**
-     * 繁殖登録番号
+     * 繁殖登録番号 8桁
      */
     private Integer breedingNo;
     private String spare1;
 
     /**
+     * 血統登録番号 10桁
      * {@link Offspring.bloodlineNo}
      */
-    private Integer bloodlineNo;
+    private Long bloodlineNo;
     private String spare2;
 
     private String horseName;
@@ -43,12 +44,12 @@ public class BreedingHorse {
     private String sourceName;
 
     /**
-     * 繁殖登録番号
+     * 繁殖登録番号 8桁
      */
     private Integer breedingNoFather;
 
     /**
-     * 繁殖登録番号
+     * 繁殖登録番号 8桁
      */
     private Integer breedingNoMother;
 

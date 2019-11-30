@@ -21,10 +21,11 @@ public class Offspring {
     private LocalDate dataCreateDate;
 
     /**
+     * 血統登録番号 10桁
      * {@link HorseRacingDetails.bloodlineNo}
      * {@link BreedingHorse.bloodlineNo}
      */
-    private Integer bloodlineNo;
+    private Long bloodlineNo;
 
     private LocalDate birthDate;
     private SexCode sexCd;
@@ -32,10 +33,6 @@ public class Offspring {
     private HairColorCode hairColorCd;
     private Integer sonBringingDiv;
     private Integer importYear;
-
-    /**
-     * {@link Breeder}
-     */
     private Integer breederCd;
     private String sourceName;
 
@@ -46,7 +43,7 @@ public class Offspring {
      * 父父･父母･母父･母母･
      * 父父父･父父母･父母父･父母母･母父父･母父母･母母父･母母母
      * の順
-     * {@link Ancestry.BreedingNo}
+     * {@link BreedingHorse.breedingNo}
      */
     private List<Integer> BreedingNo3rd;
 

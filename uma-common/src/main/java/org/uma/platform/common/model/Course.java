@@ -17,10 +17,14 @@ public class Course {
     private RecordSpec recordType;
     private String dataDiv;
     private LocalDate dataCreateDate;
+
+    /**
+     * コースコード
+     */
     private RaceCourseCode courseCd;
     private Integer distance;
     private TrackCode trackCd;
     private LocalDate courseRepairDate;
-    private String courseDiscription;
+    private String courseDescription;
 
 }

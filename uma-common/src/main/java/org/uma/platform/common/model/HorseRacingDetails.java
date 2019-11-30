@@ -17,6 +17,12 @@ public class HorseRacingDetails {
     private RecordSpec recordType;
     private String dataDiv;
     private LocalDate dataCreateDate;
+
+    /**
+     * No unique
+     * {@link RacingDetails.raceId}
+     */
+    private Long raceId;
     private LocalDate holdingDate;
     private RaceCourseCode courseCd;
     private Integer holdingNo;
@@ -33,7 +39,7 @@ public class HorseRacingDetails {
     /**
      * {@link Offspring.bloodlineNo}
      */
-    private Integer bloodlineNo;
+    private Long bloodlineNo;
     private String horseName;
     private HorseSignCode horseSignCd;
     private SexCode sexCd;
@@ -41,9 +47,9 @@ public class HorseRacingDetails {
     private HairColorCode hairColorCd;
     private Integer age;
     private EastOrWestBelongCode ewBelongCd;
-    private String trainerCd;
+    private Integer trainerCd;
     private String trainerNameShort;
-    private String ownerCd;
+    private Integer ownerCd;
     private String ownerNameWithoutCorp;
     private String clothingMark;
     private String spare1;
@@ -51,7 +57,7 @@ public class HorseRacingDetails {
     private Float loadWeightBefore;
     private Integer blinkerUseDiv;
     private String spare2;
-    private String jockeyCd;
+    private Integer jockeyCd;
     private String jockeyCdBefore;
     private String jockeyNameShort;
     private String jockeyNameShortBefore;
@@ -93,7 +99,12 @@ public class HorseRacingDetails {
 
     @Data
     private static class Contender {
-        private Integer bloodRegistrationNo;
+
+        /**
+         * 血統登録番号 10桁
+         * {@link Offspring.bloodlineNo}
+         */
+        private Long bloodlineNo;
         private String horseName;
     }
 

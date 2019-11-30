@@ -5,7 +5,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.function.Function;
 
-public class HelloFunctionANdThen {
+public class HelloFunctionAndThen {
 
     Function<String, String> wrapDoubleQuotation = str -> "\"" + str + "\"";
     Function<String, String> wrapSingleQuotation = str -> "'" + str + "'";

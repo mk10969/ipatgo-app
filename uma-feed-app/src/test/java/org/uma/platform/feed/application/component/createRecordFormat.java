@@ -31,7 +31,7 @@ public class createRecordFormat {
 
     @Test
     void test_Format作成() throws IOException {
-        createRecord("bt.txt");
+        createRecord("ch.txt");
     }
 
     private Stream<String> readLine(String filename) throws IOException {

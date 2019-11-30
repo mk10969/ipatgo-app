@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,12 +37,99 @@ class JvStoredRepositoryModelMapperTest {
     private ResourceLoader resourceLoader;
 
 
-    private List<String> readTestData(String filename) throws IOException {
-        return Files.readAllLines(resourceLoader
-                        .getResource("classpath:test-data/" + filename)
-                        .getFile()
-                        .toPath(),
-                Charset.forName("SHIFT-JIS"));
+    private List<String> readTestData(String filename) {
+        try {
+            return Files.readAllLines(resourceLoader
+                            .getResource("classpath:test-data/" + filename)
+                            .getFile()
+                            .toPath(),
+                    Charset.forName("SHIFT-JIS"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("ファイルが存在しませんでした");
+        }
+    }
+
+
+    private String toJson(Object model) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(model);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("jsonに変換できませんでした。");
+        }
+    }
+
+    private Stream<Object> check(Object object) {
+        return Stream.of(object.getClass().getDeclaredFields())
+                .peek(field -> field.setAccessible(true))
+                .map(accessibleField -> {
+                    try {
+                        // fieldに、nullがセットされていないかチェックする。
+                        return Objects.requireNonNull(accessibleField.get(object),
+                                accessibleField + "のフィールドの値が、nullです");
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                        throw new IllegalStateException("Field: "
+                                + accessibleField + " には、アクセスできませんでした。");
+                    }
+                });
+    }
+
+    private void aVoid(Object object) {
+        // 空回し
+    }
+
+
+    private void test(Supplier<Stream<Object>> streamSupplier) {
+        streamSupplier.get().flatMap(this::check).forEach(this::aVoid);
+        streamSupplier.get().map(this::toJson).forEach(System.out::println);
+    }
+
+    @SafeVarargs
+    private final void testAll(Supplier<Stream<Object>>... streamSupplier) {
+        Stream.of(streamSupplier).forEach(this::test);
+    }
+
+    @Test
+    void test_ALL() {
+        testAll(() -> readTestData("RA")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, RacingDetails.class)),
+                () -> readTestData("SE")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, HorseRacingDetails.class)),
+                () -> readTestData("HR")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, RaceRefund.class)),
+                () -> readTestData("CS")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, Course.class)),
+                () -> readTestData("SK")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, Offspring.class)),
+                () -> readTestData("HN")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, BreedingHorse.class)),
+                () -> readTestData("BT")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, Ancestry.class)),
+                () -> readTestData("BR")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, Breeder.class))
+
+        );
+
+    }
+
+    @Test
+    void test_H1モデルマッパー_データは単一ファイル() {
+        readTestData("H1")
+                .stream()
+                .map(line -> jvLinkModelMapper.deserialize(line, VoteCount.class))
+                .map(model -> toJson(model))
+                .forEach(System.out::println);
     }
 
     private Stream<String> readLines(Path filePath) {
@@ -58,93 +146,7 @@ class JvStoredRepositoryModelMapperTest {
                 .getResource("classpath:test-data/")
                 .getFile()
                 .toPath();
-
     }
-
-    private String toJson(Object model) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(model);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException();
-        }
-    }
-
-
-    @Test
-    void test_RAモデルマッパー_データは単一ファイル() throws IOException {
-        readTestData("RA")
-                .stream()
-                .map(line -> jvLinkModelMapper.deserialize(line, RacingDetails.class))
-                .map(model -> toJson(model))
-                .forEach(System.out::println);
-    }
-
-    @Test
-    void test_SEモデルマッパー_データは単一ファイル() throws IOException {
-        readTestData("SE")
-                .stream()
-                .map(line -> jvLinkModelMapper.deserialize(line, HorseRacingDetails.class))
-                .map(model -> toJson(model))
-                .forEach(System.out::println);
-    }
-
-    @Test
-    void test_HRモデルマッパー_データは単一ファイル() throws IOException {
-        readTestData("HR")
-                .stream()
-                .map(line -> jvLinkModelMapper.deserialize(line, RaceRefund.class))
-                .map(model -> toJson(model))
-                .forEach(System.out::println);
-    }
-
-    @Test
-    void test_H1モデルマッパー_データは単一ファイル() throws IOException {
-        readTestData("H1")
-                .stream()
-                .map(line -> jvLinkModelMapper.deserialize(line, VoteCount.class))
-                .map(model -> toJson(model))
-                .forEach(System.out::println);
-    }
-
-
-    @Test
-    void test_CSモデルマッパー_データは単一ファイル() throws IOException {
-        readTestData("CS")
-                .stream()
-                .map(line -> jvLinkModelMapper.deserialize(line, Course.class))
-                .map(model -> toJson(model))
-                .forEach(System.out::println);
-    }
-
-    @Test
-    void test_SKモデルマッパー_データは単一ファイル() throws IOException {
-        readTestData("SK")
-                .stream()
-                .map(line -> jvLinkModelMapper.deserialize(line, Offspring.class))
-                .map(model -> toJson(model))
-                .forEach(System.out::println);
-    }
-
-    @Test
-    void test_HNモデルマッパー_データは単一ファイル() throws IOException {
-        readTestData("HN")
-                .stream()
-                .map(line -> jvLinkModelMapper.deserialize(line, BreedingHorse.class))
-                .map(model -> toJson(model))
-                .forEach(System.out::println);
-    }
-
-    @Test
-    void test_BTモデルマッパー_データは単一ファイル() throws IOException {
-        readTestData("BT")
-                .stream()
-                .map(line -> jvLinkModelMapper.deserialize(line, Ancestry.class))
-                .map(model -> toJson(model))
-                .forEach(System.out::println);
-    }
-
 
     @Test
     void test_ディレクトリ配下のファイルたちのデータの長さ確認() throws IOException {
@@ -158,6 +160,5 @@ class JvStoredRepositoryModelMapperTest {
                         assertEquals(i.getT2() + 2, RecordSpec.of(i.getT1()).getLength())
                 );
     }
-
 
 }

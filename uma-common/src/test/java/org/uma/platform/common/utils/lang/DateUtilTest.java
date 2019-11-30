@@ -3,6 +3,7 @@ package org.uma.platform.common.utils.lang;
 import org.junit.jupiter.api.Test;
 import org.uma.platform.common.utils.lang.DateUtil;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -34,6 +35,16 @@ class DateUtilTest {
         // 今から３年より昔であるかどうか。
         // ３年より昔ではない！
         assertTrue(LocalDateTime.now().minusYears(3L).isBefore(dateTime));
+
+    }
+
+
+    @Test
+    void test_日付のTOString(){
+        LocalDate dateTime = LocalDate.now();
+
+        System.out.println(dateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+
 
     }
 
