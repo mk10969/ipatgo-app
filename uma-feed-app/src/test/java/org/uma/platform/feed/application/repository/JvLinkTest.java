@@ -1,6 +1,5 @@
 package org.uma.platform.feed.application.repository;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 
@@ -35,7 +35,6 @@ class JvLinkTest {
     @Qualifier("RACE_HR")
     private StoredOpenCondition conditionHR;
 
-    // THIS WEEK: TOKU,RACE,TCOV（DIFF系）,RCOV（DIFF系）,SNAPだけ。
     @Autowired
     @Qualifier("YSCH_YS") //これ情報としていらん。
     private StoredOpenCondition conditionYS;
@@ -67,15 +66,34 @@ class JvLinkTest {
     @Autowired
     private Map<String, StoredOpenCondition> conditionMap;
 
+    @Autowired
+    private List<StoredOpenCondition> conditions;
+
+
     private final LocalDateTime dateTime = LocalDateTime.now().minusWeeks(1L);
 
 
+//    private Flux<StoredOpenCondition> test(RecordSpec ...recordSpec) {
+//        // filterをresumeしたいね。
+//        return Flux.fromStream(conditions
+//                .stream().filter(i -> i.getRecordType() == recordSpec)
+//                );
+//
+//    }
+
     @Test
-    void test_JvLinkデータがオッズデータ種別のもの一括取得() {
-        Flux.fromStream(conditionMap
-                .entrySet()
+    void test_一覧取得() {
+        Flux.fromStream(conditionMap.entrySet()
                 .stream()
-                .filter(i -> i.getKey().contains("RACE_O")))
+                .filter(i -> !i.getKey().contains("RACE_O")))
+                .subscribe(i -> System.out.println(i));
+    }
+
+    @Test
+    void test_() {
+        Flux.fromStream(conditionMap.entrySet()
+                .stream()
+                .filter(i -> i.getKey().contains("COMM")))
                 .flatMap(i -> JvLink
                         .readFlux(i.getValue(), dateTime, Option.STANDARD)
                         .take(5))
@@ -84,7 +102,25 @@ class JvLinkTest {
                         e -> e.printStackTrace(),
                         () -> System.out.println("完了")
                 );
-        ThreadUtil.sleep(6000L);
+        ThreadUtil.sleep(1000L);
+    }
+
+
+    @Test
+    void test_JvLinkデータがオッズデータ種別以外を一括取得() {
+        Flux.fromStream(conditionMap.entrySet()
+                .stream()
+                .filter(i -> !i.getKey().contains("RACE_O"))
+                .filter(i -> !i.getKey().contains("COMM")))
+                .flatMap(i -> JvLink
+                        .readFlux(i.getValue(), dateTime, Option.STANDARD)
+                        .take(5))
+                .subscribe(
+                        i -> System.out.println(i.getLine()),
+                        e -> e.printStackTrace(),
+                        () -> System.out.println("完了")
+                );
+        ThreadUtil.sleep(15000L);
     }
 
     @Test
@@ -132,20 +168,6 @@ class JvLinkTest {
                         () -> System.out.println("完了")
                 );
         ThreadUtil.sleep(10000L);
-    }
-
-    @Test
-    void test_JvLinkデータが空になる事象調査2() {
-        JvLink.lines(conditionRA, dateTime, Option.THIS_WEEK)
-                .forEach(i -> System.out.println(i.getLine()));
-    }
-
-    @Test
-    void test_startWith() {
-        // そりゃそうだよな。。はぁなんで逆転したんだろう。。
-        String prefix = "RA";
-        String line = "RAAAAAAAAAAA";
-        Assertions.assertTrue(prefix.startsWith(line));
     }
 
 
