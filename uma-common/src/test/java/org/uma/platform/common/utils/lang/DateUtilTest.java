@@ -42,10 +42,13 @@ class DateUtilTest {
     @Test
     void test_日付のTOString(){
         LocalDate dateTime = LocalDate.now();
-
         System.out.println(dateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+    }
 
-
+    @Test
+    void test_一番古い日付(){
+       LocalDate localDate = LocalDate.MIN;
+       System.out.println(localDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
     }
 
 

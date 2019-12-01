@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.uma.platform.feed.application.configuration.JvLinkRecordSpecConfiguration;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +29,7 @@ public class createRecordFormat {
 
     @Test
     void test_Format作成() throws IOException {
-        createRecord("ch.txt");
+        createRecord("um.txt");
     }
 
     private Stream<String> readLine(String filename) throws IOException {

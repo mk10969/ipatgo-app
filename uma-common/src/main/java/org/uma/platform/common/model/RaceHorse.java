@@ -1,6 +1,5 @@
 package org.uma.platform.common.model;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.Data;
 import org.uma.platform.common.code.*;
 import org.uma.platform.common.config.spec.RecordSpec;
@@ -42,7 +41,7 @@ public class RaceHorse {
      * 父父･父母･母父･母母･
      * 父父父･父父母･父母父･父母母･母父父･母父母･母母父･母母母の順
      */
-    private List<Breeding> Breeding3rd;
+    private List<Breeding> breeding3rd;
     private EastOrWestBelongCode ewBelongCd;
 
     private Integer trainerCd;

@@ -1,23 +1,55 @@
 package org.uma.platform.feed.application.test;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.util.StringUtils;
 
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class HelloFunctionAndThen {
 
     Function<String, String> wrapDoubleQuotation = str -> "\"" + str + "\"";
     Function<String, String> wrapSingleQuotation = str -> "'" + str + "'";
 
-    Function<String, String> wrapDoubleAndSingleQuotation = wrapDoubleQuotation.andThen(wrapSingleQuotation);
-
 
     @Test
     void test() {
-        String result = wrapDoubleAndSingleQuotation.apply("hoge");
-        System.out.println(result);
+
+        String str1 = wrapDoubleQuotation.andThen(wrapSingleQuotation).apply("hello");
+        String str2 = wrapDoubleQuotation.compose(wrapSingleQuotation).apply("hello");
+
+        System.out.println(str1);
+        System.out.println(str2);
+
     }
 
+    @Test
+    void test__(){
+        String str = addFunction(wrapDoubleQuotation, wrapSingleQuotation).apply("world");
+        System.out.println(str);
+    }
+
+
+    private Function<String, String> addFunction(Function<String, String>... filter){
+        // reduceの使い方がうまい。
+        return Stream.of(filter).reduce(Function::andThen).orElse(Function.identity());
+    }
+
+
+//
+//    private final Function<> function;
+//
+//    private Flux<StoredOpenCondition> test(RecordSpec... recordSpec) {
+//        // filterをresumeしたいね。
+//
+//        Stream.of(recordSpec).reduce((recordSpec1, next) ->);
+//
+//        return Flux.fromStream()
+//    }
+//
+//    private Stream<RecordSpec> filter(RecordSpec recordSpec) {
+//        return conditions.stream().filter(i -> i.getRecordType() == recordSpec).map()
+//    }
+//
 
 }

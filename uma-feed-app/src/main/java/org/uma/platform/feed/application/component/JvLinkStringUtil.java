@@ -15,8 +15,7 @@ import java.util.Objects;
 
 final public class JvLinkStringUtil {
 
-//    private static final String characterCode = "x-SJIS_0213";
-    private static final String characterCode = "SHIFT-JIS";
+    private static final String characterCode = "x-SJIS_0213";
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -47,8 +46,6 @@ final public class JvLinkStringUtil {
     }
 
     public static String byteToStringOnSlice(byte[] array, int start, int end) {
-        test(array, start, end);
-
         final byte[] slice = Arrays.copyOfRange(array, start, end);
         final ByteBuffer byteBuffer = ByteBuffer.wrap(slice);
 
@@ -63,16 +60,16 @@ final public class JvLinkStringUtil {
         }
     }
 
-    // テスト用にいったん入れ込む。
-    private static void test(byte[] array, int start, int end) {
-        try {
-            final byte[] slice = Arrays.copyOfRange(array, start, end);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println(array.length);
-            System.out.println("start: " + start + " end: " + end);
-            throw e;
-        }
-    }
+//    // テスト用にいったん入れ込む。
+//    private static void test(byte[] array, int start, int end) {
+//        try {
+//            final byte[] slice = Arrays.copyOfRange(array, start, end);
+//        } catch (ArrayIndexOutOfBoundsException e) {
+//            System.out.println(array.length);
+//            System.out.println("start: " + start + " end: " + end);
+//            throw e;
+//        }
+//    }
 
 
 }

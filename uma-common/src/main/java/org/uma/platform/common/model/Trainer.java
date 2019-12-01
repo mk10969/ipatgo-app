@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Data
 public class Trainer {
-    
+
     private RecordSpec recordType;
     private String dataDiv;
     private LocalDate dataCreateDate;

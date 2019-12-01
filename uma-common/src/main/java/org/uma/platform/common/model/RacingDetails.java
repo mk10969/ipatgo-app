@@ -2,7 +2,6 @@ package org.uma.platform.common.model;
 
 import lombok.Data;
 import org.uma.platform.common.code.*;
-import org.uma.platform.common.config.RealTimeKey;
 import org.uma.platform.common.config.spec.RecordSpec;
 
 import java.time.LocalDate;

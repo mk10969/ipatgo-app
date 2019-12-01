@@ -21,6 +21,11 @@ public class JvLinkModelMapperConfiguration {
         @Override
         protected LocalDate convert(String source) {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+            // 日付が設定されていない場合のデフォルト値
+            if ("00000000".equals(source)){
+                // 一番古い日付を設定しておく。
+                return LocalDate.MIN;
+            }
             return LocalDate.parse(source, format);
         }
     };

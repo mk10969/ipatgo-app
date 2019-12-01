@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
+import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.common.utils.lang.ThreadUtil;
 import org.uma.platform.jvlink.JvLink;
 import org.uma.platform.jvlink.response.JvStringContent;
@@ -16,7 +17,11 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import static org.uma.platform.common.config.spec.RecordSpec.*;
 
 
 @ExtendWith(SpringExtension.class)
@@ -64,74 +69,95 @@ class JvLinkTest {
     private StoredOpenCondition conditionO1;
 
     @Autowired
-    private Map<String, StoredOpenCondition> conditionMap;
-
-    @Autowired
     private List<StoredOpenCondition> conditions;
 
 
     private final LocalDateTime dateTime = LocalDateTime.now().minusWeeks(1L);
 
 
-//    private Flux<StoredOpenCondition> test(RecordSpec ...recordSpec) {
-//        // filterをresumeしたいね。
-//        return Flux.fromStream(conditions
-//                .stream().filter(i -> i.getRecordType() == recordSpec)
-//                );
-//
-//    }
-
-    @Test
-    void test_一覧取得() {
-        Flux.fromStream(conditionMap.entrySet()
-                .stream()
-                .filter(i -> !i.getKey().contains("RACE_O")))
-                .subscribe(i -> System.out.println(i));
+    private Predicate<StoredOpenCondition> grep(RecordSpec record) {
+        return condition -> condition.getRecordType() == record;
     }
 
+    @SafeVarargs
+    private final Predicate<StoredOpenCondition> filters(Predicate<StoredOpenCondition>... predicate) {
+        return Stream.of(predicate).reduce(Predicate::and).orElseThrow(IllegalStateException::new);
+    }
+
+    private Stream<StoredOpenCondition> conditionGrep(RecordSpec... recordSpec) {
+        return Stream.of(recordSpec)
+                .flatMap(record -> conditions.stream()
+                        .filter(grep(record)));
+    }
+
+    private Stream<StoredOpenCondition> conditionGrepV(RecordSpec... recordSpec) {
+        return Stream.of(recordSpec)
+                .flatMap(record -> conditions.stream()
+                        .filter(grep(record).negate()));
+    }
+
+
     @Test
-    void test_() {
-        Flux.fromStream(conditionMap.entrySet()
-                .stream()
-                .filter(i -> i.getKey().contains("COMM")))
+    void test() {
+        run(
+                () -> runWith(RA, SE),
+                () -> runWithout(O1, O2, O3, O4, O5, O6, CS)
+        );
+    }
+
+
+    private Flux<String> runWith(RecordSpec... recordSpec) {
+        return Flux.fromStream(conditionGrep(recordSpec))
                 .flatMap(i -> JvLink
-                        .readFlux(i.getValue(), dateTime, Option.STANDARD)
-                        .take(5))
-                .subscribe(
-                        i -> System.out.println(i.getLine()),
-                        e -> e.printStackTrace(),
-                        () -> System.out.println("完了")
-                );
-        ThreadUtil.sleep(1000L);
+                        .readFlux(i, dateTime, Option.STANDARD)
+                        .map(JvStringContent::getLine)
+                        .take(5));
     }
 
-
-    @Test
-    void test_JvLinkデータがオッズデータ種別以外を一括取得() {
-        Flux.fromStream(conditionMap.entrySet()
-                .stream()
-                .filter(i -> !i.getKey().contains("RACE_O"))
-                .filter(i -> !i.getKey().contains("COMM")))
+    private Flux<String> runWithout(RecordSpec... recordSpec) {
+        return Flux.fromStream(conditionGrepV(recordSpec))
                 .flatMap(i -> JvLink
-                        .readFlux(i.getValue(), dateTime, Option.STANDARD)
-                        .take(5))
-                .subscribe(
-                        i -> System.out.println(i.getLine()),
-                        e -> e.printStackTrace(),
-                        () -> System.out.println("完了")
-                );
-        ThreadUtil.sleep(15000L);
+                        .readFlux(i, dateTime, Option.STANDARD)
+                        .map(JvStringContent::getLine)
+                        .take(5));
     }
+
+
+    private Flux<String> test_BLOD() {
+        return Flux.just(conditionSK, conditionHN)
+                .subscribeOn(Schedulers.elastic())
+                .log()
+                .flatMap(i -> JvLink
+                        .readFlux(i, dateTime, Option.SETUP_WITHOUT_DIALOG)
+                        .map(JvStringContent::getLine)
+                );
+    }
+
+
+    @SafeVarargs
+    private final void run(Supplier<Flux<String>>... runner) {
+        Flux.fromStream(Stream.of(runner))
+                .flatMap(Supplier::get)
+                .subscribe(
+                        System.out::println,
+                        Throwable::printStackTrace,
+                        () -> System.out.println("完了"));
+        ThreadUtil.sleep(10000L);
+    }
+
+
+    /**
+     * 基本操作確認
+     */
 
     @Test
     void test_シングルスレッドでJvLink呼び出し() {
         JvLink.readFlux(conditionO1, dateTime, Option.STANDARD)
                 .subscribe(
                         i -> System.out.println(i.getLine()),
-                        e -> e.printStackTrace(),
+                        Throwable::printStackTrace,
                         () -> System.out.println("完了")
                 );
-        // filterロジックがダメでした。
         ThreadUtil.sleep(3000L);
     }
 
@@ -145,22 +171,6 @@ class JvLinkTest {
                 .log()
                 .flatMap(i -> JvLink
                         .readFlux(i, dateTime, Option.STANDARD)
-                        .map(JvStringContent::getLine))
-                .subscribe(
-                        System.out::println,
-                        Throwable::printStackTrace,
-                        () -> System.out.println("完了")
-                );
-        ThreadUtil.sleep(10000L);
-    }
-
-    @Test
-    void test_セットアップ用_BLOD() {
-        Flux.just(conditionSK, conditionHN)
-                .subscribeOn(Schedulers.elastic())
-                .log()
-                .flatMap(i -> JvLink
-                        .readFlux(i, dateTime, Option.SETUP_WITHOUT_DIALOG)
                         .map(JvStringContent::getLine))
                 .subscribe(
                         System.out::println,

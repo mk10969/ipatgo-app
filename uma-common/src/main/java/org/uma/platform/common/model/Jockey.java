@@ -37,6 +37,11 @@ public class Jockey {
     private JockeyApprenticeCode jockeyApprenticeCd;
     private EastOrWestBelongCode ewBelongCd;
     private String invitationAreaName;
+
+    /**
+     * 騎手の所属厩舎 => 調教師コード
+     * フリー騎手    => 00000
+     */
     private String belongingTrainerCd;
     private String belongingTrainerNameShort;
 

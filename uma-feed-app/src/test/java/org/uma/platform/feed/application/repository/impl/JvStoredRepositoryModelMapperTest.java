@@ -93,8 +93,9 @@ class JvStoredRepositoryModelMapperTest {
     }
 
     @Test
-    void test_ALL() {
-        testAll(() -> readTestData("RA")
+    void test_ALL_デシリアライズテスト() {
+        testAll(
+                () -> readTestData("RA")
                         .stream()
                         .map(line -> jvLinkModelMapper.deserialize(line, RacingDetails.class)),
                 () -> readTestData("SE")
@@ -117,7 +118,16 @@ class JvStoredRepositoryModelMapperTest {
                         .map(line -> jvLinkModelMapper.deserialize(line, Ancestry.class)),
                 () -> readTestData("BR")
                         .stream()
-                        .map(line -> jvLinkModelMapper.deserialize(line, Breeder.class))
+                        .map(line -> jvLinkModelMapper.deserialize(line, Breeder.class)),
+                () -> readTestData("UM")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, RaceHorse.class)),
+                () -> readTestData("KS")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, Jockey.class)),
+                () -> readTestData("CH")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, Trainer.class))
 
         );
 
@@ -125,6 +135,7 @@ class JvStoredRepositoryModelMapperTest {
 
     @Test
     void test_H1モデルマッパー_データは単一ファイル() {
+        // この子は、特別nullを許容しているので。
         readTestData("H1")
                 .stream()
                 .map(line -> jvLinkModelMapper.deserialize(line, VoteCount.class))

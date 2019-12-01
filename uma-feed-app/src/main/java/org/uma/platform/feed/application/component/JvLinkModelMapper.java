@@ -2,6 +2,7 @@ package org.uma.platform.feed.application.component;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.feed.application.configuration.JvLinkModelMapperConfiguration;

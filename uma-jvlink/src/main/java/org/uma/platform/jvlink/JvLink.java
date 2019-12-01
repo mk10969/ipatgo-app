@@ -17,10 +17,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -70,10 +68,7 @@ public abstract class JvLink {
         synchronized (jvlink) {  // クラスロックをかけて、closeまで次のスレッドのアクセスを防ぐ。
             return function.apply(jvlink)
                     .publishOn(Schedulers.single()) //内部処理はシングルスレッドで行う。（仕様通り）
-                    .doOnCancel(() -> {
-                        jvlink.cancel();
-                        jvlink.close();
-                    })
+                    .doOnCancel(jvlink::close)
                     .doOnTerminate(jvlink::close); // completion or error
         }
     }
@@ -82,13 +77,13 @@ public abstract class JvLink {
             final StoredOpenCondition condition,
             final LocalDateTime fromTime,
             final Option option) {
-        return builder(jvLink ->
-                jvLink.init()
-                        .open(condition, fromTime, option)
-                        .read(condition)
-                        .stream()
-                        .filter(content -> content.getLine()
-                                .startsWith(condition.getRecordType().getCode()))
+        return builder(jvLink -> jvLink
+                .init()
+                .open(condition, fromTime, option)
+                .read(condition)
+                .stream()
+                .filter(content -> content.getLine()
+                        .startsWith(condition.getRecordType().getCode()))
 
         );
     }
@@ -96,55 +91,40 @@ public abstract class JvLink {
     public static Stream<JvStringContent> lines(
             final RealTimeOpenCondition condition,
             final RealTimeKey rtKey) {
-        return builder(jvLink ->
-                jvLink.init()
-                        .rtOpen(condition, rtKey)
-                        .read(condition)
-                        .stream()
-                        .filter(content -> content.getLine()
-                                .startsWith(condition.getRecordType().getCode()))
+        return builder(jvLink -> jvLink
+                .init()
+                .rtOpen(condition, rtKey)
+                .read(condition)
+                .stream()
+                .filter(content -> content.getLine()
+                        .startsWith(condition.getRecordType().getCode()))
         );
-    }
-
-    public static List<JvStringContent> readAllLines(
-            final StoredOpenCondition condition,
-            final LocalDateTime fromTime,
-            final Option option) {
-        return lines(condition, fromTime, option)
-                .collect(Collectors.toList());
-    }
-
-    public static List<JvStringContent> readAllLines(
-            final RealTimeOpenCondition condition,
-            final RealTimeKey rtKey) {
-        return lines(condition, rtKey)
-                .collect(Collectors.toList());
     }
 
     public static Flux<JvStringContent> readFlux(
             final StoredOpenCondition condition,
             final LocalDateTime fromTime,
             final Option option) {
-        return publisher(jvLink ->
-                jvLink.init()
-                        .open(condition, fromTime, option)
-                        .read(condition)
-                        .publish()
-                        .filter(content -> content.getLine()
-                                .startsWith(condition.getRecordType().getCode()))
+        return publisher(jvLink -> jvLink
+                .init()
+                .open(condition, fromTime, option)
+                .read(condition)
+                .publish()
+                .filter(content -> content.getLine()
+                        .startsWith(condition.getRecordType().getCode()))
         );
     }
 
     public static Flux<JvStringContent> readFlux(
             final RealTimeOpenCondition condition,
             final RealTimeKey rtKey) {
-        return publisher(jvLink ->
-                jvLink.init()
-                        .rtOpen(condition, rtKey)
-                        .read(condition)
-                        .publish()
-                        .filter(content -> content.getLine()
-                                .startsWith(condition.getRecordType().getCode()))
+        return publisher(jvLink -> jvLink
+                .init()
+                .rtOpen(condition, rtKey)
+                .read(condition)
+                .publish()
+                .filter(content -> content.getLine()
+                        .startsWith(condition.getRecordType().getCode()))
         );
     }
 
