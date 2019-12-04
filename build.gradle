@@ -1,10 +1,13 @@
 plugins {
+    id "org.springframework.boot" version "2.2.1.RELEASE"
     id "io.spring.dependency-management" version "1.0.8.RELEASE"
 }
 
-ext {
-    springVersion = "2.2.1.RELEASE"
-    lombokVersion = "1.18.10"
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
 }
 
 subprojects {
@@ -15,23 +18,21 @@ subprojects {
     apply plugin: 'java-library'
     apply plugin: 'io.spring.dependency-management'
 
-    repositories {
-        jcenter()
-        mavenCentral()
+    configurations {
+        testImplementation.extendsFrom compileOnly
+        testAnnotationProcessor.extendsFrom annotationProcessor
     }
 
     dependencyManagement {
         imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:${springVersion}")
+            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
         }
     }
 
     dependencies {
         // lombok
-        compileOnly "org.projectlombok:lombok:${lombokVersion}"
-        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
-        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        compileOnly "org.projectlombok:lombok"
+        annotationProcessor "org.projectlombok:lombok"
 
         // use JUnit 5
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
