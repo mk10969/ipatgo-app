@@ -6,14 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.model.RacingDetails;
-import org.uma.platform.feed.application.repository.impl.JvStoredRacingDetailsRepository;
 import org.uma.platform.common.utils.lang.DateUtil;
+import org.uma.platform.feed.application.repository.impl.JvStoredRacingDetailsRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
+import static org.uma.platform.common.utils.lang.DateUtil.lastWeek;
 import static org.uma.platform.common.utils.lang.DateUtil.tolocalDateTime;
 
 @RestController
@@ -26,19 +24,12 @@ public class RacingDetailsController {
         this.jvRepository = jvRepository;
     }
 
-    @GetMapping("/old/racingDetails")
-    public List<RacingDetails> dindAllOnThisWeek() {
-        LocalDateTime dateTime = LocalDateTime.now().minusWeeks(1L).minusDays(1L);
-        return jvRepository.findAll(dateTime, Option.THIS_WEEK);
-    }
-
 
     @GetMapping("/racingDetails")
     public Flux<RacingDetails> readFluxOnThisWeek() {
         return Mono
-                .defer(() -> Mono.just(DateUtil.lastWeek()))
-                .flatMapMany(i -> jvRepository
-                        .readFlux(i, Option.THIS_WEEK));
+                .defer(() -> Mono.just(lastWeek()))
+                .flatMapMany(i -> jvRepository.readFlux(i, Option.THIS_WEEK));
     }
 
     @GetMapping("/racingDetails/{epochSecond}")
@@ -46,8 +37,7 @@ public class RacingDetailsController {
         return Mono
                 .just(tolocalDateTime(epochSecond))
                 .map(DateUtil::within3years)
-                .flatMapMany(i -> jvRepository
-                        .readFlux(i, Option.STANDARD));
+                .flatMapMany(i -> jvRepository.readFlux(i, Option.STANDARD));
     }
 
 

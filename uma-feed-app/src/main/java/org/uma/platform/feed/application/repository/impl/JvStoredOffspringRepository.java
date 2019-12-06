@@ -1,20 +1,17 @@
 package org.uma.platform.feed.application.repository.impl;
 
-import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.uma.platform.jvlink.JvLink;
-import org.uma.platform.jvlink.response.JvStringContent;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
+import org.uma.platform.common.model.Course;
 import org.uma.platform.common.model.Offspring;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
+import org.uma.platform.jvlink.JvLink;
 import reactor.core.publisher.Flux;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Stream;
 
 @Repository
 public class JvStoredOffspringRepository implements JvLinkStoredRepository<Offspring> {
@@ -23,26 +20,19 @@ public class JvStoredOffspringRepository implements JvLinkStoredRepository<Offsp
 
     private final StoredOpenCondition storedOpenCondition;
 
-    public JvStoredOffspringRepository(JvLinkModelMapper jvLinkModelMapper,
-                                       @Qualifier("BLOD_SK") StoredOpenCondition storedOpenCondition) {
+    public JvStoredOffspringRepository(
+            JvLinkModelMapper jvLinkModelMapper,
+            @Qualifier("BLOD_SK") StoredOpenCondition storedOpenCondition) {
         this.jvLinkModelMapper = jvLinkModelMapper;
         this.storedOpenCondition = storedOpenCondition;
     }
 
-    @Override
-    public List<Offspring> findAll(LocalDateTime dateTime, Option option) {
-
-        try (Stream<JvStringContent> lines = JvLink.lines(storedOpenCondition, dateTime, option)) {
-            return lines
-                    .map(jvContent -> jvLinkModelMapper
-                            .deserialize(jvContent.getLine(), Offspring.class))
-                    .collect(ImmutableList.toImmutableList());
-        }
-    }
 
     @Override
     public Flux<Offspring> readFlux(LocalDateTime dateTime, Option option) {
-        return null;
+        return JvLink.readFlux(storedOpenCondition, dateTime, option)
+                .map(jvStringContent -> jvLinkModelMapper
+                        .deserialize(jvStringContent.getLine(), Offspring.class));
     }
 
 }

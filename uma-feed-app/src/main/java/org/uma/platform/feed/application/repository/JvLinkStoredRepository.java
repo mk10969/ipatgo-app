@@ -9,7 +9,5 @@ import java.util.List;
 
 public interface JvLinkStoredRepository<T> {
 
-    List<T> findAll(LocalDateTime dateTime, Option option);
-
     Flux<T> readFlux(LocalDateTime dateTime, Option option);
 }

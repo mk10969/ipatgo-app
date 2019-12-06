@@ -60,7 +60,7 @@ final public class JvLinkStringUtil {
         }
     }
 
-//    // テスト用にいったん入れ込む。
+
 //    private static void test(byte[] array, int start, int end) {
 //        try {
 //            final byte[] slice = Arrays.copyOfRange(array, start, end);
