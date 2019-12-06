@@ -2,7 +2,7 @@ apply plugin: 'org.springframework.boot'
 
 
 dependencies {
-//    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     implementation project(':uma-common')
@@ -14,14 +14,20 @@ dependencies {
 
 
     // test tools
-//    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     testImplementation 'io.projectreactor:reactor-test'
 
 }
 
 
 bootRun {
-    jvmArgs = ["-Djava.library.path=${file("${projectDir}/lib")}"]
+    jvmArgs = ["-Djava.library.path=${file("${projectDir}/service/lib")}"]
+}
+
+
+bootJar {
+    launchScript()
+    archiveFileName = "${archivesBaseName}.${archiveExtension.get()}"
 }
 
 

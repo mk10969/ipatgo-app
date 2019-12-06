@@ -1,0 +1,15 @@
+<configuration>
+  <id>SPRINGBOOT-APPLICATION</id>
+  <name>MyApp Service (powered by WinSW)</name>
+  <description>This service is a service cratead from a minimal configuration</description>
+  
+  <executable>java</executable>
+  <argument>-jar</argument>
+  <argument>%BASE%\bootJar\uma-feed-app.jar</argument>
+  <argument>-Djava.library.path=</argument>
+  <argument>%BASE%\lib\jacob-1.18-x86.dll</argument>
+  <argument>--spring.profiles.active=default</argument>
+
+  <logpath>%BASE%\log</logpath>
+
+</configuration>
