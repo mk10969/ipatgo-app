@@ -8,8 +8,8 @@ import java.util.stream.Stream;
 
 public class HelloFunctionAndThen {
 
-    Function<String, String> wrapDoubleQuotation = str -> "\"" + str + "\"";
-    Function<String, String> wrapSingleQuotation = str -> "'" + str + "'";
+    private Function<String, String> wrapDoubleQuotation = str -> "\"" + str + "\"";
+    private Function<String, String> wrapSingleQuotation = str -> "'" + str + "'";
 
 
     @Test

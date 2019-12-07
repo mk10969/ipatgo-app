@@ -1,6 +1,7 @@
 package org.uma.platform.feed.application.repository.impl;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
 import org.uma.platform.common.model.VoteCount;
@@ -11,6 +12,7 @@ import reactor.core.publisher.Flux;
 
 import java.time.LocalDateTime;
 
+@Repository
 public class JvStoredVoteCountRepository implements JvLinkStoredRepository<VoteCount> {
 
     private final JvLinkModelMapper jvLinkModelMapper;
