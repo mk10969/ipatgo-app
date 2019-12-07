@@ -1,4 +1,4 @@
-package org.uma.platform.feed.application.component;
+package org.uma.platform.feed.application.service.setup;
 
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Profile("setup")
-public class JvDataSetup {
+public class JvDataSetupService {
 
     @Value("${data.yearsOld}")
     private long yearsOld;

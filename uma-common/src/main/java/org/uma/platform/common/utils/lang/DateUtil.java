@@ -19,6 +19,11 @@ public class DateUtil {
         return LocalDateTime.ofEpochSecond(epochSecond, 0, ZoneOffset.UTC);
     }
 
+    public static LocalDateTime tolocalDateTime(String epochSecond) {
+        return LocalDateTime.ofEpochSecond(Long.parseLong(epochSecond), 0, ZoneOffset.UTC);
+    }
+
+
     public static LocalDateTime within3years(LocalDateTime dateTime) {
         // 現在時刻より、３年以内である。
         if (LocalDateTime.now().minusYears(3L).isBefore(dateTime)) {
