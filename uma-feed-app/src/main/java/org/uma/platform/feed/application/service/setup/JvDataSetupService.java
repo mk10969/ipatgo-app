@@ -30,10 +30,9 @@ public class JvDataSetupService {
     @Value("${data.yyyyMMdd}")
     private String yyyyMMdd;
 
-//    @Value("{data.filters}")
-//    private List<String> fliters;
+    private final ReactiveMongoTemplate reactiveTemplate;
 
-    private final ReactiveMongoTemplate reactiveMongoTemplate;
+//    private final MongoClient client;
 
     private final JvRaceService raceService;
 
@@ -61,8 +60,25 @@ public class JvDataSetupService {
                 .forEach(function -> function.apply(dateTime).subscribe());
     }
 
+
+//    private void eeeee() {
+//        Mono.from(client.startSession()).flatMap(session -> {
+//
+//            session.startTransaction();
+//
+//            return Mono.from(collection.insertOne(session, documentOne))
+//                    .then(Mono.from(collection.insertOne(session, documentTwo)))
+//                    .onErrorResume(e -> Mono.from(session.abortTransaction())
+//                            .then(Mono.error(e)))
+//                    .flatMap(val -> Mono.from(session.commitTransaction())
+//                            .then(Mono.just(val)))
+//                    .doFinally(signal -> session.close());
+//        });
+//    }
+
+
     private <T> Flux<T> insertOnTransaction(Tuple2<T, String> tuples) {
-        return reactiveMongoTemplate
+        return reactiveTemplate
                 .inTransaction()
                 .execute(action -> action.insert(tuples.getT1(), tuples.getT2()))
                 .log((Logger) log)

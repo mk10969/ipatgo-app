@@ -8,7 +8,7 @@
   <argument>Z:\uma-feed-app.jar</argument>
   <argument>-Djava.library.path=</argument>
   <argument>%BASE%\lib</argument>
-  <argument>--spring.profiles.active=default</argument>
+  <argument>--spring.profiles.active=prd</argument>
 
   <logpath>%BASE%\log</logpath>
 
