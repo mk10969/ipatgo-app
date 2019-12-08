@@ -5,9 +5,9 @@
   
   <executable>java</executable>
   <argument>-jar</argument>
-  <argument>%BASE%\bootJar\uma-feed-app.jar</argument>
+  <argument>Z:\uma-feed-app.jar</argument>
   <argument>-Djava.library.path=</argument>
-  <argument>%BASE%\lib\jacob-1.18-x86.dll</argument>
+  <argument>%BASE%\lib</argument>
   <argument>--spring.profiles.active=default</argument>
 
   <logpath>%BASE%\log</logpath>
