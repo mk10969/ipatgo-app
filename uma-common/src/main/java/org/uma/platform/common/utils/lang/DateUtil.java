@@ -1,8 +1,11 @@
 package org.uma.platform.common.utils.lang;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 
 public class DateUtil {
 
@@ -13,6 +16,13 @@ public class DateUtil {
         return DateTimeFormatter
                 .ofPattern(format)
                 .format(dateTime);
+    }
+
+    public static LocalDateTime of(String yyyyMMdd) {
+        final DateTimeFormatter df = DateTimeFormatter.ofPattern("uuuu/MM/dd")
+                .withResolverStyle(ResolverStyle.STRICT);
+        // localDateをlocalDateTimeに変換する。
+        return LocalDateTime.of(LocalDate.parse(yyyyMMdd, df), LocalTime.of(0, 0));
     }
 
     public static LocalDateTime tolocalDateTime(long epochSecond) {

@@ -52,4 +52,14 @@ class DateUtilTest {
     }
 
 
+    @Test
+    void test_パーサーテスト(){
+        String str = "2019/01/01";
+        LocalDateTime datetime = DateUtil.of(str);
+        String expect = DateUtil.format("yyyyMMddHHmmss", datetime);
+        assertEquals(expect, "20190101000000");
+
+    }
+
+
 }

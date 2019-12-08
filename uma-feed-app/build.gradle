@@ -3,7 +3,7 @@ apply plugin: 'org.springframework.boot'
 
 bootJar {
     launchScript()
-    archiveFileName = "${archiveBaseName.get()}.${version}.${archiveExtension.get()}"
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
 }
 
 
