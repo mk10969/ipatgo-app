@@ -38,7 +38,7 @@ public abstract class JvLink {
 
     /**
      * JvLinK側がマルチスレッドによる同時アクセスに対応していないため、
-     * クライアント側（このクラス）で、ロックをかけて直列に処理を実行する。
+     * クライアント側（このクラス）で、ロックをかけて単一スレッドで直列に処理を実行する。
      * また、このクラスを利用する側では、必ずtry-resource文を用いて、
      * close処理を忘れないようにすること。
      *
@@ -56,7 +56,7 @@ public abstract class JvLink {
     }
 
     /**
-     * ノンブロッキングのFluxオブジェクトを生成する。
+     * Publisherオブジェクトを生成する。
      *
      * @param function
      * @param <T>

@@ -24,7 +24,7 @@ public class RacingDetails {
      * {@link RaceRefund.raceId}
      * {@link VoteCount.raceId}
      */
-    private Long raceId;
+    private String raceId;
     private LocalDate holdingDate;
     private RaceCourseCode courseCd;
     private Integer holdingNo;

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.uma.platform.common.utils.lang.DateUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.Logger;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -42,6 +43,8 @@ public class SetupService implements CommandLineRunner {
         Mono.just(yyyyMMdd)
                 .doOnNext(i -> System.out.println("現在から" + i + "までの期間のセットアップを開始します。"))
                 .map(DateUtil::of)
+                .publishOn(Schedulers.elastic())
+                .log("setup")
                 .flatMap(this::setupRacingDetails)
                 .subscribe(
                         i -> System.out.println("成功"),

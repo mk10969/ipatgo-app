@@ -22,7 +22,7 @@ public class VoteCount {
     /**
      * {@link RacingDetails.raceId}
      */
-    private Long raceId;
+    private String raceId;
     private LocalDate holdingDate;
     private RaceCourseCode courseCd;
     private Integer holdingNo;
