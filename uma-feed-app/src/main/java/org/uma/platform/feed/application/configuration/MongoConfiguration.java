@@ -1,7 +1,6 @@
 package org.uma.platform.feed.application.configuration;
 
 
-import com.mongodb.ConnectionString;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +26,8 @@ public class MongoConfiguration extends AbstractReactiveMongoConfiguration {
 
     @Override
     public MongoClient reactiveMongoClient() {
-//        return MongoClients.create(new ConnectionString("mongodb://10.0.2.2"));
-        return MongoClients.create(new ConnectionString("mongodb://" + this.host + ":" + this.port + "/?replicaSet=rs0"));
+        // ちゃんとレプリを組んでいない状態で「?replicaSet=rs0」を入れるとダメ。
+        return MongoClients.create("mongodb://" + this.host + ":" + this.port + "/" + this.database);
     }
 
     @Override
@@ -46,7 +45,7 @@ public class MongoConfiguration extends AbstractReactiveMongoConfiguration {
      */
     @Bean
     public ReactiveMongoTemplate reactiveMongoTemplate() throws Exception {
-        return new ReactiveMongoTemplate(reactiveMongoDbFactory(), mappingMongoConverter());
+        return new ReactiveMongoTemplate(reactiveMongoClient(), getDatabaseName());
     }
 
 }

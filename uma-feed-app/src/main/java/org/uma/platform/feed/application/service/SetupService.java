@@ -1,21 +1,20 @@
-package org.uma.platform.feed.application.service.setup;
+package org.uma.platform.feed.application.service;
 
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Component;
 import org.uma.platform.common.utils.lang.DateUtil;
-import org.uma.platform.feed.application.service.JvRaceService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.Logger;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.function.Function;
@@ -25,7 +24,7 @@ import java.util.stream.Stream;
 @Component
 @RequiredArgsConstructor
 @Profile("setup")
-public class JvDataSetupService {
+public class SetupService implements CommandLineRunner {
 
     @Value("${data.yyyyMMdd}")
     private String yyyyMMdd;
@@ -37,16 +36,20 @@ public class JvDataSetupService {
     private final JvRaceService raceService;
 
 
-    @PostConstruct
-    public void setup() {
-        executeAll(
-                this::setupRacingDetails
-//                this::setupHorseRacingDetails,
-//                this::setupRaceRefund,
-//                this::setupVoteCount
-        );
-    }
+    @Override
+    public void run(String... args) throws Exception {
 
+        Mono.just(yyyyMMdd)
+                .doOnNext(i -> System.out.println("現在から" + i + "までの期間のセットアップを開始します。"))
+                .map(DateUtil::of)
+                .flatMap(this::setupRacingDetails)
+                .subscribe(
+                        i -> System.out.println("成功"),
+                        e -> System.out.println("失敗"),
+                        () -> System.out.println("セットアップを終わります。")
+                );
+
+    }
 
     private enum Status {
         WAIT, RUNNNIG, COMPLETE, ERROR
@@ -61,11 +64,9 @@ public class JvDataSetupService {
     }
 
 
-//    private void eeeee() {
+//    private void insertOnTransaction2() {
 //        Mono.from(client.startSession()).flatMap(session -> {
-//
 //            session.startTransaction();
-//
 //            return Mono.from(collection.insertOne(session, documentOne))
 //                    .then(Mono.from(collection.insertOne(session, documentTwo)))
 //                    .onErrorResume(e -> Mono.from(session.abortTransaction())
