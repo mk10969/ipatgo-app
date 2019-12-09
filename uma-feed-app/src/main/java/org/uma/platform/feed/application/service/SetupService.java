@@ -12,7 +12,6 @@ import org.uma.platform.common.utils.lang.DateUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.Logger;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
@@ -31,8 +30,6 @@ public class SetupService implements CommandLineRunner {
     private String yyyyMMdd;
 
     private final ReactiveMongoTemplate reactiveTemplate;
-
-//    private final MongoClient client;
 
     private final JvRaceService raceService;
 
@@ -85,14 +82,13 @@ public class SetupService implements CommandLineRunner {
         return reactiveTemplate
                 .inTransaction()
                 .execute(action -> action.insert(tuples.getT1(), tuples.getT2()))
-                .log((Logger) log)
-                .doOnError(e -> log.error(e.getMessage()));
+                .doOnError(System.out::println);
     }
 
     private Mono<Status> setupRacingDetails(LocalDateTime dateTime) {
         return raceService.findRacingDetailsOnSetUp(dateTime)
-                .buffer(5000)
-                .map(chunk -> Tuples.of(chunk, "RacingDetails"))
+//                .buffer(100)
+                .map(i -> Tuples.of(i, "RacingDetails"))
                 .flatMap(this::insertOnTransaction)
                 .then(Mono.just(Status.COMPLETE));
     }

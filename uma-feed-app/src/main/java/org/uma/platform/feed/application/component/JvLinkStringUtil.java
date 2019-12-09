@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
@@ -15,7 +14,14 @@ import java.util.Objects;
 
 final public class JvLinkStringUtil {
 
-    private static final String characterCode = "x-SJIS_0213";
+    /**
+     * クソみたいな話
+     * https://weblabo.oscasierra.net/shift_jis-windows31j/
+     * <p>
+     * SHIFT-JIS、x-SJIS_0213、ともに、ダメ。
+     * java.nio.charset.MalformedInputException: Input length = 1
+     */
+    private static final Charset SHIFT_JIS = Charset.forName("MS932");
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -28,7 +34,8 @@ final public class JvLinkStringUtil {
     public static Map<String, Integer> jsonStringToMap(String json) {
         Objects.requireNonNull(json);
         try {
-            return objectMapper.readValue(json, new TypeReference<LinkedHashMap<String, Integer>>() {});
+            return objectMapper.readValue(json, new TypeReference<LinkedHashMap<String, Integer>>() {
+            });
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException();
@@ -37,12 +44,7 @@ final public class JvLinkStringUtil {
 
     public static byte[] stringToByte(String str) {
         Objects.requireNonNull(str);
-        try {
-            return str.getBytes(characterCode);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
+        return str.getBytes(SHIFT_JIS);
     }
 
     public static String byteToStringOnSlice(byte[] array, int start, int end) {
@@ -50,10 +52,7 @@ final public class JvLinkStringUtil {
         final ByteBuffer byteBuffer = ByteBuffer.wrap(slice);
 
         try {
-            return Charset.forName(characterCode)
-                    .newDecoder()
-                    .decode(byteBuffer)
-                    .toString();
+            return SHIFT_JIS.newDecoder().decode(byteBuffer).toString();
         } catch (CharacterCodingException e) {
             e.printStackTrace();
             throw new RuntimeException();
