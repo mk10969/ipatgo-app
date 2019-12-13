@@ -16,9 +16,9 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Stream;
+
 
 @Slf4j
 @Component
@@ -31,12 +31,14 @@ public class SetupService implements CommandLineRunner {
 
     private final ReactiveMongoTemplate reactiveTemplate;
 
+    private final List<Mono<Status>> executors;
+
     private final JvRaceService raceService;
 
+    private enum Status {RUNNNIG, COMPLETE, ERROR}
 
     @Override
     public void run(String... args) throws Exception {
-
         Mono.just(yyyyMMdd)
                 .doOnNext(i -> System.out.println("現在から" + i + "までの期間のセットアップを開始します。"))
                 .map(DateUtil::of)
@@ -48,20 +50,20 @@ public class SetupService implements CommandLineRunner {
                         e -> System.out.println("失敗"),
                         () -> System.out.println("セットアップを終わります。")
                 );
+    }
+
+
+    private final void test() {
+
 
     }
 
-    private enum Status {
-        WAIT, RUNNNIG, COMPLETE, ERROR
-    }
-
-    @SafeVarargs
-    private final void executeAll(Function<LocalDateTime, Mono<Status>>... func) {
-        LocalDateTime dateTime = DateUtil.of(yyyyMMdd);
-        // 直列に実行する
-        Stream.of(func).filter(Objects::nonNull)
-                .forEach(function -> function.apply(dateTime).subscribe());
-    }
+//    private final void executeAll(Function<LocalDateTime, Mono<Status>>... func) {
+//        LocalDateTime dateTime = DateUtil.of(yyyyMMdd);
+//        // 直列に実行する
+//        Stream.of(func).filter(Objects::nonNull)
+//                .forEach(function -> function.apply(dateTime).subscribe());
+//    }
 
 
 //    private void insertOnTransaction2() {
@@ -78,24 +80,26 @@ public class SetupService implements CommandLineRunner {
 //    }
 
 
-    private <T> Flux<T> insertOnTransaction(Tuple2<T, String> tuples) {
+    private <T> Flux<T> insertOnTransaction(Tuple2<List<T>, String> tuples) {
+        // 一つのドキュメントに対して、transaction別いらない。
         return reactiveTemplate
-                .inTransaction()
-                .execute(action -> action.insert(tuples.getT1(), tuples.getT2()))
+                .insert(tuples.getT1(), tuples.getT2())
+//                .inTransaction()
+//                .execute(action -> action.insert(tuples.getT1(), tuples.getT2()))
                 .doOnError(System.out::println);
     }
 
     private Mono<Status> setupRacingDetails(LocalDateTime dateTime) {
         return raceService.findRacingDetailsOnSetUp(dateTime)
-//                .buffer(100)
-                .map(i -> Tuples.of(i, "RacingDetails"))
+                .buffer(1000)
+                .map(chunk -> Tuples.of(chunk, "RacingDetails"))
                 .flatMap(this::insertOnTransaction)
                 .then(Mono.just(Status.COMPLETE));
     }
 
     private Mono<Status> setupHorseRacingDetails(LocalDateTime dateTime) {
         return raceService.findHorseRacingDetailsOnSetUp(dateTime)
-                .buffer(2000)
+                .buffer(1000)
                 .map(chunk -> Tuples.of(chunk, "HorseRacingDetails"))
                 .flatMap(this::insertOnTransaction)
                 .then(Mono.just(Status.COMPLETE));
@@ -103,7 +107,7 @@ public class SetupService implements CommandLineRunner {
 
     private Mono<Status> setupRaceRefund(LocalDateTime dateTime) {
         return raceService.findRaceRefundOnSetUp(dateTime)
-                .buffer(5000)
+                .buffer(1000)
                 .map(chunk -> Tuples.of(chunk, "RaceRefund"))
                 .flatMap(this::insertOnTransaction)
                 .then(Mono.just(Status.COMPLETE));

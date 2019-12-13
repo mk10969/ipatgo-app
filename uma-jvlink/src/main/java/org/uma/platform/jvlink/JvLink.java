@@ -57,6 +57,7 @@ public abstract class JvLink {
 
     /**
      * Publisherオブジェクトを生成する。
+     * このPublisherの処理が終わると、closeし、スレッドを開放する
      *
      * @param function
      * @param <T>
