@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 public abstract class JvLink {
 
-    private static final JvLinkWrapper jvlink = new JvLinkWrapper();
+    private static final JvLinkWrapper JvLink = new JvLinkWrapper();
 
 //    // Thread Safe Singleton.
 //    public static JvLink getInstance() {
@@ -49,9 +49,9 @@ public abstract class JvLink {
     public static <T extends JvContent> Stream<T> builder(
             final Function<JvLinkWrapper, Stream<T>> function) {
         Objects.requireNonNull(function);
-        synchronized (jvlink) {
-            return function.apply(jvlink)
-                    .onClose(jvlink::close);
+        synchronized (JvLink) {
+            return function.apply(JvLink)
+                    .onClose(JvLink::close);
         }
     }
 
@@ -66,11 +66,11 @@ public abstract class JvLink {
     public static <T extends JvContent> Flux<T> publisher(
             final Function<JvLinkWrapper, Flux<T>> function) {
         Objects.requireNonNull(function);
-        synchronized (jvlink) {  // クラスロックをかけて、closeまで次のスレッドのアクセスを防ぐ。
-            return function.apply(jvlink)
+        synchronized (JvLink) {  // クラスロックをかけて、closeまで次のスレッドのアクセスを防ぐ。
+            return function.apply(JvLink)
                     .publishOn(Schedulers.single()) //内部処理はシングルスレッドで行う。（仕様通り）
-                    .doOnCancel(jvlink::close)
-                    .doOnTerminate(jvlink::close); // completion or error
+                    .doOnCancel(JvLink::close)
+                    .doOnTerminate(JvLink::close); // completion or error
         }
     }
 
@@ -127,53 +127,6 @@ public abstract class JvLink {
                 .filter(content -> content.getLine()
                         .startsWith(condition.getRecordType().getCode()))
         );
-    }
-
-    /**
-     * TODO: 改修予定
-     *
-     * @param filePath
-     * @param cs
-     * @param line
-     */
-    public static void writer(
-            final Path filePath,
-            final Charset cs,
-            final String line) {
-        Objects.requireNonNull(line);
-        try (BufferedWriter writer = Files.newBufferedWriter(filePath, cs, StandardOpenOption.APPEND)) {
-            writer.write(line, 0, line.length());
-            writer.newLine();
-        } catch (IOException x) {
-            System.err.format("IOException: %s%n", x);
-        }
-    }
-
-    public static void createFilePath(final Path filePath) {
-        if (!Files.exists(filePath)) {
-            try {
-                Files.createFile(filePath);
-            } catch (IOException e) {
-                e.printStackTrace(); //TODO
-            }
-        }
-    }
-
-    public Mono<Void> checkFilePath(
-            final Path filePath,
-            final Charset cs,
-            final String line) {
-        return Mono.create(sink -> {
-            Objects.requireNonNull(line);
-            try (BufferedWriter writer = Files.newBufferedWriter(filePath, cs, StandardOpenOption.APPEND)) {
-                writer.write(line, 0, line.length());
-                writer.newLine();
-                sink.success();
-            } catch (IOException e) {
-                e.printStackTrace();
-                sink.error(e);
-            }
-        });
     }
 
 
