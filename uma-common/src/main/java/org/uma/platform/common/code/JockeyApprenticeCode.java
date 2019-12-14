@@ -15,7 +15,16 @@ public enum JockeyApprenticeCode implements CodeEnum<Integer, JockeyApprenticeCo
     DEFAULT(0, ""),
     _1Kg(1, "☆"),
     _2Kg(2, "△"),
-    _3Kg(3, "▲");
+    _3Kg(3, "▲"),
+
+    /**
+     * 女性騎手専用コード
+     */
+    _4Kg_F(4, "★"),
+    _2Kg_F(9, "◇")
+
+    ;
+
 
     private Integer code;
     private String codeMark;
