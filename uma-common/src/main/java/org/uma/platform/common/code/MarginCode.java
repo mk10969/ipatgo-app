@@ -39,6 +39,9 @@ public enum MarginCode implements CodeEnum<String, MarginCode> {
     BY_TWO_QTR("214", "２1/4馬身"),
     BY_FIVE_QTR("514", "５1/4馬身"),
     BY_FIVE_3QTR("534", "５3/4馬身"),
+    BY_SIX_QTR("614", "６1/4馬身"),
+    BY_SIX_3QTR("634", "６3/4馬身"),
+    BY_SEVEN_QTR("714", "７1/4馬身"),
     BY_SEVEN_3QTR("734", "７3/4馬身"),
     ;
 
