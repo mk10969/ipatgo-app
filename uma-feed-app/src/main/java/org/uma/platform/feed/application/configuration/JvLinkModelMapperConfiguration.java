@@ -183,6 +183,7 @@ public class JvLinkModelMapperConfiguration {
         enumMap.put(RecordSpec.BT, Ancestry.class);
         enumMap.put(RecordSpec.HN, BreedingHorse.class);
 
+        // DIFF
         enumMap.put(RecordSpec.CS, Course.class);
         enumMap.put(RecordSpec.UM, RaceHorse.class);
         enumMap.put(RecordSpec.KS, Jockey.class);
