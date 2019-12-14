@@ -49,7 +49,13 @@ public enum MarginCode implements CodeEnum<String, MarginCode> {
     BY_SEVEN_HALF("712", "７1/2馬身"),
     BY_SEVEN_3QTR("734", "７3/4馬身"),
     BY_EIGHT("8  ", "８馬身"),
+    BY_EIGHT_QTR("814", "８1/4馬身"),
+    BY_EIGHT_HALF("812", "８1/2馬身"),
+    BY_EIGHT_3QTR("834", "８3/4馬身"),
     BY_NINE("9  ", "９馬身"),
+    BY_NINE_QTR("914", "９1/4馬身"),
+    BY_NINE_HALF("912", "９1/2馬身"),
+    BY_NINE_3QTR("934", "９3/4馬身"),
     BY_TEN("Z  ", "１０馬身"),
     BY_DISTANCE("T  ", "大差"),
     ;
