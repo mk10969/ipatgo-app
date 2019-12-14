@@ -17,6 +17,7 @@ import reactor.util.function.Tuples;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 
 @Slf4j
@@ -28,8 +29,8 @@ public class SetupService implements CommandLineRunner {
     @Value("${data.yyyyMMdd}")
     private String yyyyMMdd;
 
-    @Value("${data.storedDataType}")
-    private List<String> storedDataTypes;
+    @Value("${data.storedDataTypes}")
+    private Set<String> storedDataTypes;
 
     private final ReactiveMongoTemplate reactiveTemplate;
 
@@ -50,7 +51,7 @@ public class SetupService implements CommandLineRunner {
                 .flatMap(this::setupVoteCount)
                 .subscribe(
                         i -> log.info("成功"),
-                        e -> log.error("失敗"),
+                        e -> log.error("SETUP ERROR: ", e),
                         () -> log.info("セットアップを終わります。")
                 );
     }
@@ -72,16 +73,15 @@ public class SetupService implements CommandLineRunner {
     private <T> Flux<T> insertOnTransaction(Tuple2<List<T>, String> tuples) {
         // 一つのドキュメントに対して、transaction別いらない。
         return reactiveTemplate
-                .insert(tuples.getT1(), tuples.getT2())
+                .insert(tuples.getT1(), tuples.getT2());
 //                .inTransaction()
 //                .execute(action -> action.insert(tuples.getT1(), tuples.getT2()))
-                .doOnError(e -> log.error("Setup ERROR: ", e));
     }
 
 
     private Mono<LocalDateTime> setupRacingDetails(LocalDateTime dateTime) {
         return raceService.findRacingDetailsOnSetUp(dateTime)
-                .buffer(1000)
+                .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "RacingDetails"))
                 .flatMap(this::insertOnTransaction)
                 .then(Mono.just(dateTime));
@@ -89,7 +89,7 @@ public class SetupService implements CommandLineRunner {
 
     private Mono<LocalDateTime> setupHorseRacingDetails(LocalDateTime dateTime) {
         return raceService.findHorseRacingDetailsOnSetUp(dateTime)
-                .buffer(1000)
+                .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "HorseRacingDetails"))
                 .flatMap(this::insertOnTransaction)
                 .then(Mono.just(dateTime));
@@ -97,7 +97,7 @@ public class SetupService implements CommandLineRunner {
 
     private Mono<LocalDateTime> setupRaceRefund(LocalDateTime dateTime) {
         return raceService.findRaceRefundOnSetUp(dateTime)
-                .buffer(1000)
+                .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "RaceRefund"))
                 .flatMap(this::insertOnTransaction)
                 .then(Mono.just(dateTime));
@@ -105,7 +105,7 @@ public class SetupService implements CommandLineRunner {
 
     private Mono<LocalDateTime> setupVoteCount(LocalDateTime dateTime) {
         return raceService.findVoteCountOnSetUp(dateTime)
-                .buffer(1000)
+                .buffer(100)
                 .map(chunk -> Tuples.of(chunk, "VoteCount"))
                 .flatMap(this::insertOnTransaction)
                 .then(Mono.just(dateTime));

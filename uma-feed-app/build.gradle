@@ -8,7 +8,11 @@ bootJar {
 
 
 bootRun {
-    jvmArgs = ["-Djava.library.path=${file("${projectDir}/service/lib")}"]
+    jvmArgs = [
+//            "-Xms256m -Xmx512m",
+            "-Djava.library.path=${file("${projectDir}/service/lib")}",
+            "-Dspring.profiles.active=dev,setup",
+    ]
 }
 
 

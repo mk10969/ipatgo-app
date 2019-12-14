@@ -7,7 +7,7 @@
     <property name="logFileName" value="uma-feed-app" />
 
     <!--ローカル環境用設定 -->
-    <springProfile name="default">
+    <springProfile name="dev">
         <property name="logFilePath" value="./" />
     </springProfile>
 
