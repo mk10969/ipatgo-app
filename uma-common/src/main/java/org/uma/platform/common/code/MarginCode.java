@@ -37,6 +37,7 @@ public enum MarginCode implements CodeEnum<String, MarginCode> {
     BY_TEN("Z  ", "１０馬身"),
     BY_QTR(" 14", "1/4馬身"),
     BY_TWO_QTR("214", "２1/4馬身"),
+    BY_FIVE_QTR("514", "５1/4馬身"),
     BY_SEVEN_3QTR("734", "７3/4馬身"),
     ;
 
