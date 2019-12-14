@@ -56,7 +56,7 @@ public class VoteCount {
     private List<Vote> voteCountTrios;
 
     /**
-     * 取得する初期値スペース => null に変換される。
+     * 初期値スペース => null に変換される。
      */
     private Long voteCountTotalWin;
     private Long voteCountTotalPlace;
@@ -67,7 +67,7 @@ public class VoteCount {
     private Long voteCountTotalTrio;
 
     /**
-     * 取得する初期値スペース => null に変換される。
+     * 初期値スペース => null に変換される。
      */
     private Long restoreVoteCountTotalWin;
     private Long restoreVoteCountTotalPlace;
@@ -84,15 +84,15 @@ public class VoteCount {
         private String horseNo;
 
         /**
-         * ALL 0   :発売前取消し or 発売票数なし => null に変換される。
-         * スペース :登録なし                   => null に変換される。
+         * ALL 0   :発売前取消し or 発売票数なし => 0 に変換される。←だぶん
+         * スペース :登録なし                   => null に変換される。←Longだけこうなる。Integerはエラー
          */
         private Long voteCount;
 
         /**
-         * スペース :登録なし   => null に変換される。
-         * '---'   :発売前取消 => null に変換される。
-         * '***'   :発売後取消 => null に変換される。
+         * スペース :登録なし   => null に変換する。
+         * '---'   :発売前取消 => -100 に変換する。
+         * '***'   :発売後取消 => -999 に変換する。
          */
         private Integer betRank;
     }

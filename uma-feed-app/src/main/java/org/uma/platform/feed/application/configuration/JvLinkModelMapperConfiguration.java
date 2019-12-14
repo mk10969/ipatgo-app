@@ -22,7 +22,7 @@ public class JvLinkModelMapperConfiguration {
         protected LocalDate convert(String source) {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
             // 日付が設定されていない場合のデフォルト値
-            if ("00000000".equals(source)){
+            if ("00000000".equals(source)) {
                 // 一番古い日付を設定しておく。
                 return LocalDate.MIN;
             }
@@ -168,6 +168,21 @@ public class JvLinkModelMapperConfiguration {
         }
     };
 
+    private static final Converter<String, Integer> toInteger = new AbstractConverter<String, Integer>() {
+        @Override
+        protected Integer convert(String source) {
+            if ("  ".equals(source) || "   ".equals(source)) {
+                return null;
+            }
+            if ("--".equals(source) || "---".equals(source)) {
+                return -100;
+            }
+            if ("**".equals(source) || "***".equals(source)) {
+                return -999;
+            }
+            return Integer.valueOf(source);
+        }
+    };
 
     @Bean
     public EnumMap<RecordSpec, Class<?>> recordSpecPairEnumMap() {
@@ -215,6 +230,7 @@ public class JvLinkModelMapperConfiguration {
         modelMapper.addConverter(toJockeyLicenseCode);
         modelMapper.addConverter(toRaceTypeCode);
         modelMapper.addConverter(toHairColorCode);
+        modelMapper.addConverter(toInteger);
         return modelMapper;
     }
 
