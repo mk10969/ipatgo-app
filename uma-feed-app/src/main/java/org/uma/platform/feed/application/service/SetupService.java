@@ -12,7 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
@@ -20,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 
 @Slf4j
@@ -33,10 +31,10 @@ public class SetupService implements CommandLineRunner {
     @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private LocalDateTime dateTime;
 
-    @Value("${setup.property.storedDataTypes}")
-    private Set<String> storedDataTypes;
+    @Value("${setup.property.setupDataTypes}")
+    private Set<String> setupDataTypes;
 
-    private final Map<String, Mono<LocalDateTime>> runners;
+    private final Map<String, Mono<Status>> runners;
 
     private final ReactiveMongoTemplate reactiveTemplate;
 
@@ -52,6 +50,7 @@ public class SetupService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        execute();
 //        Mono.just(yyyyMMdd)
 //                .publishOn(Schedulers.elastic())
 //                .doOnNext(i -> log.info("現在から" +
@@ -68,37 +67,30 @@ public class SetupService implements CommandLineRunner {
     }
 
 
-    //    private Mono<LocalDateTime> start() {
-//        return Mono.just(yyyyMMdd)
-//                .publishOn(Schedulers.elastic())
-//                .doOnNext(i -> System.out.println("現在から" +
-//                        i + "までの期間のセットアップを開始します。"))
-//                .map(DateUtil::of)
-//                .flatMap(dateTime -> Flux.fromIterable(storedDataTypes)
-//                        .filter()
-//                        .flatMap())
-//
-//    }
-    private final void stt() {
-        Flux.fromIterable(storedDataTypes)
+    private void execute() {
+        Flux.fromIterable(setupDataTypes)
                 .doOnNext(dataType -> log.info("セットアップ開始"))
                 .doOnNext(dataType -> log.info("データ種別：{} 期間：現在から、{}まで", dataType, dateTime))
-                .flatMap(dateType -> runners.get(dateType)
-                        .map(i -> Tuples.of(dateType, i)))
-                .subscribe();
-    }
-
-    // こっちの方が、良さそう。
-    private final void streamVersion() {
-        storedDataTypes.stream()
-                .peek(dataType -> log.info("セットアップ開始"))
-                .peek(dataType -> log.info("データ種別：{} 期間：現在から、{}まで", dataType, dateTime))
-                .flatMap(dataType -> runners.entrySet()
-                        .stream()
-                        .filter(key -> key.getKey().equals(dataType))
-                        .map(key -> key.getValue())
+                .flatMap(dateType -> runners.getOrDefault(dateType, Mono.empty())
+                        .map(status -> Tuples.of(dateType, status)))
+                .subscribe(
+                        i -> log.info("{}", i),
+                        e -> log.error("SETUP ERROR:", e),
+                        () -> log.info("セットアップ終了")
                 );
     }
+
+//    // こっちの方が、良さそう。
+//    private final void streamVersion() {
+//        storedDataTypes.stream()
+//                .peek(dataType -> log.info("セットアップ開始"))
+//                .peek(dataType -> log.info("データ種別：{} 期間：現在から、{}まで", dataType, dateTime))
+//                .flatMap(dataType -> runners.entrySet()
+//                        .stream()
+//                        .filter(key -> key.getKey().equals(dataType))
+//                        .map(key -> key.getValue())
+//                );
+//    }
 
 
     private <T> Flux<T> insertOnTransaction(Tuple2<List<T>, String> tuples) {
@@ -110,120 +102,120 @@ public class SetupService implements CommandLineRunner {
     }
 
     @Bean("RacingDetails")
-    private Mono<LocalDateTime> setupRacingDetails() {
+    private Mono<Status> setupRacingDetails() {
         return raceService.findRacingDetailsOnSetUp(dateTime)
                 .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "RacingDetails"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("HorseRacingDetails")
-    private Mono<LocalDateTime> setupHorseRacingDetails() {
+    private Mono<Status> setupHorseRacingDetails() {
         return raceService.findHorseRacingDetailsOnSetUp(dateTime)
                 .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "HorseRacingDetails"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("RaceRefund")
-    private Mono<LocalDateTime> setupRaceRefund() {
+    private Mono<Status> setupRaceRefund() {
         return raceService.findRaceRefundOnSetUp(dateTime)
                 .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "RaceRefund"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("VoteCount")
-    private Mono<LocalDateTime> setupVoteCount() {
+    private Mono<Status> setupVoteCount() {
         return raceService.findVoteCountOnSetUp(dateTime)
                 .buffer(100)
                 .map(chunk -> Tuples.of(chunk, "VoteCount"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("Ancestry")
-    private Mono<LocalDateTime> setupAncestry() {
+    private Mono<Status> setupAncestry() {
         return bloodService.findAncestryOnSetUp(dateTime)
                 .buffer(200)
                 .map(chunk -> Tuples.of(chunk, "Ancestry"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("BreedingHorse")
-    private Mono<LocalDateTime> setupBreedingHorse() {
+    private Mono<Status> setupBreedingHorse() {
         return bloodService.findBreedingHorseOnSetUp(dateTime)
                 .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "BreedingHorse"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("Offspring")
-    private Mono<LocalDateTime> setupOffspring() {
+    private Mono<Status> setupOffspring() {
         return bloodService.findOffspringOnSetUp(dateTime)
                 .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "Offspring"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("Course")
-    private Mono<LocalDateTime> setupCourse() {
+    private Mono<Status> setupCourse() {
         return commonService.findCourseOnSetUp(dateTime)
                 .buffer(200)
                 .map(chunk -> Tuples.of(chunk, "Course"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("RaceHorse")
-    private Mono<LocalDateTime> setupRaceHorse() {
+    private Mono<Status> setupRaceHorse() {
         return diffService.findRaceHorseOnSetUp(dateTime)
                 .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "RaceHorse"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("Jockey")
-    private Mono<LocalDateTime> setupJockey() {
+    private Mono<Status> setupJockey() {
         return diffService.findJockeyOnSetUp(dateTime)
                 .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "Jockey"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("Trainer")
-    private Mono<LocalDateTime> setupTrainer() {
+    private Mono<Status> setupTrainer() {
         return diffService.findTrainerOnSetUp(dateTime)
                 .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "Trainer"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("Owner")
-    private Mono<LocalDateTime> setupOwner() {
+    private Mono<Status> setupOwner() {
         return diffService.findOwnerOnSetUp(dateTime)
                 .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "Owner"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
     @Bean("Breeder")
-    private Mono<LocalDateTime> setupBreeder() {
+    private Mono<Status> setupBreeder() {
         return diffService.findBreederOnSetUp(dateTime)
                 .buffer(500)
                 .map(chunk -> Tuples.of(chunk, "Breeder"))
                 .flatMap(this::insertOnTransaction)
-                .then(Mono.just(dateTime));
+                .then(Mono.just(Status.COMPLETE));
     }
 
 
