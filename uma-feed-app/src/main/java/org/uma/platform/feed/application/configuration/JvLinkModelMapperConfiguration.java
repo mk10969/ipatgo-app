@@ -171,7 +171,7 @@ public class JvLinkModelMapperConfiguration {
     private static final Converter<String, Integer> toInteger = new AbstractConverter<String, Integer>() {
         @Override
         protected Integer convert(String source) {
-            if ("  ".equals(source) || "   ".equals(source)) {
+            if ("  ".equals(source) || "   ".equals(source) || "    ".equals(source) ) {
                 return null;
             }
             if ("--".equals(source) || "---".equals(source)) {
