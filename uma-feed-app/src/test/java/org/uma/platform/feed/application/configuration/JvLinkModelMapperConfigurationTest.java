@@ -34,7 +34,7 @@ class JvLinkModelMapperConfigurationTest {
 
 
     @Data
-    public static class People {
+    private static class People {
         private String name;
         private Integer age;
         private Long longAge;
