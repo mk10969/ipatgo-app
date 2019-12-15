@@ -23,8 +23,9 @@ public class JvLinkModelMapperConfiguration {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
             // 日付が設定されていない場合のデフォルト値
             if ("00000000".equals(source)) {
-                // 一番古い日付を設定しておく。
-                return LocalDate.MIN;
+                //return LocalDate.MIN;
+                // ↑これダメっぽい。一旦nullにしときます。
+                return null;
             }
             return LocalDate.parse(source, format);
         }
