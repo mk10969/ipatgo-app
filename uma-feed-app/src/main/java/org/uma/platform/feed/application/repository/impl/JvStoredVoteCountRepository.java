@@ -31,6 +31,7 @@ public class JvStoredVoteCountRepository implements JvLinkStoredRepository<VoteC
     @Override
     public List<VoteCount> readLine(LocalDateTime dateTime, Option option) {
         return JvLink.lines(storedOpenCondition, dateTime, option)
+                .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), VoteCount.class))
                 .collect(ImmutableList.toImmutableList());

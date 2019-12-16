@@ -1,11 +1,9 @@
 package org.uma.platform.feed.application.repository;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
 import org.uma.platform.common.config.spec.RecordSpec;
@@ -24,7 +22,6 @@ import java.util.stream.Stream;
 import static org.uma.platform.common.config.spec.RecordSpec.*;
 
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 class JvLinkTest {
 
@@ -166,18 +163,19 @@ class JvLinkTest {
         // 想定通りの動きをしてくれている。よしよし。（速い処理はできないね！仕方ない！）
         // ただし、クラスロック「synchronized (jvlink)」と、「.subscribeOn(Schedulers.single())」
         // のどちらかを取り除くと、203エラーが返ってくる。（JvLink側、マルチスレッド非対応）
-        Flux.just(conditionSK, conditionHN)
+        Flux.fromIterable(conditions)
                 .subscribeOn(Schedulers.elastic())
                 .log()
-                .flatMap(i -> JvLink
-                        .readFlux(i, dateTime, Option.STANDARD)
+                .flatMap(i -> JvLink.readFlux(i, dateTime, Option.STANDARD)
+                        .log()
+                        .take(10)
                         .map(JvStringContent::getLine))
                 .subscribe(
                         System.out::println,
                         Throwable::printStackTrace,
                         () -> System.out.println("完了")
                 );
-        ThreadUtil.sleep(10000L);
+        ThreadUtil.sleep(30000L);
     }
 
 

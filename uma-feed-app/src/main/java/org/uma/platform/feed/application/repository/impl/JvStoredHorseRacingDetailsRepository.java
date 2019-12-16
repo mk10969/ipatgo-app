@@ -31,6 +31,7 @@ public class JvStoredHorseRacingDetailsRepository implements JvLinkStoredReposit
     @Override
     public List<HorseRacingDetails> readLine(LocalDateTime dateTime, Option option) {
         return JvLink.lines(storedOpenCondition, dateTime, option)
+                .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), HorseRacingDetails.class))
                 .collect(ImmutableList.toImmutableList());

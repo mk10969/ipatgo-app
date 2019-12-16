@@ -31,6 +31,7 @@ public class JvStoredOffspringRepository implements JvLinkStoredRepository<Offsp
     @Override
     public List<Offspring> readLine(LocalDateTime dateTime, Option option) {
         return JvLink.lines(storedOpenCondition, dateTime, option)
+                .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Offspring.class))
                 .collect(ImmutableList.toImmutableList());

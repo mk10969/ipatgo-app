@@ -2,6 +2,7 @@ package org.uma.platform.feed.application.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.uma.platform.common.config.Option;
@@ -53,6 +54,7 @@ public class JvRaceController {
         return racingDetailsRepository.readLine(dateTime, Option.STANDARD);
     }
 
+    @GetMapping("/racingDetails")
     public List<RacingDetails> findRacingDetailsOnThisWeek() {
         return racingDetailsRepository.readLine(lastWeek, Option.THIS_WEEK);
     }
@@ -62,6 +64,7 @@ public class JvRaceController {
         return horseRacingDetailsRepository.readLine(dateTime, Option.STANDARD);
     }
 
+    @GetMapping("/horseRacingDetails")
     public List<HorseRacingDetails> findHorseRacingDetailsOnThisWeek() {
         return horseRacingDetailsRepository.readLine(lastWeek, Option.THIS_WEEK);
     }
@@ -71,6 +74,7 @@ public class JvRaceController {
         return raceRefundRepository.readLine(dateTime, Option.STANDARD);
     }
 
+    @GetMapping("/raceRefund")
     public List<RaceRefund> findRaceRefundOnThisWeek() {
         return raceRefundRepository.readLine(lastWeek, Option.THIS_WEEK);
     }
@@ -80,6 +84,7 @@ public class JvRaceController {
         return voteCountRepository.readLine(dateTime, Option.STANDARD);
     }
 
+    @GetMapping("/voteCount")
     public List<VoteCount> findVoteCountOnThisWeek() {
         return voteCountRepository.readLine(lastWeek, Option.THIS_WEEK);
     }

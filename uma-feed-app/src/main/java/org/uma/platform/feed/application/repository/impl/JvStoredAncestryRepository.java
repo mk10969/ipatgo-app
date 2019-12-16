@@ -30,6 +30,7 @@ public class JvStoredAncestryRepository implements JvLinkStoredRepository<Ancest
     @Override
     public List<Ancestry> readLine(LocalDateTime dateTime, Option option) {
         return JvLink.lines(storedOpenCondition, dateTime, option)
+                .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Ancestry.class))
                 .collect(ImmutableList.toImmutableList());

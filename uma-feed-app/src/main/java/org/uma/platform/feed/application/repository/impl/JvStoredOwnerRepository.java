@@ -31,6 +31,7 @@ public class JvStoredOwnerRepository implements JvLinkStoredRepository<Owner> {
     @Override
     public List<Owner> readLine(LocalDateTime dateTime, Option option) {
         return JvLink.lines(storedOpenCondition, dateTime, option)
+                .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Owner.class))
                 .collect(ImmutableList.toImmutableList());

@@ -31,6 +31,7 @@ public class JvStoredTrainerRepository implements JvLinkStoredRepository<Trainer
     @Override
     public List<Trainer> readLine(LocalDateTime dateTime, Option option) {
         return JvLink.lines(storedOpenCondition, dateTime, option)
+                .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Trainer.class))
                 .collect(ImmutableList.toImmutableList());

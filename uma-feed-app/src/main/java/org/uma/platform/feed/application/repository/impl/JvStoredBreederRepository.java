@@ -31,6 +31,7 @@ public class JvStoredBreederRepository implements JvLinkStoredRepository<Breeder
     @Override
     public List<Breeder> readLine(LocalDateTime dateTime, Option option) {
         return JvLink.lines(storedOpenCondition, dateTime, option)
+                .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Breeder.class))
                 .collect(ImmutableList.toImmutableList());
