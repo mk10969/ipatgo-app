@@ -7,24 +7,24 @@ import org.uma.platform.common.config.condition.StoredOpenCondition;
 import org.uma.platform.jvlink.response.JvContent;
 import org.uma.platform.jvlink.response.JvStringContent;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
 public abstract class JvLink {
 
     private static final JvLinkWrapper JvLink = new JvLinkWrapper();
+
+    private static final Lock LOCK = new ReentrantLock();
+
 
 //    // Thread Safe Singleton.
 //    public static JvLink getInstance() {
@@ -38,20 +38,18 @@ public abstract class JvLink {
 
     /**
      * JvLinK側がマルチスレッドによる同時アクセスに対応していないため、
-     * クライアント側（このクラス）で、ロックをかけて単一スレッドで直列に処理を実行する。
-     * また、このクラスを利用する側では、必ずtry-resource文を用いて、
-     * close処理を忘れないようにすること。
-     *
-     * @param function
-     * @param <T>
-     * @return
+     * クライアント側（このクラス）で、ロックをかけて排他制御を行う。
      */
-    public static <T extends JvContent> Stream<T> builder(
+    public static <T extends JvContent> List<T> builder(
             final Function<JvLinkWrapper, Stream<T>> function) {
         Objects.requireNonNull(function);
         synchronized (JvLink) {
-            return function.apply(JvLink)
-                    .onClose(JvLink::close);
+            try {
+                return function.apply(JvLink)
+                        .collect(Collectors.toList());
+            } finally {
+                JvLink.close();
+            }
         }
     }
 
@@ -66,15 +64,18 @@ public abstract class JvLink {
     public static <T extends JvContent> Flux<T> publisher(
             final Function<JvLinkWrapper, Flux<T>> function) {
         Objects.requireNonNull(function);
-        synchronized (JvLink) {  // クラスロックをかけて、closeまで次のスレッドのアクセスを防ぐ。
+        LOCK.lock();
+        try {  // クラスロックをかけて、closeまで次のスレッドのアクセスを防ぐ。
             return function.apply(JvLink)
                     .publishOn(Schedulers.single()) //内部処理はシングルスレッドで行う。（仕様通り）
                     .doOnCancel(JvLink::close)
                     .doOnTerminate(JvLink::close); // completion or error
+        } finally {
+            LOCK.unlock();
         }
     }
 
-    public static Stream<JvStringContent> lines(
+    public static List<JvStringContent> lines(
             final StoredOpenCondition condition,
             final LocalDateTime fromTime,
             final Option option) {
@@ -89,7 +90,7 @@ public abstract class JvLink {
         );
     }
 
-    public static Stream<JvStringContent> lines(
+    public static List<JvStringContent> lines(
             final RealTimeOpenCondition condition,
             final RealTimeKey rtKey) {
         return builder(jvLink -> jvLink
@@ -128,6 +129,5 @@ public abstract class JvLink {
                         .startsWith(condition.getRecordType().getCode()))
         );
     }
-
 
 }
