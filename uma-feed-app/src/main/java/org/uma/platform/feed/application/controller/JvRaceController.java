@@ -2,7 +2,9 @@ package org.uma.platform.feed.application.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.uma.platform.common.config.Option;
@@ -20,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/race")
+@RequestMapping("/race")
 @RequiredArgsConstructor
 public class JvRaceController {
 
@@ -50,43 +52,50 @@ public class JvRaceController {
     private static final LocalDateTime lastWeek = DateUtil.lastWeek();
 
 
-    public List<RacingDetails> findRacingDetails(LocalDateTime dateTime) {
-        return racingDetailsRepository.readLine(dateTime, Option.STANDARD);
-    }
-
     @GetMapping("/racingDetails")
     public List<RacingDetails> findRacingDetailsOnThisWeek() {
-        return racingDetailsRepository.readLine(lastWeek, Option.THIS_WEEK);
-    }
-
-
-    public List<HorseRacingDetails> findHorseRacingDetails(LocalDateTime dateTime) {
-        return horseRacingDetailsRepository.readLine(dateTime, Option.STANDARD);
+        return racingDetailsRepository.readLines(lastWeek, Option.THIS_WEEK);
     }
 
     @GetMapping("/horseRacingDetails")
     public List<HorseRacingDetails> findHorseRacingDetailsOnThisWeek() {
-        return horseRacingDetailsRepository.readLine(lastWeek, Option.THIS_WEEK);
-    }
-
-
-    public List<RaceRefund> findRaceRefund(LocalDateTime dateTime) {
-        return raceRefundRepository.readLine(dateTime, Option.STANDARD);
+        return horseRacingDetailsRepository.readLines(lastWeek, Option.THIS_WEEK);
     }
 
     @GetMapping("/raceRefund")
     public List<RaceRefund> findRaceRefundOnThisWeek() {
-        return raceRefundRepository.readLine(lastWeek, Option.THIS_WEEK);
-    }
-
-
-    public List<VoteCount> findVoteCount(LocalDateTime dateTime) {
-        return voteCountRepository.readLine(dateTime, Option.STANDARD);
+        return raceRefundRepository.readLines(lastWeek, Option.THIS_WEEK);
     }
 
     @GetMapping("/voteCount")
     public List<VoteCount> findVoteCountOnThisWeek() {
-        return voteCountRepository.readLine(lastWeek, Option.THIS_WEEK);
+        return voteCountRepository.readLines(lastWeek, Option.THIS_WEEK);
     }
+
+
+    @GetMapping("/racingDetails/{epochSecond}")
+    public List<RacingDetails> findRacingDetails(@Validated @PathVariable Long epochSecond) {
+        LocalDateTime dateTime = DateUtil.tolocalDateTime(epochSecond);
+        return racingDetailsRepository.readLines(dateTime, Option.STANDARD);
+    }
+
+    @GetMapping("/horseRacingDetails/{epochSecond}")
+    public List<HorseRacingDetails> findHorseRacingDetails(@Validated @PathVariable Long epochSecond) {
+        LocalDateTime dateTime = DateUtil.tolocalDateTime(epochSecond);
+        return horseRacingDetailsRepository.readLines(dateTime, Option.STANDARD);
+    }
+
+    @GetMapping("/raceRefund/{epochSecond}")
+    public List<RaceRefund> findRaceRefund(@Validated @PathVariable Long epochSecond) {
+        LocalDateTime dateTime = DateUtil.tolocalDateTime(epochSecond);
+        return raceRefundRepository.readLines(dateTime, Option.STANDARD);
+    }
+
+    @GetMapping("/voteCount/{epochSecond}")
+    public List<VoteCount> findVoteCount(@Validated @PathVariable Long epochSecond) {
+        LocalDateTime dateTime = DateUtil.tolocalDateTime(epochSecond);
+        return voteCountRepository.readLines(dateTime, Option.STANDARD);
+    }
+
 
 }

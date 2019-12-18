@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-class JvLinkReader<T extends JvResult> implements Iterable<T> {
+public class JvLinkReader<T extends JvResult> implements Iterable<T> {
 
     private final Supplier<T> jvGenerator;
 
@@ -24,7 +24,7 @@ class JvLinkReader<T extends JvResult> implements Iterable<T> {
      *
      * @return Stream オブジェクト
      */
-    Stream<T> stream() {
+    public Stream<T> stream() {
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), Spliterator.NONNULL), false);
     }
 
@@ -33,7 +33,8 @@ class JvLinkReader<T extends JvResult> implements Iterable<T> {
      *
      * @return Flux(Publisher) オブジェクト
      */
-    Flux<T> publish() {
+    @Deprecated
+    public Flux<T> publish() {
         return Flux.fromStream(this::stream);
     }
 
