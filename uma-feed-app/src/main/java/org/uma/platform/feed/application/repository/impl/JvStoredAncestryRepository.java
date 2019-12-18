@@ -12,6 +12,7 @@ import org.uma.platform.jvlink.JvLink;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Repository
 public class JvStoredAncestryRepository implements JvLinkStoredRepository<Ancestry> {
@@ -28,11 +29,19 @@ public class JvStoredAncestryRepository implements JvLinkStoredRepository<Ancest
     }
 
     @Override
-    public List<Ancestry> readLine(LocalDateTime dateTime, Option option) {
-        return JvLink.lines(storedOpenCondition, dateTime, option)
+    public List<Ancestry> readLines(LocalDateTime dateTime, Option option) {
+        return JvLink.readLines(storedOpenCondition, dateTime, option)
                 .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Ancestry.class))
                 .collect(ImmutableList.toImmutableList());
     }
+
+    @Override
+    public Stream<Ancestry> readStream(LocalDateTime dateTime) {
+        return JvLink.readStream(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
+                .map(jvStringContent -> jvLinkModelMapper
+                        .deserialize(jvStringContent.getLine(), Ancestry.class));
+    }
+
 }

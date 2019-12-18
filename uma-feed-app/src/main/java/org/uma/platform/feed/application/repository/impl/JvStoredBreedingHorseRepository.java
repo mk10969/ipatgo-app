@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
+import org.uma.platform.common.model.Breeder;
 import org.uma.platform.common.model.BreedingHorse;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
@@ -12,6 +13,7 @@ import org.uma.platform.jvlink.JvLink;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Repository
 public class JvStoredBreedingHorseRepository implements JvLinkStoredRepository<BreedingHorse> {
@@ -29,12 +31,19 @@ public class JvStoredBreedingHorseRepository implements JvLinkStoredRepository<B
 
 
     @Override
-    public List<BreedingHorse> readLine(LocalDateTime dateTime, Option option) {
-        return JvLink.lines(storedOpenCondition, dateTime, option)
+    public List<BreedingHorse> readLines(LocalDateTime dateTime, Option option) {
+        return JvLink.readLines(storedOpenCondition, dateTime, option)
                 .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), BreedingHorse.class))
                 .collect(ImmutableList.toImmutableList());
+    }
+
+    @Override
+    public Stream<BreedingHorse> readStream(LocalDateTime dateTime) {
+        return JvLink.readStream(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
+                .map(jvStringContent -> jvLinkModelMapper
+                        .deserialize(jvStringContent.getLine(), BreedingHorse.class));
     }
 
 }

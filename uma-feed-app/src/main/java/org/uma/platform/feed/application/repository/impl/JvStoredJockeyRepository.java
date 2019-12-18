@@ -12,6 +12,7 @@ import org.uma.platform.jvlink.JvLink;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Repository
 public class JvStoredJockeyRepository implements JvLinkStoredRepository<Jockey> {
@@ -29,12 +30,19 @@ public class JvStoredJockeyRepository implements JvLinkStoredRepository<Jockey> 
 
 
     @Override
-    public List<Jockey> readLine(LocalDateTime dateTime, Option option) {
-        return JvLink.lines(storedOpenCondition, dateTime, option)
+    public List<Jockey> readLines(LocalDateTime dateTime, Option option) {
+        return JvLink.readLines(storedOpenCondition, dateTime, option)
                 .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Jockey.class))
                 .collect(ImmutableList.toImmutableList());
+    }
+
+    @Override
+    public Stream<Jockey> readStream(LocalDateTime dateTime) {
+        return JvLink.readStream(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
+                .map(jvStringContent -> jvLinkModelMapper
+                        .deserialize(jvStringContent.getLine(), Jockey.class));
     }
 
 }
