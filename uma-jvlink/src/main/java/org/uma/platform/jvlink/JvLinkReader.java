@@ -1,9 +1,9 @@
 package org.uma.platform.jvlink;
 
-import org.uma.platform.jvlink.response.JvResult;
 import org.uma.platform.common.utils.lang.ThreadUtil;
 import org.uma.platform.jvlink.exception.JvLinkErrorCode;
 import org.uma.platform.jvlink.exception.JvLinkRuntimeException;
+import org.uma.platform.jvlink.response.JvResult;
 import reactor.core.publisher.Flux;
 
 import java.util.*;
@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class JvLinkReader<T extends JvResult> implements Iterable<T> {
+class JvLinkReader<T extends JvResult> implements Iterable<T> {
 
     private final Supplier<T> jvGenerator;
 
@@ -24,7 +24,7 @@ public class JvLinkReader<T extends JvResult> implements Iterable<T> {
      *
      * @return Stream オブジェクト
      */
-    public Stream<T> stream() {
+    Stream<T> stream() {
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), Spliterator.NONNULL), false);
     }
 
@@ -34,7 +34,7 @@ public class JvLinkReader<T extends JvResult> implements Iterable<T> {
      * @return Flux(Publisher) オブジェクト
      */
     @Deprecated
-    public Flux<T> publish() {
+    Flux<T> publish() {
         return Flux.fromStream(this::stream);
     }
 

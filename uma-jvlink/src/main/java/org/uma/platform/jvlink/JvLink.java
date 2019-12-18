@@ -36,6 +36,7 @@ public abstract class JvLink {
 //        private static final JvLink INSTANCE = new JvLink();
 //    }
 
+
     /**
      * JvLinK側がマルチスレッドによる同時アクセスに対応していないため、
      * クライアント側（このクラス）で、ロックをかけて排他制御を行う。
@@ -54,20 +55,20 @@ public abstract class JvLink {
     }
 
     /**
-     * Stream用のcloseメソッド
+     * Streamに onClose()メソッドを付与しているので、
+     * 利用側で、try-with-resourceで括ってください。
      */
-    public void close() {
-        JvLink.close();
+    private static <T extends JvContent> Stream<T> streamBuilder(
+            final Function<JvLinkWrapper, Stream<T>> function) {
+        Objects.requireNonNull(function);
+        return function.apply(JvLink)
+                .onClose(JvLink::close);
     }
 
     /**
      * Publisherオブジェクトを生成する。
      * このPublisherの処理が終わると、closeし、スレッドを開放する
      * →ダメだった・・・・(´・ω・｀)
-     *
-     * @param function
-     * @param <T>
-     * @return
      */
     @Deprecated
     private static <T extends JvContent> Flux<T> publisher(
@@ -116,25 +117,25 @@ public abstract class JvLink {
             final StoredOpenCondition condition,
             final LocalDateTime fromTime,
             final Option option) {
-
-        return JvLink.init()
+        return streamBuilder(jvLink -> jvLink.init()
                 .open(condition, fromTime, option)
                 .read(condition)
                 .stream()
                 .filter(content -> content.getLine()
-                        .startsWith(condition.getRecordType().getCode()));
+                        .startsWith(condition.getRecordType().getCode()))
+        );
     }
 
     public static Stream<JvStringContent> readStream(
             final RealTimeOpenCondition condition,
             final RealTimeKey rtKey) {
-
-        return JvLink.init()
+        return streamBuilder(jvLink -> jvLink.init()
                 .rtOpen(condition, rtKey)
                 .read(condition)
                 .stream()
                 .filter(content -> content.getLine()
-                        .startsWith(condition.getRecordType().getCode()));
+                        .startsWith(condition.getRecordType().getCode()))
+        );
     }
 
 
