@@ -127,6 +127,7 @@ public class JvLinkWrapper {
         );
     }
 
+    // TODO : OpenCondition toString実装
     public JvLinkReader<JvStringContent> read(OpenCondition<?> condition) {
         log.info("read: {}", condition);
         return new JvLinkReader<>(() ->

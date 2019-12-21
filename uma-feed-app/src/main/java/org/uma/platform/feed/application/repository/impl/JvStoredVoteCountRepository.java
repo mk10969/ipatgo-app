@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
+import org.uma.platform.common.model.Trainer;
 import org.uma.platform.common.model.VoteCount;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 import org.uma.platform.jvlink.JvLinkClient;
+import reactor.core.publisher.Flux;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,4 +47,10 @@ public class JvStoredVoteCountRepository implements JvLinkStoredRepository<VoteC
                         .deserialize(jvStringContent.getLine(), VoteCount.class));
     }
 
+    @Override
+    public Flux<VoteCount> readFlux(LocalDateTime dateTime) {
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
+                .map(jvStringContent -> jvLinkModelMapper
+                        .deserialize(jvStringContent.getLine(), VoteCount.class));
+    }
 }

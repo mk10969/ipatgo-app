@@ -9,7 +9,6 @@ bootJar {
 
 bootRun {
     jvmArgs = [
-//            "-Xms256m -Xmx512m",
             "-Djava.library.path=${file("${projectDir}/service/lib")}",
             "-Dspring.profiles.active=dev,setup",
     ]
@@ -17,8 +16,10 @@ bootRun {
 
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    //implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'io.projectreactor:reactor-core:3.3.0.RELEASE'
 
     implementation project(':uma-common')
     implementation project(':uma-jvlink')

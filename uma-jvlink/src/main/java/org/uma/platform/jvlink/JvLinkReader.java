@@ -21,7 +21,6 @@ class JvLinkReader<T extends JvResult> implements Iterable<T> {
 
     /**
      * Iterator to Stream
-     *
      * @return Stream オブジェクト
      */
     Stream<T> stream() {
@@ -30,12 +29,10 @@ class JvLinkReader<T extends JvResult> implements Iterable<T> {
 
     /**
      * Iterator to Flux
-     *
      * @return Flux(Publisher) オブジェクト
      */
-    @Deprecated
     Flux<T> publish() {
-        return Flux.fromStream(this::stream);
+        return Flux.fromIterable(this);
     }
 
     @Override
@@ -66,7 +63,7 @@ class JvLinkReader<T extends JvResult> implements Iterable<T> {
                 if (returnCode < -1) {
                     if (returnCode == -3) {
                         // 1秒待機
-                        ThreadUtil.sleep(1000);
+                        ThreadUtil.sleep(500);
                         // もう一回
                         return next();
                     }

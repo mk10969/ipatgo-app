@@ -9,6 +9,7 @@ import org.uma.platform.common.model.Jockey;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 import org.uma.platform.jvlink.JvLinkClient;
+import reactor.core.publisher.Flux;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,4 +46,10 @@ public class JvStoredJockeyRepository implements JvLinkStoredRepository<Jockey> 
                         .deserialize(jvStringContent.getLine(), Jockey.class));
     }
 
+    @Override
+    public Flux<Jockey> readFlux(LocalDateTime dateTime) {
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
+                .map(jvStringContent -> jvLinkModelMapper
+                        .deserialize(jvStringContent.getLine(), Jockey.class));
+    }
 }

@@ -41,7 +41,7 @@ public abstract class JvLinkClient {
      * JvLinK側がマルチスレッドによる同時アクセスに対応していないため、
      * クライアント側（このクラス）で、ロックをかけて排他制御を行う。
      */
-    private static <T extends JvContent> List<T> builder(
+    private static <T extends JvContent<?>> List<T> builder(
             final Function<JvLinkWrapper, Stream<T>> function) {
         Objects.requireNonNull(function);
         synchronized (JvLink) {
@@ -58,7 +58,7 @@ public abstract class JvLinkClient {
      * Streamに onClose()メソッドを付与しているので、
      * 利用側で、try-with-resourceで括ってください。
      */
-    private static <T extends JvContent> Stream<T> streamBuilder(
+    private static <T extends JvContent<?>> Stream<T> streamBuilder(
             final Function<JvLinkWrapper, Stream<T>> function) {
         Objects.requireNonNull(function);
         return function.apply(JvLink)
@@ -67,24 +67,17 @@ public abstract class JvLinkClient {
 
     /**
      * Publisherオブジェクトを生成する。
-     * このPublisherの処理が終わると、closeし、スレッドを開放する
-     * →ダメだった・・・・(´・ω・｀)
+     * このPublisherの処理が終わると、closeする
      */
-    @Deprecated
-    private static <T extends JvContent> Flux<T> publisher(
+    private static <T extends JvContent<?>> Flux<T> publisher(
             final Function<JvLinkWrapper, Flux<T>> function) {
         Objects.requireNonNull(function);
-        LOCK.lock();
-        try {  // クラスロックをかけて、closeまで次のスレッドのアクセスを防ぐ。
-            return function.apply(JvLink)
-                    .publishOn(Schedulers.single()) //内部処理はシングルスレッドで行う。（仕様通り）
-                    .doOnCancel(JvLink::close)
-                    .doOnTerminate(JvLink::close); // completion or error
-        } finally {
-            LOCK.unlock();
-        }
+        return function.apply(JvLink)
+                .publishOn(Schedulers.single()) //内部読み取り処理はシングルスレッド
+                .doFinally(i -> JvLink.close())
+                .doOnCancel(JvLink::close)
+                .doOnTerminate(JvLink::close); // completion or error
     }
-
 
     public static List<JvStringContent> readLines(
             final StoredOpenCondition condition,
@@ -96,7 +89,6 @@ public abstract class JvLinkClient {
                 .stream()
                 .filter(content -> content.getLine()
                         .startsWith(condition.getRecordType().getCode()))
-
         );
     }
 
@@ -139,7 +131,6 @@ public abstract class JvLinkClient {
     }
 
 
-    @Deprecated
     public static Flux<JvStringContent> readFlux(
             final StoredOpenCondition condition,
             final LocalDateTime fromTime,
@@ -153,7 +144,6 @@ public abstract class JvLinkClient {
         );
     }
 
-    @Deprecated
     public static Flux<JvStringContent> readFlux(
             final RealTimeOpenCondition condition,
             final RealTimeKey rtKey) {

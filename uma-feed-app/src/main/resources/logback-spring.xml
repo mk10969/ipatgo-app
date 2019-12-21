@@ -10,7 +10,7 @@
 
     <!-- ローカル環境用設定 -->
     <springProfile name="dev">
-        <property name="logFilePath" value="./"/>
+        <property name="logFilePath" value="./log/"/>
     </springProfile>
 
     <!-- production環境用設定 -->
@@ -41,7 +41,7 @@
     </appender>
 
     <!-- JvLink Client ログファイル書き出し -->
-    <appender name="APPLICATION_LOG_SETUP" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="APPLICATION_LOG_JVLINK" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${logFilePath}${jvLink}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${logFilePath}${jvLink}-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
@@ -67,7 +67,8 @@
     </appender>
 
     <!-- セットアップ ロガー -->
-    <logger name="org.uma.platform.feed.application.component.JvSetupCommandLineRunner" level="info" additivity="false">
+    <logger name="org.uma.platform.feed.application.component.JvSetupReactiveCommandLineRunner"
+            level="info" additivity="false">
         <appender-ref ref="APPLICATION_LOG_SETUP"/>
     </logger>
 

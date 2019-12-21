@@ -9,6 +9,7 @@ import org.uma.platform.common.model.Ancestry;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 import org.uma.platform.jvlink.JvLinkClient;
+import reactor.core.publisher.Flux;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,6 +41,13 @@ public class JvStoredAncestryRepository implements JvLinkStoredRepository<Ancest
     @Override
     public Stream<Ancestry> readStream(LocalDateTime dateTime) {
         return JvLinkClient.readStream(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
+                .map(jvStringContent -> jvLinkModelMapper
+                        .deserialize(jvStringContent.getLine(), Ancestry.class));
+    }
+
+    @Override
+    public Flux<Ancestry> readFlux(LocalDateTime dateTime) {
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Ancestry.class));
     }
