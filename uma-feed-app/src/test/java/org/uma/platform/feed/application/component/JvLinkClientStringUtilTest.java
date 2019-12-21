@@ -6,7 +6,7 @@ import org.uma.platform.feed.application.component.JvLinkStringUtil;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class JvLinkStringUtilTest {
+class JvLinkClientStringUtilTest {
 
     @Test
     void test_空判定(){

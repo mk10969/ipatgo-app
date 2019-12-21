@@ -1,5 +1,6 @@
 package org.uma.platform.jvlink;
 
+import lombok.extern.slf4j.Slf4j;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.RealTimeKey;
 import org.uma.platform.common.config.condition.OpenCondition;
@@ -19,14 +20,15 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 
+@Slf4j
 public class JvLinkWrapper {
     /**
-     * UserAgentの最大バイト長です。
+     * UserAgentの最大バイト長
      */
     private static final int MAX_BYTE_LENGTH_USER_AGENT = 64;
 
     /**
-     * open時に指定するための時間フォーマットです。
+     * open時に指定するための時間フォーマット
      */
     private static final String JV_DATE_FORMAT = "yyyyMMddHHmmss";
 
@@ -60,6 +62,7 @@ public class JvLinkWrapper {
     }
 
     public JvLinkWrapper init() {
+        log.info("init");
         JvLinkHandler.handle(() -> jvLinkDataLab.jvInit(getUserAgent()));
         return this;
     }
@@ -100,9 +103,9 @@ public class JvLinkWrapper {
     public JvLinkWrapper open(StoredOpenCondition condition, String fromTime, Option option) {
         Objects.requireNonNull(condition, "データ検索条件がnullになっています。");
         Objects.requireNonNull(fromTime, "データ読み出し開始ポイントがnullになっています。");
-
-        JvLinkHandler.handle(
-                () -> jvLinkDataLab.jvOpen(condition.getDataSpec().getCode(), fromTime, option.getCode())
+        log.info("open: {}", condition);
+        JvLinkHandler.handle(() ->
+                jvLinkDataLab.jvOpen(condition.getDataSpec().getCode(), fromTime, option.getCode())
         );
 
         return this;
@@ -111,21 +114,23 @@ public class JvLinkWrapper {
     public JvLinkWrapper rtOpen(RealTimeOpenCondition condition, RealTimeKey rtKey) {
         Objects.requireNonNull(condition, "データ検索条件がnullになっています。");
         Objects.requireNonNull(rtKey, "keyがnullになっています。");
-        JvLinkHandler.handle(
-                () -> jvLinkDataLab.jvRtOpen(condition.getDataSpec().getCode(), rtKey.get())
+        log.info("rtOpen: {}", condition);
+        JvLinkHandler.handle(() ->
+                jvLinkDataLab.jvRtOpen(condition.getDataSpec().getCode(), rtKey.get())
         );
         return this;
     }
 
-    public JvLinkReader<JvByteContent> gets(OpenCondition condition) {
-        return new JvLinkReader<>(
-                () -> jvLinkDataLab.jvGets(condition.getRecordType().getLength())
+    public JvLinkReader<JvByteContent> gets(OpenCondition<?> condition) {
+        return new JvLinkReader<>(() ->
+                jvLinkDataLab.jvGets(condition.getRecordType().getLength())
         );
     }
 
-    public JvLinkReader<JvStringContent> read(OpenCondition condition) {
-        return new JvLinkReader<>(
-                () -> jvLinkDataLab.jvRead(condition.getRecordType().getLength())
+    public JvLinkReader<JvStringContent> read(OpenCondition<?> condition) {
+        log.info("read: {}", condition);
+        return new JvLinkReader<>(() ->
+                jvLinkDataLab.jvRead(condition.getRecordType().getLength())
         );
     }
 
@@ -138,6 +143,7 @@ public class JvLinkWrapper {
     }
 
     public void close() {
+        log.info("close");
         JvLinkHandler.handle(jvLinkDataLab::jvClose);
     }
 

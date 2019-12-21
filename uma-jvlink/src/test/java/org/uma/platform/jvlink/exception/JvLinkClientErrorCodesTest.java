@@ -2,7 +2,7 @@ package org.uma.platform.jvlink.exception;
 
 import org.junit.jupiter.api.Test;
 
-public class JvLinkErrorCodesTest {
+public class JvLinkClientErrorCodesTest {
 
     @Test
     public void test() {

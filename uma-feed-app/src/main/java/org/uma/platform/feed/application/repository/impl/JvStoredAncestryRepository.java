@@ -8,7 +8,7 @@ import org.uma.platform.common.config.condition.StoredOpenCondition;
 import org.uma.platform.common.model.Ancestry;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
-import org.uma.platform.jvlink.JvLink;
+import org.uma.platform.jvlink.JvLinkClient;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,7 +30,7 @@ public class JvStoredAncestryRepository implements JvLinkStoredRepository<Ancest
 
     @Override
     public List<Ancestry> readLines(LocalDateTime dateTime, Option option) {
-        return JvLink.readLines(storedOpenCondition, dateTime, option)
+        return JvLinkClient.readLines(storedOpenCondition, dateTime, option)
                 .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Ancestry.class))
@@ -39,7 +39,7 @@ public class JvStoredAncestryRepository implements JvLinkStoredRepository<Ancest
 
     @Override
     public Stream<Ancestry> readStream(LocalDateTime dateTime) {
-        return JvLink.readStream(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
+        return JvLinkClient.readStream(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Ancestry.class));
     }

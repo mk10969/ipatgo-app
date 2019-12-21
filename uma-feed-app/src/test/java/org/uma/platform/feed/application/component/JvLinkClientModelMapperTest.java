@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class JvLinkModelMapperTest {
+class JvLinkClientModelMapperTest {
 
     @Autowired
     private JvLinkModelMapper jvLinkModelMapper;

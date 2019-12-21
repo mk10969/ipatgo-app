@@ -1,0 +1,19 @@
+setup:
+  property:
+    yyyyMMddHHmmss: 2019/01/01 00:00:00
+    dataType:
+      - RacingDetails
+      - HorseRacingDetails
+      - RaceRefund
+      - VoteCount
+      - Ancestry
+      - BreedingHorse
+      - Offspring
+      - Course
+      - RaceHorse
+      - Jockey
+      - Trainer
+      - Owner
+      - Breeder
+
+

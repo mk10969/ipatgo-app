@@ -8,7 +8,7 @@ import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
 import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.common.utils.lang.ThreadUtil;
-import org.uma.platform.jvlink.JvLink;
+import org.uma.platform.jvlink.JvLinkClient;
 import org.uma.platform.jvlink.response.JvStringContent;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
@@ -23,7 +23,7 @@ import static org.uma.platform.common.config.spec.RecordSpec.*;
 
 
 @SpringBootTest
-class JvLinkTest {
+class JvLinkClientTest {
 
     @Autowired
     @Qualifier("RACE_RA")
@@ -105,7 +105,7 @@ class JvLinkTest {
 
     private Flux<String> runWith(RecordSpec... recordSpec) {
         return Flux.fromStream(conditionGrep(recordSpec))
-                .flatMap(i -> JvLink
+                .flatMap(i -> JvLinkClient
                         .readFlux(i, dateTime, Option.STANDARD)
                         .map(JvStringContent::getLine)
                         .take(5));
@@ -113,7 +113,7 @@ class JvLinkTest {
 
     private Flux<String> runWithout(RecordSpec... recordSpec) {
         return Flux.fromStream(conditionGrepV(recordSpec))
-                .flatMap(i -> JvLink
+                .flatMap(i -> JvLinkClient
                         .readFlux(i, dateTime, Option.STANDARD)
                         .map(JvStringContent::getLine)
                         .take(5));
@@ -124,7 +124,7 @@ class JvLinkTest {
         return Flux.just(conditionSK, conditionHN)
                 .subscribeOn(Schedulers.elastic())
                 .log()
-                .flatMap(i -> JvLink
+                .flatMap(i -> JvLinkClient
                         .readFlux(i, dateTime, Option.SETUP_WITHOUT_DIALOG)
                         .map(JvStringContent::getLine)
                 );
@@ -149,7 +149,7 @@ class JvLinkTest {
 
     @Test
     void test_シングルスレッドでJvLink呼び出し() {
-        JvLink.readFlux(conditionO1, dateTime, Option.STANDARD)
+        JvLinkClient.readFlux(conditionO1, dateTime, Option.STANDARD)
                 .subscribe(
                         i -> System.out.println(i.getLine()),
                         Throwable::printStackTrace,
@@ -166,7 +166,7 @@ class JvLinkTest {
         Flux.fromIterable(conditions)
                 .subscribeOn(Schedulers.elastic())
                 .log()
-                .flatMap(i -> JvLink.readFlux(i, dateTime, Option.STANDARD)
+                .flatMap(i -> JvLinkClient.readFlux(i, dateTime, Option.STANDARD)
                         .log()
                         .take(10)
                         .map(JvStringContent::getLine))

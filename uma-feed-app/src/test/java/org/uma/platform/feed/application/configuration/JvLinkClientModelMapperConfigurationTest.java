@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-class JvLinkModelMapperConfigurationTest {
+class JvLinkClientModelMapperConfigurationTest {
 
     private final ModelMapper modelMapper = new ModelMapper();
 

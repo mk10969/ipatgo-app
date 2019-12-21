@@ -9,14 +9,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.uma.platform.common.config.RealTimeKey;
 import org.uma.platform.common.config.condition.RealTimeOpenCondition;
 import org.uma.platform.common.utils.lang.ThreadUtil;
-import org.uma.platform.jvlink.JvLink;
+import org.uma.platform.jvlink.JvLinkClient;
 import reactor.core.publisher.Flux;
 
 import java.util.Map;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class JvLinkRealTimeTest {
+public class JvLinkClientRealTimeTest {
 
     @Autowired
     private Map<String, RealTimeOpenCondition> rtOpenCondition;
@@ -63,7 +63,7 @@ public class JvLinkRealTimeTest {
     @Test
     void test_0B12_HRデータ取得() {
         // 払い戻しは、取れるね！
-        JvLink.readFlux(HRcondition, realTimeKey)
+        JvLinkClient.readFlux(HRcondition, realTimeKey)
                 .subscribe(
                         i -> System.out.println(i.getLine()),
                         e -> e.printStackTrace(),
@@ -74,7 +74,7 @@ public class JvLinkRealTimeTest {
 
     @Test
     void test_0B12_RAデータ取得() {
-        JvLink.readFlux(RAcondition, realTimeKey)
+        JvLinkClient.readFlux(RAcondition, realTimeKey)
                 .subscribe(
                         i -> System.out.println(i.getLine()),
                         e -> e.printStackTrace(),
@@ -87,7 +87,7 @@ public class JvLinkRealTimeTest {
     void test_0B11_WHデータ取得() {
         // 馬体重は、取れるね！
         Flux.just(realTimeKey, realTimeKeyVeryShort)
-                .flatMap(key -> JvLink.readFlux(WHcondition, key))
+                .flatMap(key -> JvLinkClient.readFlux(WHcondition, key))
                 .subscribe(
                         i -> System.out.println(i.getLine()),
                         e -> e.printStackTrace(),

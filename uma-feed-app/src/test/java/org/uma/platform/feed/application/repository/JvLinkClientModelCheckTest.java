@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class JvLinkModelCheckTest {
+public class JvLinkClientModelCheckTest {
 
     @Autowired
     private Map<String, JvLinkRecordSpecConfiguration.RecordSpecItems> recordSpecs;

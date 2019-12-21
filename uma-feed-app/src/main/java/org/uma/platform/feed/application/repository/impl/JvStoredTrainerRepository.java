@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
-import org.uma.platform.common.model.RacingDetails;
 import org.uma.platform.common.model.Trainer;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
-import org.uma.platform.jvlink.JvLink;
+import org.uma.platform.jvlink.JvLinkClient;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,7 +31,7 @@ public class JvStoredTrainerRepository implements JvLinkStoredRepository<Trainer
 
     @Override
     public List<Trainer> readLines(LocalDateTime dateTime, Option option) {
-        return JvLink.readLines(storedOpenCondition, dateTime, option)
+        return JvLinkClient.readLines(storedOpenCondition, dateTime, option)
                 .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Trainer.class))
@@ -41,7 +40,7 @@ public class JvStoredTrainerRepository implements JvLinkStoredRepository<Trainer
 
     @Override
     public Stream<Trainer> readStream(LocalDateTime dateTime) {
-        return JvLink.readStream(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
+        return JvLinkClient.readStream(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Trainer.class));
     }

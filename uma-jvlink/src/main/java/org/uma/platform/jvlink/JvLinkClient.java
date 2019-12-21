@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public abstract class JvLink {
+public abstract class JvLinkClient {
 
     private static final JvLinkWrapper JvLink = new JvLinkWrapper();
 
