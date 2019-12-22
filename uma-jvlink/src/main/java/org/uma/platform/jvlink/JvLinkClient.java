@@ -73,8 +73,7 @@ public abstract class JvLinkClient {
             final Function<JvLinkWrapper, Flux<T>> function) {
         Objects.requireNonNull(function);
         return function.apply(JvLink)
-                .publishOn(Schedulers.single()) //内部読み取り処理はシングルスレッド
-                .doFinally(i -> JvLink.close())
+                .publishOn(Schedulers.immediate()) //内部読み取り処理はシングルスレッド
                 .doOnCancel(JvLink::close)
                 .doOnTerminate(JvLink::close); // completion or error
     }
