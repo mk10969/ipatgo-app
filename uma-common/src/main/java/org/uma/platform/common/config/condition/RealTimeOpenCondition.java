@@ -23,5 +23,12 @@ public class RealTimeOpenCondition implements OpenCondition<RealTimeDataSpec> {
         return this.recordType;
     }
 
+    @Override
+    public String toString() {
+        return "RealTimeOpenCondition{" +
+                "dataSpec=" + dataSpec +
+                ", recordType=" + recordType +
+                '}';
+    }
 
 }

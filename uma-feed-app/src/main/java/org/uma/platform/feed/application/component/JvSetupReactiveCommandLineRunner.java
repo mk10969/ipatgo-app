@@ -48,23 +48,28 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         }
 
         // セットアップ実行
-        execute2();
+        execute();
     }
 
-    private void execute2() {
+    private void execute() {
         log.info("セットアップ開始");
-        // 直列に実行する
+
         jvSetupRunners.entrySet().stream()
                 .filter(e -> dataTypes.contains(e.getKey()))
-                .map(Map.Entry::getValue)
-                .forEach(runner -> runner.run()
-                        .blockFirst()
+                .peek(e -> log.info("セットアップ中: {}", e.getKey()))
+                .forEach(runner -> runner.getValue().run()
+                        .subscribeOn(Schedulers.single())
+                        .subscribe(
+                                i -> {},
+                                e -> log.error("エラー: [" + runner.getKey() + "]", e),
+                                () -> log.info("完了 :[{}]", runner.getKey())
+                        )
                 );
 
         log.info("セットアップ完了");
     }
 
-//    private void execute() {
+//    private void execute2() {
 //        Flux.fromStream(jvSetupRunners.entrySet().stream())
 //                .doOnNext(i -> log.info("セットアップ開始"))
 //                .filter(e -> dataTypes.contains(e.getKey()))
@@ -115,6 +120,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<RacingDetails> jvSetupRunnerRacingDetails(
                 JvStoredRacingDetailsRepository repository) {
             return () -> repository.readFlux(dateTime)
+                    .log()
                     .doOnNext(model -> log.info("RacingDetails: {}", model))
                     .buffer(500)
                     .map(chunk -> Tuples.of(chunk, "racingDetails"))

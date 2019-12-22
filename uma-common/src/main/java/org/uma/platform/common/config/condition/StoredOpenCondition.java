@@ -24,5 +24,12 @@ public class StoredOpenCondition implements OpenCondition<StoredDataSpec> {
         return this.recordType;
     }
 
+    @Override
+    public String toString() {
+        return "StoredOpenCondition{" +
+                "dataSpec=" + dataSpec +
+                ", recordType=" + recordType +
+                '}';
+    }
 
 }
