@@ -53,6 +53,24 @@ public class JvLinkRecordSpecConfiguration {
     }
 
     /**
+     * @return 単勝オッズ・複勝オッズ・枠連オッズ
+     */
+    @Bean(name = "O1")
+    @ConfigurationProperties(prefix = "o1")
+    RecordSpecItems configO1() {
+        return new RecordSpecItems();
+    }
+
+    /**
+     * @return 馬連オッズ
+     */
+    @Bean(name = "O2")
+    @ConfigurationProperties(prefix = "o2")
+    RecordSpecItems configO2() {
+        return new RecordSpecItems();
+    }
+    
+    /**
      * @return 競走馬除外情報
      */
     @Bean(name = "JG")

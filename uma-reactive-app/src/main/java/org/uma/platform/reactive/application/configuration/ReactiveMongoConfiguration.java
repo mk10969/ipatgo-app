@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 
 @Configuration
 @EnableReactiveMongoRepositories
-public class MongoConfiguration extends AbstractReactiveMongoConfiguration {
+public class ReactiveMongoConfiguration extends AbstractReactiveMongoConfiguration {
 
     @Override
     public MongoClient reactiveMongoClient() {

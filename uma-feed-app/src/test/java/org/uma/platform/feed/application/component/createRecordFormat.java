@@ -3,11 +3,9 @@ package org.uma.platform.feed.application.component;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,17 +17,16 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 //@ComponentScan(excludeFilters =  @ComponentScan.Filter(JvLinkRecordSpecConfiguration.class))
 public class createRecordFormat {
 
-    @Autowired
-    private ResourceLoader resourceLoader;
+    private final ResourceLoader resourceLoader;
 
     @Test
     void test_Format作成() throws IOException {
-        createRecord("um.txt");
+        createRecord("o2.txt");
     }
 
     private Stream<String> readLine(String filename) throws IOException {

@@ -3,6 +3,8 @@ package org.uma.platform.common.model;
 import lombok.Data;
 import org.uma.platform.common.code.RaceCourseCode;
 import org.uma.platform.common.config.spec.RecordSpec;
+import org.uma.platform.common.utils.javatuples.Pair;
+import org.uma.platform.common.utils.javatuples.Triplet;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -73,17 +75,18 @@ public class RaceRefund {
     // 枠連
     private List<refund> refundBracketQuinellas;
     // 馬連
-    private List<refund> refundQuinellas;
+    private List<refundPair> refundQuinellas;
     // ワイド
-    private List<refund> refundQuinellaPlaces;
+    private List<refundPair> refundQuinellaPlaces;
     // 予備
-    private List<refund> refundSpares;
+    private List<refundPair> refundSpares;
     // 馬単
-    private List<refund> refundExactas;
+    private List<refundPair> refundExactas;
     // 3連複
-    private List<refund> refundTrios;
+    private List<refundTriplet> refundTrios;
     // 3連単
-    private List<refund> refundTrifectas;
+    private List<refundTriplet> refundTrifectas;
+
 
     @Data
     private static class refund {
@@ -94,13 +97,53 @@ public class RaceRefund {
         private String horseNo;
 
         /**
-         * 払戻
-         * refundMoney: 取得する初期値スペース => null に変換される。
-         * betRank    : 取得する初期値スペース => null に変換される。
+         * 取得する初期値スペース => null に変換される。
          */
         private Long refundMoney;
-        private Integer betRank;
 
+        /**
+         * 取得する初期値スペース => null に変換する。
+         */
+        private Integer betRank;
     }
+
+    @Data
+    private static class refundPair {
+
+        /**
+         * 馬番の組み合わせ
+         */
+        private Pair<String, String> pairNo;
+
+        /**
+         * 取得する初期値スペース => null に変換される。
+         */
+        private Long refundMoney;
+
+        /**
+         * 取得する初期値スペース => null に変換する。
+         */
+        private Integer betRank;
+    }
+
+    @Data
+    private static class refundTriplet {
+
+        /**
+         * 馬番の組み合わせ
+         */
+        private Triplet<String, String, String> tripletNo;
+
+        /**
+         * 取得する初期値スペース => null に変換される。
+         */
+        private Long refundMoney;
+
+        /**
+         * 取得する初期値スペース => null に変換する。
+         */
+        private Integer betRank;
+    }
+
 
 }

@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.uma.platform.common.code.*;
 import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.common.model.*;
+import org.uma.platform.common.model.odds.Quinella;
+import org.uma.platform.common.model.odds.WinsPlaceBracketQuinella;
+import org.uma.platform.common.utils.javatuples.Pair;
+import org.uma.platform.common.utils.javatuples.Triplet;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -172,7 +176,11 @@ public class JvLinkModelMapperConfiguration {
     private static final Converter<String, Integer> toInteger = new AbstractConverter<String, Integer>() {
         @Override
         protected Integer convert(String source) {
-            if ("  ".equals(source) || "   ".equals(source) || "    ".equals(source) ) {
+            if ("  ".equals(source)
+                    || "   ".equals(source)
+                    || "    ".equals(source)
+                    || "     ".equals(source)
+                    || "      ".equals(source)) {
                 return null;
             }
             if ("--".equals(source) || "---".equals(source)) {
@@ -185,6 +193,33 @@ public class JvLinkModelMapperConfiguration {
         }
     };
 
+    private static final Converter<String, Pair<String, String>> toPair = new AbstractConverter<String, Pair<String, String>>() {
+        @Override
+        protected Pair<String, String> convert(String source) {
+            if ("    ".equals(source)) {
+                return Pair.with(null, null);
+            }
+            if (source.length() != 4) {
+                throw new IllegalArgumentException("sizeが 4ではありません。");
+            }
+            return Pair.with(source.substring(0, 2), source.substring(2, 4));
+        }
+    };
+
+    private static final Converter<String, Triplet<String, String, String>> toTriplet = new AbstractConverter<String, Triplet<String, String, String>>() {
+        @Override
+        protected Triplet<String, String, String> convert(String source) {
+            if ("      ".equals(source)) {
+                return Triplet.with(null, null, null);
+            }
+            if (source.length() != 6) {
+                throw new IllegalArgumentException("sizeが 6ではありません。");
+            }
+            return Triplet.with(source.substring(0, 2), source.substring(2, 4), source.substring(4, 6));
+        }
+    };
+
+
     @Bean
     public EnumMap<RecordSpec, Class<?>> recordSpecPairEnumMap() {
         EnumMap<RecordSpec, Class<?>> enumMap = new EnumMap<>(RecordSpec.class);
@@ -193,6 +228,10 @@ public class JvLinkModelMapperConfiguration {
         enumMap.put(RecordSpec.SE, HorseRacingDetails.class);
         enumMap.put(RecordSpec.HR, RaceRefund.class);
         enumMap.put(RecordSpec.H1, VoteCount.class);
+
+        // ODDS
+        enumMap.put(RecordSpec.O1, WinsPlaceBracketQuinella.class);
+        enumMap.put(RecordSpec.O2, Quinella.class);
 
         // BLOD
         enumMap.put(RecordSpec.SK, Offspring.class);
@@ -232,6 +271,8 @@ public class JvLinkModelMapperConfiguration {
         modelMapper.addConverter(toRaceTypeCode);
         modelMapper.addConverter(toHairColorCode);
         modelMapper.addConverter(toInteger);
+        modelMapper.addConverter(toPair);
+        modelMapper.addConverter(toTriplet);
         return modelMapper;
     }
 

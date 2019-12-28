@@ -4,6 +4,8 @@ package org.uma.platform.common.model;
 import lombok.Data;
 import org.uma.platform.common.code.RaceCourseCode;
 import org.uma.platform.common.config.spec.RecordSpec;
+import org.uma.platform.common.utils.javatuples.Pair;
+import org.uma.platform.common.utils.javatuples.Triplet;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -50,10 +52,10 @@ public class VoteCount {
     private List<Vote> voteCountWins;
     private List<Vote> voteCountPlaces;
     private List<Vote> voteCountBracketQuinellas;
-    private List<Vote> voteCountQuinellas;
-    private List<Vote> voteCountQuinellaPlaces;
-    private List<Vote> voteCountExactas;
-    private List<Vote> voteCountTrios;
+    private List<VotePair> voteCountQuinellas;
+    private List<VotePair> voteCountQuinellaPlaces;
+    private List<VotePair> voteCountExactas;
+    private List<VoteTriplet> voteCountTrios;
 
     /**
      * 初期値スペース => null に変換される。
@@ -81,7 +83,54 @@ public class VoteCount {
     @Data
     private static class Vote {
 
+        /**
+         * 馬番なので、String型を使う
+         */
         private String horseNo;
+
+        /**
+         * ALL 0   :発売前取消し or 発売票数なし => 0 に変換される。←だぶん
+         * スペース :登録なし                   => null に変換される。←Longだけこうなる。Integerはエラー
+         */
+        private Long voteCount;
+
+        /**
+         * スペース :登録なし   => null に変換する。
+         * '---'   :発売前取消 => -100 に変換する。
+         * '***'   :発売後取消 => -999 に変換する。
+         */
+        private Integer betRank;
+    }
+
+    @Data
+    private static class VotePair {
+
+        /**
+         * 馬番の組み合わせ
+         */
+        private Pair<String, String> pairNo;
+
+        /**
+         * ALL 0   :発売前取消し or 発売票数なし => 0 に変換される。←だぶん
+         * スペース :登録なし                   => null に変換される。←Longだけこうなる。Integerはエラー
+         */
+        private Long voteCount;
+
+        /**
+         * スペース :登録なし   => null に変換する。
+         * '---'   :発売前取消 => -100 に変換する。
+         * '***'   :発売後取消 => -999 に変換する。
+         */
+        private Integer betRank;
+    }
+
+    @Data
+    private static class VoteTriplet {
+
+        /**
+         * 馬番の組み合わせ
+         */
+        private Triplet<String, String, String> tripletNo;
 
         /**
          * ALL 0   :発売前取消し or 発売票数なし => 0 に変換される。←だぶん

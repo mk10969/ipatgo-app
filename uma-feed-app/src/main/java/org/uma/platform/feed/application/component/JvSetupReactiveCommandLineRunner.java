@@ -87,6 +87,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
     }
 
 
+    @Profile("setup")
     @Configuration
     @RequiredArgsConstructor
     private static class JvSetupRunnerConfiguration {
