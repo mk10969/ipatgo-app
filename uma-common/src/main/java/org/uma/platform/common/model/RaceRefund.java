@@ -89,7 +89,7 @@ public class RaceRefund {
 
 
     @Data
-    private static class refund {
+    public static class refund {
 
         /**
          * 馬番は組み合わせになるため、String型を使う。
@@ -108,7 +108,7 @@ public class RaceRefund {
     }
 
     @Data
-    private static class refundPair {
+    public static class refundPair {
 
         /**
          * 馬番の組み合わせ
@@ -127,7 +127,7 @@ public class RaceRefund {
     }
 
     @Data
-    private static class refundTriplet {
+    public static class refundTriplet {
 
         /**
          * 馬番の組み合わせ

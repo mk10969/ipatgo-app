@@ -2,7 +2,6 @@ package org.uma.platform.feed.application.component;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.feed.application.configuration.JvLinkModelMapperConfiguration;
@@ -83,7 +82,8 @@ public class JvLinkModelMapper {
                 // 単純な繰り返し。
                 else {
                     for (int i = 0; i < record.getRepeat(); i++) {
-                        String tmpString = JvLinkStringUtil.byteToStringOnSlice(byteArrayLine, start, start + record.getLength());
+                        String tmpString = JvLinkStringUtil
+                                .byteToStringOnSlice(byteArrayLine, start, start + record.getLength());
                         tmpList.add(tmpString);
                         start = start + record.getLength();
                     }

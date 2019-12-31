@@ -48,7 +48,7 @@ public class Quinella {
 
 
     @Data
-    private static class QuinellaOdds {
+    public static class QuinellaOdds {
         /**
          * 馬番の組み合わせ
          */

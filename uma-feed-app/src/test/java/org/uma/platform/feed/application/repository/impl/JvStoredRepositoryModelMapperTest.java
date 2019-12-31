@@ -11,7 +11,6 @@ import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.common.model.RaceRefund;
 import org.uma.platform.common.model.VoteCount;
 import org.uma.platform.common.model.odds.Quinella;
-import org.uma.platform.common.model.odds.WinsPlaceBracketQuinella;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.component.JvLinkStringUtil;
 import reactor.util.function.Tuples;
@@ -60,30 +59,11 @@ class JvStoredRepositoryModelMapperTest {
         }
     }
 
-    private Stream<Object> check(Object object) {
-        return Stream.of(object.getClass().getDeclaredFields())
-                .peek(field -> field.setAccessible(true))
-                .map(accessibleField -> {
-                    try {
-                        // fieldに、nullがセットされていないかチェックする。
-                        return Objects.requireNonNull(accessibleField.get(object),
-                                accessibleField + "のフィールドの値が、nullです");
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                        throw new IllegalStateException("Field: "
-                                + accessibleField + " には、アクセスできませんでした。");
-                    }
-                });
-    }
-
-    private void aVoid(Object object) {
-        // 空回し
-    }
-
 
     private void test(Supplier<Stream<Object>> streamSupplier) {
-//        streamSupplier.get().flatMap(this::check).forEach(this::aVoid);
-        streamSupplier.get().map(this::toJson).forEach(System.out::println);
+        streamSupplier.get()
+                .map(this::toJson)
+                .forEach(System.out::println);
     }
 
     @SafeVarargs
@@ -102,7 +82,18 @@ class JvStoredRepositoryModelMapperTest {
 //                        .map(line -> jvLinkModelMapper.deserialize(line, HorseRacingDetails.class)),
                 () -> readTestData("HR")
                         .stream()
-                        .map(line -> jvLinkModelMapper.deserialize(line, RaceRefund.class)),
+                        .map(line -> jvLinkModelMapper.deserialize(line, RaceRefund.class))
+                        .peek(model -> model.getRefundWins().removeIf(this::refundFilter))
+                        .peek(model -> model.getRefundPlaces().removeIf(this::refundFilter))
+                        .peek(model -> model.getRefundBracketQuinellas().removeIf(this::refundFilter))
+                        .peek(model -> model.getRefundQuinellas().removeIf(this::refundFilter))
+                        .peek(model -> model.getRefundQuinellaPlaces().removeIf(this::refundFilter))
+                        .peek(model -> model.getRefundSpares().removeIf(this::refundFilter))
+                        .peek(model -> model.getRefundExactas().removeIf(this::refundFilter))
+                        .peek(model -> model.getRefundTrios().removeIf(this::refundFilter))
+                        .peek(model -> model.getRefundTrifectas().removeIf(this::refundFilter))
+                        .map(i -> i),
+
 //                () -> readTestData("CS")
 //                        .stream()
 //                        .map(line -> jvLinkModelMapper.deserialize(line, Course.class)),
@@ -130,15 +121,23 @@ class JvStoredRepositoryModelMapperTest {
 //                () -> readTestData("H1")
 //                        .stream()
 //                        .map(line -> jvLinkModelMapper.deserialize(line, VoteCount.class)),
-                () -> readTestData("O1")
-                        .stream()
-                        .map(line -> jvLinkModelMapper.deserialize(line, WinsPlaceBracketQuinella.class)),
+//                () -> readTestData("O1")
+//                        .stream()
+//                        .map(line -> jvLinkModelMapper.deserialize(line, WinsPlaceBracketQuinella.class)),
                 () -> readTestData("O2")
                         .stream()
                         .map(line -> jvLinkModelMapper.deserialize(line, Quinella.class))
+                        .peek(model -> model.getQuinellaOdds().removeIf(quinellaOdds ->
+                                quinellaOdds.getBetRank() == null && quinellaOdds.getOdds() == null))
+                        .peek(model -> System.out.println(model.getQuinellaOdds().size()))
+                        .map(i -> i)
 
+//                () -> readTestData("O2")
+//                        .stream()
+//                        .map(line -> jvLinkModelMapper.deserialize(line, Quinella.class))
+//                        .peek(model -> System.out.println(model.getQuinellaOdds().size()))
+//                        .map(i -> i)
         );
-
     }
 
     @Test
@@ -147,9 +146,42 @@ class JvStoredRepositoryModelMapperTest {
         readTestData("H1")
                 .stream()
                 .map(line -> jvLinkModelMapper.deserialize(line, VoteCount.class))
-                .map(model -> toJson(model))
+                .peek(model -> model.getVoteCountWins().removeIf(this::voteFilter))
+                .peek(model -> model.getVoteCountPlaces().removeIf(this::voteFilter))
+                .peek(model -> model.getVoteCountBracketQuinellas().removeIf(this::voteFilter))
+                .peek(model -> model.getVoteCountQuinellas().removeIf(this::voteFilter))
+                .peek(model -> model.getVoteCountQuinellaPlaces().removeIf(this::voteFilter))
+                .peek(model -> model.getVoteCountExactas().removeIf(this::voteFilter))
+                .peek(model -> model.getVoteCountTrios().removeIf(this::voteFilter))
+                .map(this::toJson)
                 .forEach(System.out::println);
     }
+
+    private boolean refundFilter(RaceRefund.refund refund) {
+        return refund.getBetRank() == null && refund.getRefundMoney() == null;
+    }
+
+    private boolean refundFilter(RaceRefund.refundPair refundPair) {
+        return refundPair.getBetRank() == null && refundPair.getRefundMoney() == null;
+    }
+
+    private boolean refundFilter(RaceRefund.refundTriplet refundTriplet) {
+        return refundTriplet.getBetRank() == null && refundTriplet.getRefundMoney() == null;
+    }
+
+
+    private boolean voteFilter(VoteCount.Vote vote) {
+        return vote.getBetRank() == null && vote.getVoteCount() == null;
+    }
+
+    private boolean voteFilter(VoteCount.VotePair votePair) {
+        return votePair.getBetRank() == null && votePair.getVoteCount() == null;
+    }
+
+    private boolean voteFilter(VoteCount.VoteTriplet voteTriplet) {
+        return voteTriplet.getBetRank() == null && voteTriplet.getVoteCount() == null;
+    }
+
 
     private Stream<String> readLines(Path filePath) {
         try {

@@ -88,7 +88,7 @@ public class RacingDetails {
     private String recordUpdateDiv;
 
     @Data
-    private static class CornerPassageRank {
+    public static class CornerPassageRank {
         private Integer corner;
         private Integer aroundCount;
         private String passageRank;

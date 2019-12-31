@@ -1,6 +1,7 @@
 package org.uma.platform.feed.application.repository.impl;
 
 import com.google.common.collect.ImmutableList;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.uma.platform.common.config.Option;
@@ -16,18 +17,14 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Repository
+@RequiredArgsConstructor
 public class JvStoredAncestryRepository implements JvLinkStoredRepository<Ancestry> {
 
     private final JvLinkModelMapper jvLinkModelMapper;
 
+    @Qualifier("BLOD_BT")
     private final StoredOpenCondition storedOpenCondition;
 
-    public JvStoredAncestryRepository(
-            JvLinkModelMapper jvLinkModelMapper,
-            @Qualifier("BLOD_BT") StoredOpenCondition storedOpenCondition) {
-        this.jvLinkModelMapper = jvLinkModelMapper;
-        this.storedOpenCondition = storedOpenCondition;
-    }
 
     @Override
     public List<Ancestry> readLines(LocalDateTime dateTime, Option option) {

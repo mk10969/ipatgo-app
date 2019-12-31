@@ -64,7 +64,7 @@ public class RaceHorse {
 
 
     @Data
-    private static class Breeding {
+    public static class Breeding {
         /**
          * 繁殖登録番号 8桁
          * {@link BreedingHorse.breedingNo}

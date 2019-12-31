@@ -99,7 +99,7 @@ public class HorseRacingDetails {
     private Integer runningStyle;
 
     @Data
-    private static class Contender {
+    public static class Contender {
 
         /**
          * 血統登録番号 10桁

@@ -1,6 +1,7 @@
 package org.uma.platform.feed.application.repository.impl;
 
 import com.google.common.collect.ImmutableList;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.uma.platform.common.config.Option;
@@ -16,18 +17,13 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Repository
+@RequiredArgsConstructor
 public class JvStoredJockeyRepository implements JvLinkStoredRepository<Jockey> {
 
     private final JvLinkModelMapper jvLinkModelMapper;
 
+    @Qualifier("DIFF_KS")
     private final StoredOpenCondition storedOpenCondition;
-
-    public JvStoredJockeyRepository(
-            JvLinkModelMapper jvLinkModelMapper,
-            @Qualifier("DIFF_KS") StoredOpenCondition storedOpenCondition) {
-        this.jvLinkModelMapper = jvLinkModelMapper;
-        this.storedOpenCondition = storedOpenCondition;
-    }
 
 
     @Override

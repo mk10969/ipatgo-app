@@ -81,7 +81,7 @@ public class VoteCount {
 
 
     @Data
-    private static class Vote {
+    public static class Vote {
 
         /**
          * 馬番なので、String型を使う
@@ -103,7 +103,7 @@ public class VoteCount {
     }
 
     @Data
-    private static class VotePair {
+    public static class VotePair {
 
         /**
          * 馬番の組み合わせ
@@ -125,7 +125,7 @@ public class VoteCount {
     }
 
     @Data
-    private static class VoteTriplet {
+    public static class VoteTriplet {
 
         /**
          * 馬番の組み合わせ

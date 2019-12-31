@@ -59,7 +59,7 @@ public class WinsPlaceBracketQuinella {
 
 
     @Data
-    private static class WinOdds {
+    public static class WinOdds {
         /**
          * 馬番は、String型を使う。
          */
@@ -69,7 +69,7 @@ public class WinsPlaceBracketQuinella {
     }
 
     @Data
-    private static class PlaceOdds {
+    public static class PlaceOdds {
         /**
          * 馬番は、String型を使う。
          */
@@ -80,7 +80,7 @@ public class WinsPlaceBracketQuinella {
     }
 
     @Data
-    private static class BracketQuinellaOdds {
+    public static class BracketQuinellaOdds {
         /**
          * 枠連は、pairが正しいが、
          * 1. どうせ使わない
