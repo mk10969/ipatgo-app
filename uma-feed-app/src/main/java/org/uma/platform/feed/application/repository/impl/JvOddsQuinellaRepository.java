@@ -8,6 +8,7 @@ import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
 import org.uma.platform.common.model.odds.Quinella;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
+import org.uma.platform.feed.application.repository.JvLinkRepository;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 import org.uma.platform.jvlink.JvLinkClient;
 import reactor.core.publisher.Flux;
@@ -33,7 +34,7 @@ public class JvOddsQuinellaRepository implements JvLinkStoredRepository<Quinella
                 .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Quinella.class))
-                .peek(model -> model.getQuinellaOdds().removeIf(this::quinellaOddsFilter))
+                .peek(model -> model.getQuinellaOdds().removeIf(JvLinkRepository::quinellaOddsFilter))
                 .collect(ImmutableList.toImmutableList());
     }
 
@@ -42,7 +43,7 @@ public class JvOddsQuinellaRepository implements JvLinkStoredRepository<Quinella
         return JvLinkClient.readStream(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Quinella.class))
-                .peek(model -> model.getQuinellaOdds().removeIf(this::quinellaOddsFilter));
+                .peek(model -> model.getQuinellaOdds().removeIf(JvLinkRepository::quinellaOddsFilter));
     }
 
     @Override
@@ -50,13 +51,7 @@ public class JvOddsQuinellaRepository implements JvLinkStoredRepository<Quinella
         return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Quinella.class))
-                .doOnNext(model -> model.getQuinellaOdds().removeIf(this::quinellaOddsFilter));
+                .doOnNext(model -> model.getQuinellaOdds().removeIf(JvLinkRepository::quinellaOddsFilter));
     }
-
-
-    private boolean quinellaOddsFilter(Quinella.QuinellaOdds quinellaOdds) {
-        return quinellaOdds.getOdds() == null && quinellaOdds.getBetRank() == null;
-    }
-
 
 }

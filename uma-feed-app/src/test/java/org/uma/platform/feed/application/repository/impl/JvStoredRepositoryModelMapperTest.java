@@ -2,6 +2,9 @@ package org.uma.platform.feed.application.repository.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,18 +88,7 @@ class JvStoredRepositoryModelMapperTest {
 //                        .map(line -> jvLinkModelMapper.deserialize(line, HorseRacingDetails.class)),
                 () -> readTestData("HR")
                         .stream()
-                        .map(line -> jvLinkModelMapper.deserialize(line, RaceRefund.class))
-                        .peek(model -> model.getRefundWins().removeIf(this::refundFilter))
-                        .peek(model -> model.getRefundPlaces().removeIf(this::refundFilter))
-                        .peek(model -> model.getRefundBracketQuinellas().removeIf(this::refundFilter))
-                        .peek(model -> model.getRefundQuinellas().removeIf(this::refundFilter))
-                        .peek(model -> model.getRefundQuinellaPlaces().removeIf(this::refundFilter))
-                        .peek(model -> model.getRefundSpares().removeIf(this::refundFilter))
-                        .peek(model -> model.getRefundExactas().removeIf(this::refundFilter))
-                        .peek(model -> model.getRefundTrios().removeIf(this::refundFilter))
-                        .peek(model -> model.getRefundTrifectas().removeIf(this::refundFilter))
-                        .map(i -> i),
-
+                        .map(line -> jvLinkModelMapper.deserialize(line, RaceRefund.class)),
 //                () -> readTestData("CS")
 //                        .stream()
 //                        .map(line -> jvLinkModelMapper.deserialize(line, Course.class)),
@@ -127,16 +122,6 @@ class JvStoredRepositoryModelMapperTest {
                 () -> readTestData("O2")
                         .stream()
                         .map(line -> jvLinkModelMapper.deserialize(line, Quinella.class))
-                        .peek(model -> model.getQuinellaOdds().removeIf(quinellaOdds ->
-                                quinellaOdds.getBetRank() == null && quinellaOdds.getOdds() == null))
-                        .peek(model -> System.out.println(model.getQuinellaOdds().size()))
-                        .map(i -> i)
-
-//                () -> readTestData("O2")
-//                        .stream()
-//                        .map(line -> jvLinkModelMapper.deserialize(line, Quinella.class))
-//                        .peek(model -> System.out.println(model.getQuinellaOdds().size()))
-//                        .map(i -> i)
         );
     }
 
@@ -146,43 +131,32 @@ class JvStoredRepositoryModelMapperTest {
         readTestData("H1")
                 .stream()
                 .map(line -> jvLinkModelMapper.deserialize(line, VoteCount.class))
-                .peek(model -> model.getVoteCountWins().removeIf(this::voteFilter))
-                .peek(model -> model.getVoteCountPlaces().removeIf(this::voteFilter))
-                .peek(model -> model.getVoteCountBracketQuinellas().removeIf(this::voteFilter))
-                .peek(model -> model.getVoteCountQuinellas().removeIf(this::voteFilter))
-                .peek(model -> model.getVoteCountQuinellaPlaces().removeIf(this::voteFilter))
-                .peek(model -> model.getVoteCountExactas().removeIf(this::voteFilter))
-                .peek(model -> model.getVoteCountTrios().removeIf(this::voteFilter))
                 .map(this::toJson)
                 .forEach(System.out::println);
     }
 
-    private boolean refundFilter(RaceRefund.refund refund) {
-        return refund.getBetRank() == null && refund.getRefundMoney() == null;
+
+    public static List<List<Integer>> nPr(final int n, final int r) {
+        List<Integer> input = IntStream.rangeClosed(1, n)
+                .boxed()
+                .collect(Collectors.toList());
+
+        return Collections2.permutations(input).stream()
+                .map(list -> Lists.partition(list, r).get(0))
+                .distinct()
+                .collect(Collectors.toList());
     }
 
-    private boolean refundFilter(RaceRefund.refundPair refundPair) {
-        return refundPair.getBetRank() == null && refundPair.getRefundMoney() == null;
-    }
-
-    private boolean refundFilter(RaceRefund.refundTriplet refundTriplet) {
-        return refundTriplet.getBetRank() == null && refundTriplet.getRefundMoney() == null;
-    }
-
-
-    private boolean voteFilter(VoteCount.Vote vote) {
-        return vote.getBetRank() == null && vote.getVoteCount() == null;
-    }
-
-    private boolean voteFilter(VoteCount.VotePair votePair) {
-        return votePair.getBetRank() == null && votePair.getVoteCount() == null;
-    }
-
-    private boolean voteFilter(VoteCount.VoteTriplet voteTriplet) {
-        return voteTriplet.getBetRank() == null && voteTriplet.getVoteCount() == null;
+    public static Set<Set<Integer>> nCr(final int n, final int r) {
+        return nPr(n, r).stream()
+                .map(Sets::newHashSet)
+                .collect(Collectors.toSet());
     }
 
 
+    /**
+     * データの長さ調査
+     */
     private Stream<String> readLines(Path filePath) {
         try {
             return Files.lines(filePath, Charset.forName("SHIFT-JIS"));

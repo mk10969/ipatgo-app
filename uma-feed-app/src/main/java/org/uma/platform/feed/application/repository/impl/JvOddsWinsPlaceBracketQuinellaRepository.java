@@ -8,6 +8,7 @@ import org.uma.platform.common.config.Option;
 import org.uma.platform.common.config.condition.StoredOpenCondition;
 import org.uma.platform.common.model.odds.WinsPlaceBracketQuinella;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
+import org.uma.platform.feed.application.repository.JvLinkRepository;
 import org.uma.platform.feed.application.repository.JvLinkStoredRepository;
 import org.uma.platform.jvlink.JvLinkClient;
 import reactor.core.publisher.Flux;
@@ -34,9 +35,9 @@ public class JvOddsWinsPlaceBracketQuinellaRepository
                 .stream()
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), WinsPlaceBracketQuinella.class))
-                .peek(model -> model.getWinOdds().removeIf(this::winOddsFilter))
-                .peek(model -> model.getPlaceOdds().removeIf(this::placeOddsFilter))
-                .peek(model -> model.getBracketQuinellaOdds().removeIf(this::bracketQuinellaOddsFilter))
+                .peek(model -> model.getWinOdds().removeIf(JvLinkRepository::winOddsFilter))
+                .peek(model -> model.getPlaceOdds().removeIf(JvLinkRepository::placeOddsFilter))
+                .peek(model -> model.getBracketQuinellaOdds().removeIf(JvLinkRepository::bracketQuinellaOddsFilter))
                 .collect(ImmutableList.toImmutableList());
     }
 
@@ -45,9 +46,9 @@ public class JvOddsWinsPlaceBracketQuinellaRepository
         return JvLinkClient.readStream(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), WinsPlaceBracketQuinella.class))
-                .peek(model -> model.getWinOdds().removeIf(this::winOddsFilter))
-                .peek(model -> model.getPlaceOdds().removeIf(this::placeOddsFilter))
-                .peek(model -> model.getBracketQuinellaOdds().removeIf(this::bracketQuinellaOddsFilter));
+                .peek(model -> model.getWinOdds().removeIf(JvLinkRepository::winOddsFilter))
+                .peek(model -> model.getPlaceOdds().removeIf(JvLinkRepository::placeOddsFilter))
+                .peek(model -> model.getBracketQuinellaOdds().removeIf(JvLinkRepository::bracketQuinellaOddsFilter));
     }
 
     @Override
@@ -55,25 +56,9 @@ public class JvOddsWinsPlaceBracketQuinellaRepository
         return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), WinsPlaceBracketQuinella.class))
-                .doOnNext(model -> model.getWinOdds().removeIf(this::winOddsFilter))
-                .doOnNext(model -> model.getPlaceOdds().removeIf(this::placeOddsFilter))
-                .doOnNext(model -> model.getBracketQuinellaOdds().removeIf(this::bracketQuinellaOddsFilter));
-    }
-
-
-    private boolean winOddsFilter(WinsPlaceBracketQuinella.WinOdds winOdds) {
-        return winOdds.getOdds() == null && winOdds.getBetRank() == null;
-    }
-
-    private boolean placeOddsFilter(WinsPlaceBracketQuinella.PlaceOdds placeOdds) {
-        return placeOdds.getOddsMin() == null
-                && placeOdds.getOddsMax() == null
-                && placeOdds.getBetRank() == null;
-    }
-
-    private boolean bracketQuinellaOddsFilter(WinsPlaceBracketQuinella.BracketQuinellaOdds bracketQuinellaOdds) {
-        return bracketQuinellaOdds.getOdds() == null
-                && bracketQuinellaOdds.getBetRank() == null;
+                .doOnNext(model -> model.getWinOdds().removeIf(JvLinkRepository::winOddsFilter))
+                .doOnNext(model -> model.getPlaceOdds().removeIf(JvLinkRepository::placeOddsFilter))
+                .doOnNext(model -> model.getBracketQuinellaOdds().removeIf(JvLinkRepository::bracketQuinellaOddsFilter));
     }
 
 }
