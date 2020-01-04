@@ -1,6 +1,10 @@
 package org.uma.platform.feed.application.component;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.wnameless.json.flattener.JsonFlattener;
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,10 +15,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
-import org.uma.platform.common.model.HorseRacingDetails;
-import org.uma.platform.common.model.RacingDetails;
-import org.uma.platform.feed.application.repository.impl.JvStoredHorseRacingDetailsRepository;
-import org.uma.platform.feed.application.repository.impl.JvStoredRacingDetailsRepository;
+import org.uma.platform.common.model.*;
+import org.uma.platform.common.model.odds.Quinella;
+import org.uma.platform.common.model.odds.WinsPlaceBracketQuinella;
+import org.uma.platform.feed.application.repository.impl.*;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple2;
@@ -23,6 +27,7 @@ import reactor.util.function.Tuples;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 @Profile("setup")
@@ -57,7 +62,8 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 .flatMap(JvSetupReactiveRunner::run)
                 .subscribeOn(Schedulers.single()) //single thread で回す
                 .subscribe(
-                        i -> {},
+                        i -> {
+                        },
                         e -> log.error("ERROR: ", e),
                         () -> log.info("完了")
                 );
@@ -65,19 +71,47 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         log.info("セットアップ完了");
     }
 
-//    private void execute() {
-//        jvSetupRunners.entrySet().stream()
-//                .filter(e -> dataTypes.contains(e.getKey()))
-//                .peek(e -> log.info("セットアップ中: {}", e.getKey()))
-//                .forEach(runner -> runner.getValue().run()
-//                        .publishOn(Schedulers.immediate()) // use current thread
-//                        .subscribe(
-//                                i -> {},
-//                                e -> log.error("エラー: [" + runner.getKey() + "]", e),
-//                                () -> log.info("完了 :[{}]", runner.getKey())
-//                        )
-//                );
-//    }
+
+    public static class Checker {
+
+        private static ObjectMapper objectMapper = new ObjectMapper();
+
+        private static List<String> excludeList = Lists.newArrayList(
+                "voteCountTotalWin",
+                "voteCountTotalPlace",
+                "voteCountTotalBracketQuinella",
+                "voteCountTotalQuinella",
+                "voteCountTotalQuinellaPlace",
+                "voteCountTotalExacta",
+                "voteCountTotalTrio",
+                "restoreVoteCountTotalWin",
+                "restoreVoteCountTotalPlace",
+                "restoreVoteCountTotalBracketQuinella",
+                "restoreVoteCountTotalQuinella",
+                "restoreVoteCountTotalQuinellaPlace",
+                "restoreVoteCountTotalExacta",
+                "restoreVoteCountTotalTrio"
+        );
+
+        public static void fieldNotNull(Object model) {
+            Map<String, Object> json = JsonFlattener.flattenAsMap(toJson(model));
+            json.entrySet().stream()
+                    .filter(Checker::nullOkFieldName)
+                    .forEach(e -> Objects.requireNonNull(e.getValue(), e.getKey() + "が、nullです。"));
+        }
+
+        private static boolean nullOkFieldName(Map.Entry<String, Object> stringObjectEntry) {
+            return excludeList.stream().noneMatch(i -> i.contains(stringObjectEntry.getKey()));
+        }
+
+        private static String toJson(Object model) {
+            try {
+                return objectMapper.writeValueAsString(model);
+            } catch (JsonProcessingException e) {
+                throw new IllegalArgumentException("jsonに変換できませんでした。");
+            }
+        }
+    }
 
 
     @FunctionalInterface
@@ -118,6 +152,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 JvStoredRacingDetailsRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .doOnNext(model -> log.info("RacingDetails: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
                     .buffer(500)
                     .map(chunk -> Tuples.of(chunk, "racingDetails"))
                     .flatMap(this::insert);
@@ -128,121 +163,157 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 JvStoredHorseRacingDetailsRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .doOnNext(model -> log.info("HorseRacingDetails: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
                     .buffer(500)
                     .map(chunk -> Tuples.of(chunk, "horseRacingDetails"))
                     .flatMap(this::insert);
         }
 
-//        @Bean("RaceRefund")
-//        public JvSetupReactiveRunner<RaceRefund> jvSetupRunnerRaceRefund(
-//                JvStoredRaceRefundRepository repository) {
-//            return () -> repository.readFlux(dateTime)
-//                    .doOnNext(model -> log.info("RaceRefund: {}", model))
-//                    .buffer(500)
-//                    .map(chunk -> Tuples.of(chunk, "raceRefund"))
-//                    .flatMap(this::insert);
-//        }
-//
-//
-//        @Bean("VoteCount")
-//        public JvSetupReactiveRunner<VoteCount> jvSetupRunnerVoteCount(
-//                JvStoredVoteCountRepository repository) {
-//            return () -> repository.readFlux(dateTime)
-//                    .doOnNext(model -> log.info("VoteCount: {}", model))
-//                    .buffer(200)
-//                    .map(chunk -> Tuples.of(chunk, "voteCount"))
-//                    .flatMap(this::insert);
-//        }
-//
-//        @Bean("Ancestry")
-//        public JvSetupReactiveRunner<Ancestry> jvSetupRunnerAncestry(
-//                JvStoredAncestryRepository repository) {
-//            return () -> repository.readFlux(dateTime)
-//                    .doOnNext(model -> log.info("Ancestry: {}", model))
-//                    .buffer(500)
-//                    .map(chunk -> Tuples.of(chunk, "ancestry"))
-//                    .flatMap(this::insert);
-//        }
-//
-//        @Bean("BreedingHorse")
-//        public JvSetupReactiveRunner<BreedingHorse> jvSetupRunnerBreedingHorse(
-//                JvStoredBreedingHorseRepository repository) {
-//            return () -> repository.readFlux(dateTime)
-//                    .doOnNext(model -> log.info("BreedingHorse: {}", model))
-//                    .buffer(500)
-//                    .map(chunk -> Tuples.of(chunk, "breedingHorse"))
-//                    .flatMap(this::insert);
-//        }
-//
-//        @Bean("Offspring")
-//        public JvSetupReactiveRunner<Offspring> jvSetupRunnerOffspring(
-//                JvStoredOffspringRepository repository) {
-//            return () -> repository.readFlux(dateTime)
-//                    .doOnNext(model -> log.info("Offspring: {}", model))
-//                    .buffer(500)
-//                    .map(chunk -> Tuples.of(chunk, "offspring"))
-//                    .flatMap(this::insert);
-//        }
-//
-//        @Bean("RaceHorse")
-//        public JvSetupReactiveRunner<RaceHorse> jvSetupRunnerRaceHorse(
-//                JvStoredRaceHorseRepository repository) {
-//            return () -> repository.readFlux(dateTime)
-//                    .doOnNext(model -> log.info("RaceHorse: {}", model))
-//                    .buffer(300)
-//                    .map(chunk -> Tuples.of(chunk, "raceHorse"))
-//                    .flatMap(this::insert);
-//        }
-//
-//        @Bean("Jockey")
-//        public JvSetupReactiveRunner<Jockey> jvSetupRunnerJockey(
-//                JvStoredJockeyRepository repository) {
-//            return () -> repository.readFlux(dateTime)
-//                    .doOnNext(model -> log.info("Jockey: {}", model))
-//                    .buffer(300)
-//                    .map(chunk -> Tuples.of(chunk, "jockey"))
-//                    .flatMap(this::insert);
-//        }
-//
-//        @Bean("Trainer")
-//        public JvSetupReactiveRunner<Trainer> jvSetupRunnerTrainer(
-//                JvStoredTrainerRepository repository) {
-//            return () -> repository.readFlux(dateTime)
-//                    .doOnNext(model -> log.info("Trainer: {}", model))
-//                    .buffer(300)
-//                    .map(chunk -> Tuples.of(chunk, "trainer"))
-//                    .flatMap(this::insert);
-//        }
-//
-//        @Bean("Owner")
-//        public JvSetupReactiveRunner<Owner> jvSetupRunnerOwner(
-//                JvStoredOwnerRepository repository) {
-//            return () -> repository.readFlux(dateTime)
-//                    .doOnNext(model -> log.info("Owner: {}", model))
-//                    .buffer(300)
-//                    .map(chunk -> Tuples.of(chunk, "owner"))
-//                    .flatMap(this::insert);
-//        }
-//
-//        @Bean("Breeder")
-//        public JvSetupReactiveRunner<Breeder> jvSetupRunnerBreeder(
-//                JvStoredBreederRepository repository) {
-//            return () -> repository.readFlux(dateTime)
-//                    .doOnNext(model -> log.info("Breeder: {}", model))
-//                    .buffer(300)
-//                    .map(chunk -> Tuples.of(chunk, "breeder"))
-//                    .flatMap(this::insert);
-//        }
-//
-//        @Bean("Course")
-//        public JvSetupReactiveRunner<Course> jvSetupRunnerCourse(
-//                JvStoredCourseRepository repository) {
-//            return () -> repository.readFlux(dateTime)
-//                    .doOnNext(model -> log.info("Course: {}", model))
-//                    .buffer(300)
-//                    .map(chunk -> Tuples.of(chunk, "course"))
-//                    .flatMap(this::insert);
-//        }
+        @Bean("RaceRefund")
+        public JvSetupReactiveRunner<RaceRefund> jvSetupRunnerRaceRefund(
+                JvStoredRaceRefundRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("RaceRefund: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(500)
+                    .map(chunk -> Tuples.of(chunk, "raceRefund"))
+                    .flatMap(this::insert);
+        }
+
+        @Bean("VoteCount")
+        public JvSetupReactiveRunner<VoteCount> jvSetupRunnerVoteCount(
+                JvStoredVoteCountRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("VoteCount: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(200)
+                    .map(chunk -> Tuples.of(chunk, "voteCount"))
+                    .flatMap(this::insert);
+        }
+
+
+        @Bean("WinsPlaceBracketQuinella")
+        public JvSetupReactiveRunner<WinsPlaceBracketQuinella> jvSetupRunnerWinsPlaceBracketQuinella(
+                JvOddsWinsPlaceBracketQuinellaRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("WinsPlaceBracketQuinella: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(300)
+                    .map(chunk -> Tuples.of(chunk, "WinsPlaceBracketQuinella"))
+                    .flatMap(this::insert);
+        }
+
+        @Bean("Quinella")
+        public JvSetupReactiveRunner<Quinella> jvSetupRunnerQuinella(
+                JvOddsQuinellaRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("Quinella: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(300)
+                    .map(chunk -> Tuples.of(chunk, "Quinella"))
+                    .flatMap(this::insert);
+        }
+
+
+        @Bean("Ancestry")
+        public JvSetupReactiveRunner<Ancestry> jvSetupRunnerAncestry(
+                JvStoredAncestryRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("Ancestry: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(500)
+                    .map(chunk -> Tuples.of(chunk, "ancestry"))
+                    .flatMap(this::insert);
+        }
+
+        @Bean("BreedingHorse")
+        public JvSetupReactiveRunner<BreedingHorse> jvSetupRunnerBreedingHorse(
+                JvStoredBreedingHorseRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("BreedingHorse: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(500)
+                    .map(chunk -> Tuples.of(chunk, "breedingHorse"))
+                    .flatMap(this::insert);
+        }
+
+        @Bean("Offspring")
+        public JvSetupReactiveRunner<Offspring> jvSetupRunnerOffspring(
+                JvStoredOffspringRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("Offspring: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(500)
+                    .map(chunk -> Tuples.of(chunk, "offspring"))
+                    .flatMap(this::insert);
+        }
+
+
+        @Bean("RaceHorse")
+        public JvSetupReactiveRunner<RaceHorse> jvSetupRunnerRaceHorse(
+                JvStoredRaceHorseRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("RaceHorse: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(300)
+                    .map(chunk -> Tuples.of(chunk, "raceHorse"))
+                    .flatMap(this::insert);
+        }
+
+        @Bean("Jockey")
+        public JvSetupReactiveRunner<Jockey> jvSetupRunnerJockey(
+                JvStoredJockeyRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("Jockey: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(300)
+                    .map(chunk -> Tuples.of(chunk, "jockey"))
+                    .flatMap(this::insert);
+        }
+
+        @Bean("Trainer")
+        public JvSetupReactiveRunner<Trainer> jvSetupRunnerTrainer(
+                JvStoredTrainerRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("Trainer: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(300)
+                    .map(chunk -> Tuples.of(chunk, "trainer"))
+                    .flatMap(this::insert);
+        }
+
+        @Bean("Owner")
+        public JvSetupReactiveRunner<Owner> jvSetupRunnerOwner(
+                JvStoredOwnerRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("Owner: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(300)
+                    .map(chunk -> Tuples.of(chunk, "owner"))
+                    .flatMap(this::insert);
+        }
+
+        @Bean("Breeder")
+        public JvSetupReactiveRunner<Breeder> jvSetupRunnerBreeder(
+                JvStoredBreederRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("Breeder: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(300)
+                    .map(chunk -> Tuples.of(chunk, "breeder"))
+                    .flatMap(this::insert);
+        }
+
+        @Bean("Course")
+        public JvSetupReactiveRunner<Course> jvSetupRunnerCourse(
+                JvStoredCourseRepository repository) {
+            return () -> repository.readFlux(dateTime)
+                    .doOnNext(model -> log.info("Course: {}", model))
+                    .doOnNext(Checker::fieldNotNull)
+                    .buffer(300)
+                    .map(chunk -> Tuples.of(chunk, "course"))
+                    .flatMap(this::insert);
+        }
 
     }
 

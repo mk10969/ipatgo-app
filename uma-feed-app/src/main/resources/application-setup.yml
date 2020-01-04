@@ -5,6 +5,8 @@ setup:
     HorseRacingDetails,
     RaceRefund,
     VoteCount,
+    WinsPlaceBracketQuinella,
+    Quinella,
     Ancestry,
     BreedingHorse,
     Offspring,

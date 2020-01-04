@@ -16,6 +16,7 @@ import org.uma.platform.common.model.VoteCount;
 import org.uma.platform.common.model.odds.Quinella;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.component.JvLinkStringUtil;
+import org.uma.platform.feed.application.component.JvSetupReactiveCommandLineRunner;
 import reactor.util.function.Tuples;
 
 import java.io.IOException;

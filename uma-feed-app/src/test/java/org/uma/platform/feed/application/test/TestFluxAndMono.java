@@ -1,9 +1,11 @@
 package org.uma.platform.feed.application.test;
 
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class TestFluxAndMono {
 
@@ -35,5 +37,22 @@ public class TestFluxAndMono {
         throw new Exception("ERROR");
     }
 
+
+    @Test
+    void test_doOnNext() {
+
+        Flux.just("aaa", "bbb", "ccc")
+                .doOnNext(this::str)
+                .subscribe(System.out::println);
+
+
+        Stream.of("aaa", "bbb", "ccc")
+                .peek(this::str)
+                .forEach(System.out::println);
+    }
+
+    private void str(String str){
+        str.substring(0, 1);
+    }
 
 }

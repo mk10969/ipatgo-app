@@ -26,9 +26,10 @@ dependencies {
 
     // Map Object to JavaBean library
     implementation 'org.modelmapper:modelmapper:2.3.5'
-
     // Use permutations ex... nPr, nCr
     implementation 'com.google.guava:guava:28.1-jre'
+    // model to json ex... null check
+    implementation 'com.github.wnameless.json:json-flattener:0.8.1'
 
 //    implementation 'org.apache.commons:commons-math3:3.6.1'
 
@@ -37,7 +38,5 @@ dependencies {
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     testImplementation 'io.projectreactor:reactor-test'
 
-    // お試し
-    testImplementation 'com.github.wnameless.json:json-flattener:0.8.1'
 
 }
