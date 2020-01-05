@@ -191,23 +191,23 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
 
         @Bean("WinsPlaceBracketQuinella")
         public JvSetupReactiveRunner<WinsPlaceBracketQuinella> jvSetupRunnerWinsPlaceBracketQuinella(
-                JvOddsWinsPlaceBracketQuinellaRepository repository) {
+                JvStoredOddsWinsPlaceBracketQuinellaRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .doOnNext(model -> log.info("WinsPlaceBracketQuinella: {}", model))
                     .doOnNext(Checker::fieldNotNull)
                     .buffer(300)
-                    .map(chunk -> Tuples.of(chunk, "WinsPlaceBracketQuinella"))
+                    .map(chunk -> Tuples.of(chunk, "winsPlaceBracketQuinella"))
                     .flatMap(this::insert);
         }
 
         @Bean("Quinella")
         public JvSetupReactiveRunner<Quinella> jvSetupRunnerQuinella(
-                JvOddsQuinellaRepository repository) {
+                JvStoredOddsQuinellaRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .doOnNext(model -> log.info("Quinella: {}", model))
                     .doOnNext(Checker::fieldNotNull)
                     .buffer(300)
-                    .map(chunk -> Tuples.of(chunk, "Quinella"))
+                    .map(chunk -> Tuples.of(chunk, "quinella"))
                     .flatMap(this::insert);
         }
 

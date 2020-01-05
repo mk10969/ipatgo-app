@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 
 @Repository
 @RequiredArgsConstructor
-public class JvOddsQuinellaRepository implements JvLinkStoredRepository<Quinella> {
+public class JvStoredOddsQuinellaRepository implements JvLinkStoredRepository<Quinella> {
 
     private final JvLinkModelMapper jvLinkModelMapper;
 
