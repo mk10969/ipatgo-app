@@ -63,7 +63,7 @@ class JvLinkReader<T extends JvResult> implements Iterable<T> {
                 if (returnCode < -1) {
                     if (returnCode == -3) {
                         // 1秒待機
-                        ThreadUtil.sleep(500);
+                        ThreadUtil.sleep(1000L);
                         // もう一回
                         return next();
                     }

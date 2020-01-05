@@ -15,12 +15,12 @@
 
     <!-- production用設定 -->
     <springProfile name="prd">
-        <property name="logFilePath" value="Z:\log\"/>
+        <property name="logFilePath" value="./log/"/>
     </springProfile>
 
     <!-- setup用設定 -->
     <springProfile name="setup">
-        <property name="logFilePath" value="Z:\log\"/>
+        <property name="logFilePath" value="./log/"/>
     </springProfile>
 
 

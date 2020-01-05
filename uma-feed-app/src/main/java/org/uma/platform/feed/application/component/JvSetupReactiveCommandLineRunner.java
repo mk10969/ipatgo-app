@@ -73,7 +73,11 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
 
         private static ObjectMapper objectMapper = new ObjectMapper();
 
+        // horseWeightは、とりあえず。
+        // nullのデータは、div=9 だった。つまりいらんデータ
         private static List<String> excludeList = Lists.newArrayList(
+                "horseWeight",
+                "changeAmount",
                 "voteCountTotalWin",
                 "voteCountTotalPlace",
                 "voteCountTotalBracketQuinella",
@@ -144,12 +148,17 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
 //                .execute(action -> action.insert(tuples.getT1(), tuples.getT2()))
         }
 
+        private <T> Flux<T> logAndNullCheck(T anyModel) {
+            return Flux.just(anyModel)
+                    .doOnNext(model -> log.info("{}", model))
+                    .doOnNext(Checker::fieldNotNull);
+        }
+
         @Bean("RacingDetails")
         public JvSetupReactiveRunner<RacingDetails> jvSetupRunnerRacingDetails(
                 JvStoredRacingDetailsRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("RacingDetails: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
+                    .flatMap(this::logAndNullCheck)
                     .buffer(500)
                     .map(chunk -> Tuples.of(chunk, "racingDetails"))
                     .flatMap(this::insert);
@@ -159,8 +168,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<HorseRacingDetails> jvSetupRunnerHorseRacingDetails(
                 JvStoredHorseRacingDetailsRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("HorseRacingDetails: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
+                    .flatMap(this::logAndNullCheck)
                     .buffer(500)
                     .map(chunk -> Tuples.of(chunk, "horseRacingDetails"))
                     .flatMap(this::insert);
@@ -170,8 +178,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<RaceRefund> jvSetupRunnerRaceRefund(
                 JvStoredRaceRefundRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("RaceRefund: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
+                    .flatMap(this::logAndNullCheck)
                     .buffer(500)
                     .map(chunk -> Tuples.of(chunk, "raceRefund"))
                     .flatMap(this::insert);
@@ -181,9 +188,8 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<VoteCount> jvSetupRunnerVoteCount(
                 JvStoredVoteCountRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("VoteCount: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
-                    .buffer(200)
+                    .flatMap(this::logAndNullCheck)
+                    .buffer(50)
                     .map(chunk -> Tuples.of(chunk, "voteCount"))
                     .flatMap(this::insert);
         }
@@ -193,8 +199,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<WinsPlaceBracketQuinella> jvSetupRunnerWinsPlaceBracketQuinella(
                 JvStoredOddsWinsPlaceBracketQuinellaRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("WinsPlaceBracketQuinella: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
+                    .flatMap(this::logAndNullCheck)
                     .buffer(300)
                     .map(chunk -> Tuples.of(chunk, "winsPlaceBracketQuinella"))
                     .flatMap(this::insert);
@@ -204,8 +209,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<Quinella> jvSetupRunnerQuinella(
                 JvStoredOddsQuinellaRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("Quinella: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
+                    .flatMap(this::logAndNullCheck)
                     .buffer(300)
                     .map(chunk -> Tuples.of(chunk, "quinella"))
                     .flatMap(this::insert);
@@ -216,9 +220,8 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<Ancestry> jvSetupRunnerAncestry(
                 JvStoredAncestryRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("Ancestry: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
-                    .buffer(500)
+                    .flatMap(this::logAndNullCheck)
+                    .buffer(300)
                     .map(chunk -> Tuples.of(chunk, "ancestry"))
                     .flatMap(this::insert);
         }
@@ -227,9 +230,8 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<BreedingHorse> jvSetupRunnerBreedingHorse(
                 JvStoredBreedingHorseRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("BreedingHorse: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
-                    .buffer(500)
+                    .flatMap(this::logAndNullCheck)
+                    .buffer(300)
                     .map(chunk -> Tuples.of(chunk, "breedingHorse"))
                     .flatMap(this::insert);
         }
@@ -238,9 +240,8 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<Offspring> jvSetupRunnerOffspring(
                 JvStoredOffspringRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("Offspring: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
-                    .buffer(500)
+                    .flatMap(this::logAndNullCheck)
+                    .buffer(300)
                     .map(chunk -> Tuples.of(chunk, "offspring"))
                     .flatMap(this::insert);
         }
@@ -250,9 +251,8 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<RaceHorse> jvSetupRunnerRaceHorse(
                 JvStoredRaceHorseRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("RaceHorse: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
-                    .buffer(300)
+                    .flatMap(this::logAndNullCheck)
+                    .buffer(200)
                     .map(chunk -> Tuples.of(chunk, "raceHorse"))
                     .flatMap(this::insert);
         }
@@ -261,8 +261,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<Jockey> jvSetupRunnerJockey(
                 JvStoredJockeyRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("Jockey: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
+                    .flatMap(this::logAndNullCheck)
                     .buffer(300)
                     .map(chunk -> Tuples.of(chunk, "jockey"))
                     .flatMap(this::insert);
@@ -272,8 +271,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<Trainer> jvSetupRunnerTrainer(
                 JvStoredTrainerRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("Trainer: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
+                    .flatMap(this::logAndNullCheck)
                     .buffer(300)
                     .map(chunk -> Tuples.of(chunk, "trainer"))
                     .flatMap(this::insert);
@@ -283,8 +281,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<Owner> jvSetupRunnerOwner(
                 JvStoredOwnerRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("Owner: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
+                    .flatMap(this::logAndNullCheck)
                     .buffer(300)
                     .map(chunk -> Tuples.of(chunk, "owner"))
                     .flatMap(this::insert);
@@ -294,8 +291,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<Breeder> jvSetupRunnerBreeder(
                 JvStoredBreederRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("Breeder: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
+                    .flatMap(this::logAndNullCheck)
                     .buffer(300)
                     .map(chunk -> Tuples.of(chunk, "breeder"))
                     .flatMap(this::insert);
@@ -305,9 +301,8 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         public JvSetupReactiveRunner<Course> jvSetupRunnerCourse(
                 JvStoredCourseRepository repository) {
             return () -> repository.readFlux(dateTime)
-                    .doOnNext(model -> log.info("Course: {}", model))
-                    .doOnNext(Checker::fieldNotNull)
-                    .buffer(300)
+                    .flatMap(this::logAndNullCheck)
+                    .buffer(100)
                     .map(chunk -> Tuples.of(chunk, "course"))
                     .flatMap(this::insert);
         }
