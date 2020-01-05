@@ -159,7 +159,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 JvStoredRacingDetailsRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .flatMap(this::logAndNullCheck)
-                    .buffer(500)
+                    .buffer(300)
                     .map(chunk -> Tuples.of(chunk, "racingDetails"))
                     .flatMap(this::insert);
         }
@@ -189,7 +189,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 JvStoredVoteCountRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .flatMap(this::logAndNullCheck)
-                    .buffer(50)
+                    .buffer(30)
                     .map(chunk -> Tuples.of(chunk, "voteCount"))
                     .flatMap(this::insert);
         }
@@ -200,7 +200,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 JvStoredOddsWinsPlaceBracketQuinellaRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .flatMap(this::logAndNullCheck)
-                    .buffer(300)
+                    .buffer(100)
                     .map(chunk -> Tuples.of(chunk, "winsPlaceBracketQuinella"))
                     .flatMap(this::insert);
         }
@@ -210,7 +210,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 JvStoredOddsQuinellaRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .flatMap(this::logAndNullCheck)
-                    .buffer(300)
+                    .buffer(100)
                     .map(chunk -> Tuples.of(chunk, "quinella"))
                     .flatMap(this::insert);
         }
@@ -221,7 +221,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 JvStoredAncestryRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .flatMap(this::logAndNullCheck)
-                    .buffer(300)
+                    .buffer(100)
                     .map(chunk -> Tuples.of(chunk, "ancestry"))
                     .flatMap(this::insert);
         }
@@ -231,7 +231,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 JvStoredBreedingHorseRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .flatMap(this::logAndNullCheck)
-                    .buffer(300)
+                    .buffer(100)
                     .map(chunk -> Tuples.of(chunk, "breedingHorse"))
                     .flatMap(this::insert);
         }
@@ -241,7 +241,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 JvStoredOffspringRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .flatMap(this::logAndNullCheck)
-                    .buffer(300)
+                    .buffer(100)
                     .map(chunk -> Tuples.of(chunk, "offspring"))
                     .flatMap(this::insert);
         }
@@ -252,7 +252,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 JvStoredRaceHorseRepository repository) {
             return () -> repository.readFlux(dateTime)
                     .flatMap(this::logAndNullCheck)
-                    .buffer(200)
+                    .buffer(100)
                     .map(chunk -> Tuples.of(chunk, "raceHorse"))
                     .flatMap(this::insert);
         }
