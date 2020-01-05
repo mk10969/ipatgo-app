@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.uma.platform.common.config.RealTimeKey;
 import org.uma.platform.common.config.condition.RealTimeOpenCondition;
-import org.uma.platform.common.model.odds.WinsPlaceBracketQuinella;
+import org.uma.platform.common.model.odds.Quinella;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.repository.JvLinkRealTimeRepository;
 import org.uma.platform.feed.application.repository.JvLinkRepository;
@@ -17,25 +17,23 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class JvRealTimeWinsPlaceBracketQuinellaRepository
-        implements JvLinkRealTimeRepository<WinsPlaceBracketQuinella> {
+public class JvRtOddsQuinellaRepository implements JvLinkRealTimeRepository<Quinella> {
 
     private final JvLinkModelMapper jvLinkModelMapper;
 
-    @Qualifier("0B31_O1")
+    @Qualifier("0B32_O2")
     private final RealTimeOpenCondition realTimeOpenCondition;
 
 
     @Override
-    public List<WinsPlaceBracketQuinella> readLine(RealTimeKey realTimeKey) {
+    public List<Quinella> readLine(RealTimeKey realTimeKey) {
         return JvLinkClient.readLines(realTimeOpenCondition, realTimeKey)
                 .stream()
                 .map(jvStringContent -> jvLinkModelMapper
-                        .deserialize(jvStringContent.getLine(), WinsPlaceBracketQuinella.class))
-                .peek(model -> model.getWinOdds().removeIf(JvLinkRepository::winOddsFilter))
-                .peek(model -> model.getPlaceOdds().removeIf(JvLinkRepository::placeOddsFilter))
-                .peek(model -> model.getBracketQuinellaOdds().removeIf(JvLinkRepository::bracketQuinellaOddsFilter))
+                        .deserialize(jvStringContent.getLine(), Quinella.class))
+                .peek(model -> model.getQuinellaOdds().removeIf(JvLinkRepository::quinellaOddsFilter))
                 .collect(ImmutableList.toImmutableList());
+
     }
-    
+
 }

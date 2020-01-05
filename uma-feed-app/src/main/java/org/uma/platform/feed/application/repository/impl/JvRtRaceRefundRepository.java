@@ -17,7 +17,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class JvRealTimeRaceRefundRepository implements JvLinkRealTimeRepository<RaceRefund> {
+public class JvRtRaceRefundRepository implements JvLinkRealTimeRepository<RaceRefund> {
 
     private final JvLinkModelMapper jvLinkModelMapper;
 

@@ -62,13 +62,10 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
                 .flatMap(JvSetupReactiveRunner::run)
                 .subscribeOn(Schedulers.single()) //single thread で回す
                 .subscribe(
-                        i -> {
-                        },
+                        i -> {},
                         e -> log.error("ERROR: ", e),
                         () -> log.info("完了")
                 );
-
-        log.info("セットアップ完了");
     }
 
 

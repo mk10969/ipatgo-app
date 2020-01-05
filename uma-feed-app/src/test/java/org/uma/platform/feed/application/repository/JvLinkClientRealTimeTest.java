@@ -21,6 +21,9 @@ public class JvLinkClientRealTimeTest {
     @Autowired
     private Map<String, RealTimeOpenCondition> rtOpenCondition;
 
+    /**
+     * 0B15の方が、データ提供の期間範囲が広い。
+     */
     @Autowired
     @Qualifier("0B12_HR") // 成績確定後 OK
     private RealTimeOpenCondition HRcondition;

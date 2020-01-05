@@ -1,8 +1,10 @@
-# windows server
+# On windows server configuration
 
-mongo:
-  host: 10.0.2.2
-  port: 27017
-  database: uma
-
-
+# デフォルト設定をしておかないと
+# localhostに接続しにいってエラーで落ちるw（解決策がいまいち...）
+spring:
+  data:
+    mongodb:
+      host: 10.0.2.2
+      port: 27017
+      database: uma

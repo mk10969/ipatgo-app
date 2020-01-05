@@ -1,3 +1,9 @@
+mongo:
+  host: 10.0.2.2
+  port: 27017
+  database: uma
+
+
 setup:
   yyyyMMddHHmmss: 2019/01/01 00:00:00
   dataTypes:

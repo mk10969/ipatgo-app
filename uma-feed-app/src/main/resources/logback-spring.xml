@@ -8,15 +8,21 @@
     <property name="jvLink" value="jvLink"/>
     <property name="umaApp" value="uma-feed-app"/>
 
-    <!-- ローカル環境用設定 -->
+    <!-- ローカル用設定 -->
     <springProfile name="dev">
         <property name="logFilePath" value="./log/"/>
     </springProfile>
 
-    <!-- production環境用設定 -->
-    <springProfile name="prod">
-        <property name="logFilePath" value="/var/log/production/"/>
+    <!-- production用設定 -->
+    <springProfile name="prd">
+        <property name="logFilePath" value="Z:\log\"/>
     </springProfile>
+
+    <!-- setup用設定 -->
+    <springProfile name="setup">
+        <property name="logFilePath" value="Z:\log\"/>
+    </springProfile>
+
 
     <!-- コンソール出力 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -73,7 +79,8 @@
     </logger>
 
     <!-- JvLink Client ロガー -->
-    <logger name="org.uma.platform.jvlink.JvLinkWrapper" level="debug" additivity="false">
+    <logger name="org.uma.platform.jvlink.JvLinkWrapper"
+            level="debug" additivity="false">
         <appender-ref ref="APPLICATION_LOG_JVLINK"/>
     </logger>
 
@@ -81,4 +88,5 @@
     <root level="INFO">
         <appender-ref ref="APPLICATION_LOG"/>
     </root>
+
 </configuration>

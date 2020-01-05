@@ -12,11 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
 import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.common.model.RaceRefund;
+import org.uma.platform.common.model.RacingDetails;
 import org.uma.platform.common.model.VoteCount;
 import org.uma.platform.common.model.odds.Quinella;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
 import org.uma.platform.feed.application.component.JvLinkStringUtil;
-import org.uma.platform.feed.application.component.JvSetupReactiveCommandLineRunner;
 import reactor.util.function.Tuples;
 
 import java.io.IOException;
@@ -81,9 +81,9 @@ class JvStoredRepositoryModelMapperTest {
     @Test
     void test_ALL_デシリアライズテスト() {
         testAll(
-//                () -> readTestData("RA")
-//                        .stream()
-//                        .map(line -> jvLinkModelMapper.deserialize(line, RacingDetails.class)),
+                () -> readTestData("RA")
+                        .stream()
+                        .map(line -> jvLinkModelMapper.deserialize(line, RacingDetails.class)),
 //                () -> readTestData("SE")
 //                        .stream()
 //                        .map(line -> jvLinkModelMapper.deserialize(line, HorseRacingDetails.class)),
