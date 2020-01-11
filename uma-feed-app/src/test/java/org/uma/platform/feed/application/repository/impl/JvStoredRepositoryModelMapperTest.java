@@ -16,7 +16,7 @@ import org.uma.platform.common.model.RacingDetails;
 import org.uma.platform.common.model.VoteCount;
 import org.uma.platform.common.model.odds.Quinella;
 import org.uma.platform.feed.application.component.JvLinkModelMapper;
-import org.uma.platform.feed.application.component.JvLinkStringUtil;
+import org.uma.platform.feed.application.util.JvLinkUtil;
 import reactor.util.function.Tuples;
 
 import java.io.IOException;
@@ -180,7 +180,7 @@ class JvStoredRepositoryModelMapperTest {
                 .flatMap(filePath -> readLines(filePath)
                         .filter(Objects::nonNull)
                         .map(i -> i.replace("\\n", "")) // 仮おきデータを除外
-                        .map(line -> JvLinkStringUtil.stringToByte(line).length)
+                        .map(line -> JvLinkUtil.toByte(line).length)
                         .map(i -> Tuples.of(filePath.toFile().getName(), i)))
                 .forEach(i ->
                         assertEquals(i.getT2() + 2, RecordSpec.of(i.getT1()).getLength())

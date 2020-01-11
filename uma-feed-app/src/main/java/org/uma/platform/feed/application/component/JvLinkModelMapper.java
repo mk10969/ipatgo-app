@@ -7,6 +7,7 @@ import org.uma.platform.common.config.spec.RecordSpec;
 import org.uma.platform.feed.application.configuration.JvLinkModelMapperConfiguration;
 import org.uma.platform.feed.application.configuration.JvLinkRecordSpecConfiguration;
 import org.uma.platform.feed.application.configuration.JvLinkRecordSpecConfiguration.RecordSpecItems;
+import org.uma.platform.feed.application.util.JvLinkUtil;
 
 import java.util.*;
 
@@ -55,7 +56,7 @@ public class JvLinkModelMapper {
      */
     public <T> T deserialize(String line, Class<T> clazz) {
         Map<String, Object> deSerialMap = new HashMap<>();
-        final byte[] byteArrayLine = JvLinkStringUtil.stringToByte(line);
+        final byte[] byteArrayLine = JvLinkUtil.toByte(line);
 
         findOne(clazz).getRecordItems().forEach(record -> {
             // 繰り返しあり。
@@ -68,10 +69,10 @@ public class JvLinkModelMapper {
                     String[] columnNameAndJsonString = record.getColumn().split("=");
                     for (int i = 0; i < record.getRepeat(); i++) {
                         Map<String, Object> tmpMap = new HashMap<>(); //ループ毎に初期化
-                        for (Map.Entry<String, Integer> entry : JvLinkStringUtil
-                                .jsonStringToMap(columnNameAndJsonString[1]).entrySet()) {
-                            String tmpString = JvLinkStringUtil
-                                    .byteToStringOnSlice(byteArrayLine, start, start + entry.getValue());
+                        for (Map.Entry<String, Integer> entry : JvLinkUtil
+                                .jsonToMap(columnNameAndJsonString[1]).entrySet()) {
+                            String tmpString = JvLinkUtil
+                                    .sliceAndToString(byteArrayLine, start, start + entry.getValue());
                             tmpMap.put(entry.getKey(), tmpString);
                             start = start + entry.getValue();
                         }
@@ -82,8 +83,8 @@ public class JvLinkModelMapper {
                 // 単純な繰り返し。
                 else {
                     for (int i = 0; i < record.getRepeat(); i++) {
-                        String tmpString = JvLinkStringUtil
-                                .byteToStringOnSlice(byteArrayLine, start, start + record.getLength());
+                        String tmpString = JvLinkUtil
+                                .sliceAndToString(byteArrayLine, start, start + record.getLength());
                         tmpList.add(tmpString);
                         start = start + record.getLength();
                     }
@@ -93,7 +94,7 @@ public class JvLinkModelMapper {
             // 繰り返しなし
             else {
                 int end = record.getStart() + record.getLength(); // 次のメソッドの引数が長くなるから。
-                String tmpString = JvLinkStringUtil.byteToStringOnSlice(byteArrayLine, record.getStart(), end);
+                String tmpString = JvLinkUtil.sliceAndToString(byteArrayLine, record.getStart(), end);
                 deSerialMap.put(record.getColumn(), tmpString);
             }
         });

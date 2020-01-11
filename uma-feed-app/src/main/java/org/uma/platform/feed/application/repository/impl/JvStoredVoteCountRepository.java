@@ -59,7 +59,7 @@ public class JvStoredVoteCountRepository implements JvLinkStoredRepository<VoteC
 
     @Override
     public Flux<VoteCount> readFlux(LocalDateTime dateTime) {
-        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), VoteCount.class))
                 .doOnNext(model -> model.getVoteCountWins().removeIf(JvLinkRepository::voteFilter))

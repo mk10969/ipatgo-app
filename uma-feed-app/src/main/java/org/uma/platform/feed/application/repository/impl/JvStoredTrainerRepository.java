@@ -44,7 +44,7 @@ public class JvStoredTrainerRepository implements JvLinkStoredRepository<Trainer
 
     @Override
     public Flux<Trainer> readFlux(LocalDateTime dateTime) {
-        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Trainer.class));
     }

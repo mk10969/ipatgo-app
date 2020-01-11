@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
-public interface JvLinkStoredRepository<T> extends JvLinkRepository {
+public interface JvLinkStoredRepository<T> {
 
     /**
      * バッチ用

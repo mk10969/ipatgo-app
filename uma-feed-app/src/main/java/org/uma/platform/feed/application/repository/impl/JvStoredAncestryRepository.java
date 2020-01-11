@@ -44,7 +44,7 @@ public class JvStoredAncestryRepository implements JvLinkStoredRepository<Ancest
 
     @Override
     public Flux<Ancestry> readFlux(LocalDateTime dateTime) {
-        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Ancestry.class));
     }

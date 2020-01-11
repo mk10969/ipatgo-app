@@ -44,7 +44,7 @@ public class JvStoredBreederRepository implements JvLinkStoredRepository<Breeder
 
     @Override
     public Flux<Breeder> readFlux(LocalDateTime dateTime) {
-        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Breeder.class));
     }

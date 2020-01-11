@@ -44,7 +44,7 @@ public class JvStoredHorseRacingDetailsRepository implements JvLinkStoredReposit
 
     @Override
     public Flux<HorseRacingDetails> readFlux(LocalDateTime dateTime) {
-        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), HorseRacingDetails.class));
     }

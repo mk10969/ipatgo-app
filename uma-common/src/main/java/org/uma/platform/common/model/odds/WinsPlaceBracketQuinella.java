@@ -82,12 +82,10 @@ public class WinsPlaceBracketQuinella {
     @Data
     public static class BracketQuinellaOdds {
         /**
-         * 枠連は、pairが正しいが、
-         * 1. どうせ使わない
-         * 2. 単勝、複勝のhorseNoとlength()が同じ
-         * なため。Pairにしない。
+         * 枠連は、Pairオブジェクトを利用するのでが正しいが、
+         * どうせ使わないので、String型にしておく。
          */
-        private String horseNo;
+        private String pairNo;
         private Integer odds;
         private Integer betRank;
     }

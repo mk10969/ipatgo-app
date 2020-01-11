@@ -7,18 +7,18 @@ mongo:
 setup:
   yyyyMMddHHmmss: 2019/01/01 00:00:00
   dataTypes:
-#    RacingDetails,
-#    HorseRacingDetails,
-#    RaceRefund,
-    VoteCount,
-    WinsPlaceBracketQuinella,
-    Quinella,
-    Ancestry,
-    BreedingHorse,
-    Offspring,
-    Course,
-    RaceHorse,
-    Jockey,
-    Trainer,
-    Owner,
-    Breeder
+#    - RacingDetails
+#    - HorseRacingDetails
+#    - RaceRefund
+#    - VoteCount
+#    - WinsPlaceBracketQuinella
+#    - Quinella
+#    - Ancestry
+#    - BreedingHorse
+#    - Offspring
+    - Course
+#    - RaceHorse
+    - Jockey
+    - Trainer
+    - Owner
+    - Breeder

@@ -44,7 +44,7 @@ public class JvStoredJockeyRepository implements JvLinkStoredRepository<Jockey> 
 
     @Override
     public Flux<Jockey> readFlux(LocalDateTime dateTime) {
-        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Jockey.class));
     }

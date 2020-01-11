@@ -1,7 +1,7 @@
 package org.uma.platform.feed.application.component;
 
 import org.junit.jupiter.api.Test;
-import org.uma.platform.feed.application.component.JvLinkStringUtil;
+import org.uma.platform.feed.application.util.JvLinkUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,11 +25,11 @@ class JvLinkClientStringUtilTest {
     @Test
     void test_空() {
         String str = "";
-        byte[] bytes = JvLinkStringUtil.stringToByte(str);
+        byte[] bytes = JvLinkUtil.toByte(str);
 
         assertThrows(
                 ArrayIndexOutOfBoundsException.class,
-                () -> JvLinkStringUtil.byteToStringOnSlice(bytes, 2, 3)
+                () -> JvLinkUtil.sliceAndToString(bytes, 2, 3)
         );
     }
 

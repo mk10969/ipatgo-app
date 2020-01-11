@@ -28,7 +28,7 @@ public class JvLinkModelMapperConfiguration {
             // 日付が設定されていない場合のデフォルト値
             if ("00000000".equals(source)) {
                 //return LocalDate.MIN;
-                // ↑これダメっぽい。一旦nullにしときます。
+                // ↑これダメっぽい。一旦null。
                 return null;
             }
             return LocalDate.parse(source, format);
@@ -183,10 +183,18 @@ public class JvLinkModelMapperConfiguration {
                     || "      ".equals(source)) {
                 return null;
             }
-            if ("--".equals(source) || "---".equals(source)) {
+            if ("--".equals(source)
+                    || "---".equals(source)
+                    || "----".equals(source)
+                    || "-----".equals(source)
+                    || "------".equals(source)) {
                 return -100;
             }
-            if ("**".equals(source) || "***".equals(source)) {
+            if ("**".equals(source)
+                    || "***".equals(source)
+                    || "****".equals(source)
+                    || "*****".equals(source)
+                    || "******".equals(source)) {
                 return -999;
             }
             return Integer.valueOf(source);

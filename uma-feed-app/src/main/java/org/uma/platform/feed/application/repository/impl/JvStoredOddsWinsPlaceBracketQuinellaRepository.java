@@ -53,7 +53,7 @@ public class JvStoredOddsWinsPlaceBracketQuinellaRepository
 
     @Override
     public Flux<WinsPlaceBracketQuinella> readFlux(LocalDateTime dateTime) {
-        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), WinsPlaceBracketQuinella.class))
                 .doOnNext(model -> model.getWinOdds().removeIf(JvLinkRepository::winOddsFilter))

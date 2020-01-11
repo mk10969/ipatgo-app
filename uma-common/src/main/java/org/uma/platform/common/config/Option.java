@@ -16,7 +16,7 @@ public enum Option implements CodeEnum<Integer, Option> {
     private final Integer code;
     private final String message;
 
-    private Option(Integer code, String message) {
+    Option(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

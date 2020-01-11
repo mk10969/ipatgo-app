@@ -48,7 +48,7 @@ public class JvStoredOddsQuinellaRepository implements JvLinkStoredRepository<Qu
 
     @Override
     public Flux<Quinella> readFlux(LocalDateTime dateTime) {
-        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Quinella.class))
                 .doOnNext(model -> model.getQuinellaOdds().removeIf(JvLinkRepository::quinellaOddsFilter));

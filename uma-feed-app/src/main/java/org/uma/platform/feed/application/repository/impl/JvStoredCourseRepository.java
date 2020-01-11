@@ -44,7 +44,7 @@ public class JvStoredCourseRepository implements JvLinkStoredRepository<Course> 
 
     @Override
     public Flux<Course> readFlux(LocalDateTime dateTime) {
-        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITH_DIALOG)
+        return JvLinkClient.readFlux(storedOpenCondition, dateTime, Option.SETUP_WITHOUT_DIALOG)
                 .map(jvStringContent -> jvLinkModelMapper
                         .deserialize(jvStringContent.getLine(), Course.class));
     }
