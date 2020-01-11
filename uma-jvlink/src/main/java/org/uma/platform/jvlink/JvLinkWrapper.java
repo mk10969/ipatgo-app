@@ -97,12 +97,12 @@ public class JvLinkWrapper {
     }
 
     public JvLinkWrapper open(StoredOpenCondition condition, LocalDateTime fromTime, Option option) {
+        Objects.requireNonNull(fromTime, "データ読み出し開始ポイントがnullになっています。");
         return open(condition, DateUtil.format(JV_DATE_FORMAT, fromTime), option);
     }
 
     public JvLinkWrapper open(StoredOpenCondition condition, String fromTime, Option option) {
         Objects.requireNonNull(condition, "データ検索条件がnullになっています。");
-        Objects.requireNonNull(fromTime, "データ読み出し開始ポイントがnullになっています。");
         log.info("open: {}", condition);
         JvLinkHandler.handle(() ->
                 jvLinkDataLab.jvOpen(condition.getDataSpec().getCode(), fromTime, option.getCode())

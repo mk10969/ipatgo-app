@@ -1,9 +1,11 @@
 package org.uma.platform.common.test;
 
 //import org.apache.commons.lang3.StringUtils;
-//import org.junit.jupiter.api.Test;
-//
+
 //import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import org.uma.platform.common.utils.lang.DateUtil;
 
 public class IntegerTest {
 
@@ -20,5 +22,11 @@ public class IntegerTest {
 //
 //
 //    }
+
+    @Test
+    void test_LocalDate() {
+        // 当たり前のnullぽ
+        DateUtil.format("yyyyMMddHHmmss", null);
+    }
 
 }
