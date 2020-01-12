@@ -73,7 +73,7 @@
     </appender>
 
     <!-- セットアップ ロガー -->
-    <logger name="org.uma.platform.feed.application.component.JvSetupCommandLineRunner"
+    <logger name="org.uma.platform.feed.application.component.JvSetupReactiveCommandLineRunner"
             level="info" additivity="false">
         <appender-ref ref="APPLICATION_LOG_SETUP"/>
     </logger>

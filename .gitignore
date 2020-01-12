@@ -38,3 +38,7 @@ out/
 # log
 *.log
 *.log.zip
+
+
+# mac
+.DS_Store
