@@ -1,4 +1,4 @@
-# 指定がない場合のデフォルト設定
-spring:
-  profiles:
-    active: dev
+## 指定がない場合のデフォルト設定
+#spring:
+#  profiles:
+#    active: dev

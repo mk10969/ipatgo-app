@@ -7,4 +7,4 @@ spring:
     mongodb:
       host: 10.0.2.2
       port: 27017
-      database: uma
+      database: test

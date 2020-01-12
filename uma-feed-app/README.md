@@ -25,7 +25,7 @@ ssh Administrator@192.168.56.104
 
  - 手動起動
 ```
-java -jar uma-feed-app.jar --spring.profiles.active=prd,setup -Xms1024M -Xmx2048M
+java -Xms1024M -Xms1024M -Xloggc:./log/gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -jar uma-feed-app.jar --spring.profiles.active=prd,setup
 ``` 
  - jstat
  ```
