@@ -25,8 +25,39 @@ ssh Administrator@192.168.56.104
 
  - 手動起動
 ```
-java -Xms1024M -Xmx1024M -XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=70 -Xloggc:./log/gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -jar uma-feed-app.jar --spring.profiles.active=prd,setup
-``` 
+java 
+ -Xms1024M ^
+ -Xmx1024M ^
+ -XX:+UseG1GC ^
+ -XX:InitiatingHeapOccupancyPercent=40 ^
+ -Xloggc:./log/gc.log -XX:+PrintGCDetails ^
+ -XX:+PrintGCTimeStamps -jar uma-feed-app.jar ^
+ --spring.profiles.active=prd,setup
+```
+
+```
+java ^
+ -d32 ^
+ -XX:+UseConcMarkSweepGC ^
+ -XX:+UseParNewGC ^
+ -XX:+CMSParallelRemarkEnabled ^
+ -XX:+CMSClassUnloadingEnabled ^
+ -XX:CMSInitiatingOccupancyFraction=70 ^
+ -XX:+DisableExplicitGC ^
+ -XX:-UseGCOverheadLimit ^
+ -Xms512M ^
+ -Xmx512M ^
+ -XX:NewRatio=2 ^
+ -XX:SurvivorRatio=8 ^
+ -XX:MaxTenuringThreshold=15 ^
+ -XX:TargetSurvivorRatio=90 ^
+ -Xloggc:./log/gc.log ^
+ -XX:+PrintGCDetails ^
+ -XX:+PrintGCTimeStamps ^
+ -jar .\build\libs\uma-feed-app.jar ^
+ --spring.profiles.active=prd,setup 
+```
+
 
 要約すると、
 ・32bit Windowsだと搭載メモリの1/4が最大値の限度。
