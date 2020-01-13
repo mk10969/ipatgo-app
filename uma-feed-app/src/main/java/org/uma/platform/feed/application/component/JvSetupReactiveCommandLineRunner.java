@@ -41,32 +41,6 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
     private final Map<String, JvSetupReactiveRunner<?>> jvSetupRunners;
 
 
-    private static class MySubscriber<T> implements Subscriber<T> {
-
-        @Override
-        public void onSubscribe(Subscription s) {
-            log.info("  --> onSubscribe");
-            s.request(Long.MAX_VALUE);
-        }
-
-        @Override
-        public void onNext(T data) {
-            log.info("  --> onNext: {}", data);
-        }
-
-        @Override
-        public void onError(Throwable throwable) {
-            log.error("  --> onError: ", throwable);
-        }
-
-        @Override
-        public void onComplete() {
-            log.info("  --> onComplete");
-
-        }
-    }
-
-
     @Override
     public void run(String... args) throws Exception {
         if (setUpConfiguration.getDataTypes() == null) {
@@ -76,19 +50,36 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
         // 起動時は、慌ただしいので、5秒待つ。
         Thread.sleep(5000L);
 
-        log.info("セットアップ開始");
-
         Flux.fromStream(jvSetupRunners.entrySet().stream())
                 .filter(entry -> setUpConfiguration.getDataTypes().contains(entry.getKey()))
-                .doOnSubscribe(subscription -> log.info("<-- subscribe"))
                 .doOnNext(jvSetupRunner -> log.info("実行: {}", jvSetupRunner.getKey()))
                 .flatMap(jvSetupRunner -> jvSetupRunner.getValue()
                         .run()
                         .then(Mono.just(jvSetupRunner.getKey())))
-                .subscribeOn(Schedulers.single()) //single thread で回す
-                .subscribe(new MySubscriber<>());
+                .subscribeOn(Schedulers.immediate()) //main thread で回す
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onSubscribe(Subscription subscription) {
+                        log.info("セットアップ開始");
+                        subscription.request(Long.MAX_VALUE);
+                    }
 
-        log.info("セットアップ完了");
+                    @Override
+                    public void onNext(String data) {
+                        log.info("{}: 完了", data);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        log.error("Error: ", throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        log.info("セットアップ完了");
+                    }
+                });
+
     }
 
 
@@ -110,11 +101,6 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
          */
         private final ReactiveMongoTemplate reactiveTemplate;
 
-//        /*
-//         * JvLinkStoredRepositories
-//         */
-//        private final JvStoredRacingDetailsRepository racingDetailsRepository;
-
 
         private <T> Flux<T> insert(Tuple2<List<T>, String> tuples) {
             // 一つのドキュメントに対して、transaction別いらない。
@@ -125,7 +111,7 @@ public class JvSetupReactiveCommandLineRunner implements CommandLineRunner {
 
         private static <T> Flux<T> logAndNullCheck(T anyModel) {
             return Flux.just(anyModel)
-                    .doOnNext(model -> log.info("{}", model))
+//                    .doOnNext(model -> log.info("{}", model))
                     .doOnNext(JvLinkUtil::fieldNotNull);
         }
 

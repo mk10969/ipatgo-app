@@ -42,11 +42,13 @@ java ^
  -XX:+UseParNewGC ^
  -XX:+CMSParallelRemarkEnabled ^
  -XX:+CMSClassUnloadingEnabled ^
+ -XX:+UseCMSInitiatingOccupancyOnly ^
  -XX:CMSInitiatingOccupancyFraction=70 ^
  -XX:+DisableExplicitGC ^
  -XX:-UseGCOverheadLimit ^
  -Xms512M ^
  -Xmx512M ^
+ -Xmn256M ^
  -XX:NewRatio=2 ^
  -XX:SurvivorRatio=8 ^
  -XX:MaxTenuringThreshold=15 ^
@@ -54,7 +56,7 @@ java ^
  -Xloggc:./log/gc.log ^
  -XX:+PrintGCDetails ^
  -XX:+PrintGCTimeStamps ^
- -jar .\build\libs\uma-feed-app.jar ^
+ -jar uma-feed-app.jar ^
  --spring.profiles.active=prd,setup 
 ```
 
