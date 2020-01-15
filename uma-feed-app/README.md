@@ -43,7 +43,7 @@ java ^
  -XX:+CMSParallelRemarkEnabled ^
  -XX:+CMSClassUnloadingEnabled ^
  -XX:+UseCMSInitiatingOccupancyOnly ^
- -XX:CMSInitiatingOccupancyFraction=70 ^
+ -XX:CMSInitiatingOccupancyFraction=40 ^
  -XX:+DisableExplicitGC ^
  -XX:-UseGCOverheadLimit ^
  -Xms512M ^

@@ -24,6 +24,10 @@ public class JvSimpleResult extends JvResult {
         super(builder);
     }
 
+    public static Builder create(Integer returnCode) {
+        return new Builder(returnCode);
+    }
+
     @Override
     public Integer getReturnCode() {
         return super.getReturnCode();

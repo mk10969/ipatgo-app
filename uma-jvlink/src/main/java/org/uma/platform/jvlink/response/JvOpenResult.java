@@ -63,6 +63,10 @@ public class JvOpenResult extends JvResult {
         this.lastFileTimeStamp = builder.lastFileTimeStamp;
     }
 
+    public static Builder create(Integer returnCode) {
+        return new Builder(returnCode);
+    }
+
     @Override
     public Integer getReturnCode() {
         return super.getReturnCode();

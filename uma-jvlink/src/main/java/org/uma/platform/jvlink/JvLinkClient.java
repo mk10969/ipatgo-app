@@ -73,6 +73,7 @@ public abstract class JvLinkClient {
             final Function<JvLinkWrapper, Flux<T>> function) {
         Objects.requireNonNull(function);
         return function.apply(JvLink)
+                .onBackpressureBuffer()
                 .publishOn(Schedulers.immediate()) //内部読み取り処理はシングルスレッド
                 .doOnCancel(JvLink::close)
                 .doOnTerminate(JvLink::close); // completion or error

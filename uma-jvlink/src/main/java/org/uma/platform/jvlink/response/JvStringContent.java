@@ -2,7 +2,7 @@ package org.uma.platform.jvlink.response;
 
 import java.util.Objects;
 
-public class JvStringContent extends JvResult implements JvContent<String>{
+public class JvStringContent extends JvResult implements JvContent<String> {
     /**
      * JV-Data文字列
      */
@@ -49,6 +49,10 @@ public class JvStringContent extends JvResult implements JvContent<String>{
         this.fileName = builder.fileName;
     }
 
+    public static Builder create(Integer returnCode) {
+        return new Builder(returnCode);
+    }
+    
     @Override
     public Integer getReturnCode() {
         return super.getReturnCode();

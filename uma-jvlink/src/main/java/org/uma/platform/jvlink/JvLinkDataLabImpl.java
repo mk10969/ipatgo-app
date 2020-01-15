@@ -1,6 +1,7 @@
 package org.uma.platform.jvlink;
 
 import com.jacob.activeX.ActiveXComponent;
+import com.jacob.com.ComThread;
 import com.jacob.com.Dispatch;
 import com.jacob.com.NotImplementedException;
 import com.jacob.com.Variant;
@@ -18,40 +19,30 @@ class JvLinkDataLabImpl implements JvLinkDataLab {
         this.activeXComponent = new ActiveXComponent(JVLINK_DLL);
     }
 
+
     public JvSimpleResult jvInit(String sid) {
         Variant variant = Dispatch.call(activeXComponent, "JVInit", sid);
-        //Log.info(String.format("JRA-VANサーバにアクセスする際に %s をUserAgentとして使用します。", sid));
-        return JvResultFactory
-                .create(JvSimpleResult.Builder.class, variant)
-                .build();
+        return JvSimpleResult.create(getInt(variant)).build();
     }
 
     public JvSimpleResult jvSetUIProperties() {
         Variant variant = Dispatch.call(activeXComponent, "JVSetUIProperties");
-        return JvResultFactory
-                .create(JvSimpleResult.Builder.class, variant)
-                .build();
+        return JvSimpleResult.create(getInt(variant)).build();
     }
 
     public JvSimpleResult jvSetServiceKey(String serviceKey) {
         Variant variant = Dispatch.call(activeXComponent, "JVSetServiceKey", serviceKey);
-        return JvResultFactory
-                .create(JvSimpleResult.Builder.class, variant)
-                .build();
+        return JvSimpleResult.create(getInt(variant)).build();
     }
 
     public JvSimpleResult jvSetSaveFlag(int saveFlag) {
         Variant variant = Dispatch.call(activeXComponent, "JVSetSaveFlag", saveFlag);
-        return JvResultFactory
-                .create(JvSimpleResult.Builder.class, variant)
-                .build();
+        return JvSimpleResult.create(getInt(variant)).build();
     }
 
     public JvSimpleResult jvSetSavePath(String savePath) {
         Variant variant = Dispatch.call(activeXComponent, "JVSetSavePath", savePath);
-        return JvResultFactory
-                .create(JvSimpleResult.Builder.class, variant)
-                .build();
+        return JvSimpleResult.create(getInt(variant)).build();
     }
 
     public JvOpenResult jvOpen(String dataSpec, String fromTime, int option) {
@@ -59,29 +50,25 @@ class JvLinkDataLabImpl implements JvLinkDataLab {
         Variant downloadCount = new Variant(0, true);
         Variant lastFileTimeStamp = new Variant("", true);
         Variant variant = Dispatch.call(activeXComponent, "JVOpen", dataSpec, fromTime, option, readCount, downloadCount, lastFileTimeStamp);
-        return JvResultFactory
-                .create(JvOpenResult.Builder.class, variant)
-                .downloadCount(downloadCount.getIntRef())
-                .readCount(readCount.getIntRef())
-                .lastFileTimeStamp(lastFileTimeStamp.getStringRef())
+        return JvOpenResult.create(getInt(variant))
+                .readCount(getIntRef(readCount))
+                .downloadCount(getIntRef(downloadCount))
+                .lastFileTimeStamp(getStringRef(lastFileTimeStamp))
                 .build();
     }
 
     public JvSimpleResult jvRtOpen(String dataSpec, String key) {
         Variant variant = Dispatch.call(activeXComponent, "JVRTOpen", dataSpec, key);
-        return JvResultFactory
-                .create(JvSimpleResult.Builder.class, variant)
-                .build();
+        return JvSimpleResult.create(getInt(variant)).build();
     }
 
     public JvStringContent jvRead(int size) {
-        Variant vBuff = new Variant("", true);
-        Variant vFileName = new Variant("", true);
-        Variant variant = Dispatch.call(activeXComponent, "JVRead", vBuff, size, vFileName);
-        return JvResultFactory
-                .create(JvStringContent.Builder.class, variant)
-                .line(vBuff.getStringRef())
-                .fileName(vFileName.getStringRef())
+        Variant buff = new Variant("", true);
+        Variant filename = new Variant("", true);
+        Variant variant = Dispatch.call(activeXComponent, "JVRead", buff, size, filename);
+        return JvStringContent.create(getInt(variant))
+                .line(getStringRef(buff))
+                .fileName(getStringRef(filename))
                 .build();
     }
 
@@ -105,16 +92,12 @@ class JvLinkDataLabImpl implements JvLinkDataLab {
 
     public JvSimpleResult jvStatus() {
         Variant variant = Dispatch.call(activeXComponent, "JVStatus");
-        return JvResultFactory
-                .create(JvSimpleResult.Builder.class, variant)
-                .build();
+        return JvSimpleResult.create(getInt(variant)).build();
     }
 
     public JvSimpleResult jvClose() {
         Variant variant = Dispatch.call(activeXComponent, "JVClose");
-        return JvResultFactory
-                .create(JvSimpleResult.Builder.class, variant)
-                .build();
+        return JvSimpleResult.create(getInt(variant)).build();
     }
 
     public void jvSkip() {
@@ -124,5 +107,33 @@ class JvLinkDataLabImpl implements JvLinkDataLab {
     public void jvCancel() {
         Dispatch.call(activeXComponent, "JVCancel");
     }
+
+    /**
+     * Variantリソースの解放忘れでメモリがリークした。
+     * そのため、Variantインスタンスから、Javaオブジェクト
+     * に変換する際は、同時にリソースの解放も行う。
+     * try-finallyの方はよかったな。
+     */
+    private static int getInt(Variant variant) {
+        int n = variant.getInt();
+//        variant.safeRelease();
+        ComThread.Release();
+        return n;
+    }
+
+    private static int getIntRef(Variant variant) {
+        int n = variant.getIntRef();
+//        variant.safeRelease();
+        ComThread.Release();
+        return n;
+    }
+
+    private static String getStringRef(Variant variant) {
+        String n = variant.getStringRef();
+//        variant.safeRelease();
+        ComThread.Release();
+        return n;
+    }
+
 
 }

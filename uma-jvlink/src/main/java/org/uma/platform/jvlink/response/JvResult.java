@@ -6,7 +6,7 @@ public abstract class JvResult {
 
     private final Integer returnCode;
 
-    public abstract static class Builder<T extends Builder<T>> {
+    protected abstract static class Builder<T extends Builder<T>> {
 
         private final Integer returnCode;
 
