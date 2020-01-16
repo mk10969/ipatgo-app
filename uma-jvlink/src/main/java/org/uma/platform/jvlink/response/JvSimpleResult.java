@@ -29,7 +29,7 @@ public class JvSimpleResult extends JvResult {
     }
 
     @Override
-    public Integer getReturnCode() {
+    public int getReturnCode() {
         return super.getReturnCode();
     }
 

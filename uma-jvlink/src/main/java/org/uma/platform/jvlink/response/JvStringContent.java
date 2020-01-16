@@ -54,7 +54,7 @@ public class JvStringContent extends JvResult implements JvContent<String> {
     }
     
     @Override
-    public Integer getReturnCode() {
+    public int getReturnCode() {
         return super.getReturnCode();
     }
 

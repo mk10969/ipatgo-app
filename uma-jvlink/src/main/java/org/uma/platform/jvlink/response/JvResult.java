@@ -1,17 +1,15 @@
 package org.uma.platform.jvlink.response;
 
-import java.util.Objects;
-
 public abstract class JvResult {
 
-    private final Integer returnCode;
+    private final int returnCode;
 
     protected abstract static class Builder<T extends Builder<T>> {
 
-        private final Integer returnCode;
+        private final int returnCode;
 
-        Builder(Integer returnCode) {
-            this.returnCode = Objects.requireNonNull(returnCode);
+        Builder(int returnCode) {
+            this.returnCode = returnCode;
         }
 
         protected abstract T self();
@@ -24,7 +22,7 @@ public abstract class JvResult {
         returnCode = builder.returnCode;
     }
 
-    public Integer getReturnCode() {
+    public int getReturnCode() {
         return this.returnCode;
     }
 }

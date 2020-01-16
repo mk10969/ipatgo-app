@@ -51,7 +51,7 @@ public class JvByteContent extends JvResult implements JvContent<byte[]> {
     }
 
     @Override
-    public Integer getReturnCode() {
+    public int getReturnCode() {
         return super.getReturnCode();
     }
 

@@ -6,12 +6,12 @@ public class JvOpenResult extends JvResult {
     /**
      * 指定した条件に該当する全ファイル数
      */
-    private final Integer readCount;
+    private final int readCount;
 
     /**
      * ダウンロードが必要なファイル数
      */
-    private final Integer downloadCount;
+    private final int downloadCount;
 
     /**
      * 全ファイルのうち最も新しいファイルのタイムスタンプ
@@ -21,21 +21,21 @@ public class JvOpenResult extends JvResult {
 
     public static class Builder extends JvResult.Builder<Builder> {
         // デフォルトパラメータ
-        private Integer readCount;
-        private Integer downloadCount;
+        private int readCount;
+        private int downloadCount;
         private String lastFileTimeStamp;
 
-        public Builder(Integer returnCode) {
+        public Builder(int returnCode) {
             // 必須パラメータ
             super(returnCode);
         }
 
-        public Builder readCount(Integer val) {
+        public Builder readCount(int val) {
             this.readCount = Objects.requireNonNull(val);
             return self();
         }
 
-        public Builder downloadCount(Integer val) {
+        public Builder downloadCount(int val) {
             this.downloadCount = Objects.requireNonNull(val);
             return self();
         }
@@ -63,20 +63,20 @@ public class JvOpenResult extends JvResult {
         this.lastFileTimeStamp = builder.lastFileTimeStamp;
     }
 
-    public static Builder create(Integer returnCode) {
+    public static Builder create(int returnCode) {
         return new Builder(returnCode);
     }
 
     @Override
-    public Integer getReturnCode() {
+    public int getReturnCode() {
         return super.getReturnCode();
     }
 
-    public Integer getReadCount() {
+    public int getReadCount() {
         return this.readCount;
     }
 
-    public Integer getDownloadCount() {
+    public int getDownloadCount() {
         return this.downloadCount;
     }
 
