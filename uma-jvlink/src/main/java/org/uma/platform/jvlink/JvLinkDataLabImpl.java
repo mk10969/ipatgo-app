@@ -5,6 +5,7 @@ import com.jacob.com.ComThread;
 import com.jacob.com.Dispatch;
 import com.jacob.com.NotImplementedException;
 import com.jacob.com.Variant;
+import com.sun.jna.platform.win32.Variant;
 import org.uma.platform.jvlink.response.JvByteContent;
 import org.uma.platform.jvlink.response.JvOpenResult;
 import org.uma.platform.jvlink.response.JvSimpleResult;
@@ -12,16 +13,16 @@ import org.uma.platform.jvlink.response.JvStringContent;
 
 class JvLinkDataLabImpl implements JvLinkDataLab {
 
-    private final ActiveXComponent activeXComponent;
+    private final JvLInkDataLabComponent jvLInkDataLabComponent;
     private static final String JVLINK_DLL = "JVDTLab.JVLink.1";
 
     JvLinkDataLabImpl() {
-        this.activeXComponent = new ActiveXComponent(JVLINK_DLL);
+        this.jvLInkDataLabComponent = new JvLInkDataLabComponent(JVLINK_DLL);
     }
 
 
     public JvSimpleResult jvInit(String sid) {
-        Variant variant = Dispatch.call(activeXComponent, "JVInit", sid);
+    Variant.VARIANT variant = jvLInkDataLabComponent.call("JVInit", sid);
         return JvSimpleResult.create(getInt(variant)).build();
     }
 

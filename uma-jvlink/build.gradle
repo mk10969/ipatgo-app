@@ -1,7 +1,10 @@
 dependencies {
     implementation project(':uma-common')
-    // Use activeXComponent
-    implementation 'com.hynnet:jacob:1.18'
+
+    // JNA
+    implementation 'net.java.dev.jna:jna:5.5.0'
+    implementation 'net.java.dev.jna:jna-platform:5.5.0'
+
     // reactor 対応
     implementation 'io.projectreactor:reactor-core:3.3.0.RELEASE'
 
