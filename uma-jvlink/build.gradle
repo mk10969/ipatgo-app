@@ -1,9 +1,11 @@
 dependencies {
     implementation project(':uma-common')
+    implementation files('lib/jacob.jar')
 
     // JNA
-    implementation 'net.java.dev.jna:jna:5.5.0'
-    implementation 'net.java.dev.jna:jna-platform:5.5.0'
+    // アカンかった
+//    implementation 'net.java.dev.jna:jna:5.5.0'
+//    implementation 'net.java.dev.jna:jna-platform:5.5.0'
 
     // reactor 対応
     implementation 'io.projectreactor:reactor-core:3.3.0.RELEASE'

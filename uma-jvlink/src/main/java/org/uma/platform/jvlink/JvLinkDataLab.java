@@ -32,7 +32,7 @@ interface JvLinkDataLab {
 
     void jvCancel();
 
-    JvSimpleResult jvClose();
+    void jvClose();
 
 //    下記のインターフェースは、必要になれば、実装する予定
 //

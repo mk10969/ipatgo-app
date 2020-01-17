@@ -2,13 +2,24 @@ package org.uma.platform.jvlink;
 
 import com.sun.jna.platform.win32.COM.COMException;
 import com.sun.jna.platform.win32.COM.COMLateBindingObject;
+import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.Variant.VARIANT;
+
+import static com.sun.jna.platform.win32.Ole32.COINIT_MULTITHREADED;
 
 class JvLInkDataLabComponent extends COMLateBindingObject {
 
 
     public JvLInkDataLabComponent(String progId) throws COMException {
         super(progId, true);
+    }
+
+    public static void init() {
+        Ole32.INSTANCE.CoInitializeEx(null, COINIT_MULTITHREADED);
+    }
+
+    public static void fin() {
+        Ole32.INSTANCE.CoUninitialize();
     }
 
     public VARIANT call(String methodName) {

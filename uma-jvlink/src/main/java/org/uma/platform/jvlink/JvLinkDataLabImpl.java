@@ -12,6 +12,7 @@ class JvLinkDataLabImpl implements JvLinkDataLab {
     private static final String JVLINK_DLL = "JVDTLab.JVLink.1";
 
     JvLinkDataLabImpl() {
+        JvLInkDataLabComponent.init();
         this.jvLInkDataLabComponent = new JvLInkDataLabComponent(JVLINK_DLL);
     }
 
@@ -79,17 +80,17 @@ class JvLinkDataLabImpl implements JvLinkDataLab {
         return JvSimpleResult.create(variant.intValue()).build();
     }
 
-    public JvSimpleResult jvClose() {
-        VARIANT variant = jvLInkDataLabComponent.call("JVClose");
-        return JvSimpleResult.create(variant.intValue()).build();
+    public void jvClose() {
+        jvLInkDataLabComponent.call("JVClose");
+        jvLInkDataLabComponent.fin();
     }
 
     public void jvSkip() {
-        VARIANT variant = jvLInkDataLabComponent.call("JVSkip");
+        jvLInkDataLabComponent.call("JVSkip");
     }
 
     public void jvCancel() {
-        VARIANT variant = jvLInkDataLabComponent.call("JVCancel");
+        jvLInkDataLabComponent.call("JVCancel");
     }
 
 }
