@@ -1,11 +1,14 @@
-# Uma Application
+# uma-JvLink
 
-## vodka
+## uma-jvLink-core
+JvLink接続するためのクライアントライブラリ
 
-library
 
-## daiwaScarlet
+## uma-jvLink-server
+Tomcat Web server
+JvLinkから得られたデータを、HTTPで返すサーバ。
 
-application
+## uma-JvLink-setup
+データをセットアップするためのサーバ。
 
 
