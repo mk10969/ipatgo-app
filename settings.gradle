@@ -1,4 +1,3 @@
-include 'uma-common'
-include 'uma-jvlink'
-include 'uma-feed-app'
-include 'uma-reactive-app'
+include 'uma-jvLink-core'
+include 'uma-jvLink-server'
+include 'uma-jvLink-setup'

@@ -1,0 +1,20 @@
+apply plugin: 'org.springframework.boot'
+
+
+bootJar {
+    launchScript()
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+}
+
+
+bootRun {
+    jvmArgs = ['-Dspring.profiles.active=dev']
+}
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation project(':uma-jvLink-core')
+    implementation 'com.google.guava:guava:28.1-jre'
+
+}

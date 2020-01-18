@@ -1,0 +1,13 @@
+<configuration>
+  <id>SPRINGBOOT-APPLICATION</id>
+  <name>MyApp Service (powered by WinSW)</name>
+  <description>This service is a service cratead from a minimal configuration</description>
+  
+  <executable>java</executable>
+  <argument>-jar</argument>
+  <argument>Z:\uma-jvLink-server.jar</argument>
+  <argument>--spring.profiles.active=prd</argument>
+
+  <logpath>%BASE%\log</logpath>
+
+</configuration>
