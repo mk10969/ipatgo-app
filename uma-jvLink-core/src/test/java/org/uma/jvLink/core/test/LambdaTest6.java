@@ -1,7 +1,7 @@
 package org.uma.jvLink.core.test;
 
 import org.junit.jupiter.api.Test;
-import org.uma.platform.common.utils.lang.ThreadUtil;
+import org.uma.jvLink.core.util.ThreadUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -100,8 +100,6 @@ public class LambdaTest6 {
         }
 
     }
-
-
 
 
 }

@@ -148,6 +148,24 @@ public enum JvStored {
      */
     COMM_CS(new StoredOpenCondition(COMM, CS)),
 
+
+    ///// セットアップ用データ /////
+
+    /**
+     * RACE ALL IN ONE
+     */
+    RACE_ALL(new StoredOpenCondition(RACE, null)),
+
+    /**
+     * BLOD ALL IN ONE
+     */
+    BLOD_ALL(new StoredOpenCondition(BLOD, null)),
+
+    /**
+     * DIFF ALL IN ONE
+     */
+    DIFF_ALL(new StoredOpenCondition(DIFF, null)),
+
     ;
 
 

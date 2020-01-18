@@ -1,9 +1,9 @@
 package org.uma.jvLink.core;
 
-import org.uma.jvLink.core.config.option.Option;
-import org.uma.jvLink.core.config.option.RealTimeKey;
 import org.uma.jvLink.core.config.condition.RealTimeOpenCondition;
 import org.uma.jvLink.core.config.condition.StoredOpenCondition;
+import org.uma.jvLink.core.config.option.Option;
+import org.uma.jvLink.core.config.option.RealTimeKey;
 import org.uma.jvLink.core.response.JvContent;
 import org.uma.jvLink.core.response.JvStringContent;
 
@@ -27,7 +27,7 @@ public abstract class JvLinkClient {
      * JvLinK側がマルチスレッドによる同時アクセスに対応していないため、
      * クライアント側（このクラス）で、ロックをかけて排他制御を行う。
      */
-    private static <T extends JvContent<?>> List<T> builder(
+    public static <T extends JvContent<?>> List<T> builder(
             final Function<JvLinkWrapper, Stream<T>> function) {
         Objects.requireNonNull(function);
         synchronized (JvLink) {
@@ -66,26 +66,14 @@ public abstract class JvLinkClient {
     }
 
 
-    /**
-     * Streamに onClose()メソッドを付与しているので、
-     * 利用側で、try-with-resourceで括ってください。
-     */
-    private static <T extends JvContent<?>> Stream<T> streamBuilder(
-            final Function<JvLinkWrapper, Stream<T>> function) {
-        Objects.requireNonNull(function);
-        return function.apply(JvLink)
-                .onClose(JvLink::close);
-    }
-
     public static Stream<JvStringContent> readForSetup(
             final StoredOpenCondition condition,
-            final LocalDateTime fromTime,
-            final Option option) {
-        return streamBuilder(jvLink -> jvLink.init()
-                .open(condition, fromTime, option)
+            final LocalDateTime fromTime) {
+        return JvLink.init()
+                .open(condition, fromTime, Option.SETUP_WITHOUT_DIALOG)
                 .read(condition)
                 .stream()
-        );
+                .onClose(JvLink::close);
     }
 
 }

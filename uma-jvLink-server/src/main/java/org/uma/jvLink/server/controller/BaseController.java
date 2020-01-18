@@ -16,6 +16,8 @@ public class BaseController {
 
     protected List<byte[]> converter(Supplier<Stream<JvStringContent>> supplier) {
         Objects.requireNonNull(supplier);
+
+        // TODO: byteArrayとStringどっちをログに吐くか。。
         return supplier.get()
                 .map(JvStringContent::getLine)
                 .peek(log::info)

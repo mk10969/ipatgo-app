@@ -5,18 +5,18 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
     <property name="jvLink" value="jvLink"/>
-    <property name="server" value="server"/>
+    <property name="setup" value="setup"/>
     <property name="jvLinkRawData" value="jvLinkRawData"/>
 
 
     <!-- ローカル用設定 -->
     <springProfile name="dev">
-        <property name="logFilePath" value="./log/"/>
+        <property name="logFilePath" value="./setup/"/>
     </springProfile>
 
     <!-- production用設定 -->
     <springProfile name="prd">
-        <property name="logFilePath" value="./log/"/>
+        <property name="logFilePath" value="./setup/"/>
     </springProfile>
 
 
@@ -59,9 +59,9 @@
 
     <!-- ログファイル書き出し -->
     <appender name="APPLICATION_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logFilePath}${server}.log</file>
+        <file>${logFilePath}${setup}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logFilePath}${server}-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <fileNamePattern>${logFilePath}${setup}-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
             <maxHistory>3</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -76,11 +76,10 @@
         <appender-ref ref="APPLICATION_LOG_JVLINK"/>
     </logger>
 
-    <!-- JvLink Raw Data ロガー -->
-    <logger name="org.uma.jvLink.server.controller.BaseController" level="info" additivity="false">
+    <!-- JvLink raw data ロガー -->
+    <logger name="org.uma.jvLink.setup.SetupRunner" level="info" additivity="false">
         <appender-ref ref="APPLICATION_LOG_JVLINK_RAW_DATA"/>
     </logger>
-
 
     <!-- root ロガー -->
     <root level="INFO">
