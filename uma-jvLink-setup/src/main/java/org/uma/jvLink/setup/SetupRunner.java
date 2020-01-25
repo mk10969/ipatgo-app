@@ -5,14 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
-import org.uma.jvLink.core.JvLinkClient;
-import org.uma.jvLink.core.response.JvStringContent;
-import org.uma.jvLink.core.util.ByteUtil;
+import org.uma.jvLink.client.JvLinkClient;
+import org.uma.jvLink.client.response.JvStringContent;
+import org.uma.jvLink.client.util.ByteUtil;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.uma.jvLink.core.JvStored.RACE_ALL;
+import static org.uma.jvLink.client.JvStored.RACE_ALL;
 
 @Slf4j
 @Component
@@ -26,20 +27,29 @@ public class SetupRunner {
     private LocalDateTime yyyyMMddHHmmss;
 
 
-    public void test() {
+    /**
+     * あまりにも遅かったら、Flux使うか。
+     * TODO : RSocketにしようかと。
+     */
+    public void setupRACE() {
 
         try (Stream<JvStringContent> stream = JvLinkClient
                 .readForSetup(RACE_ALL.get(), yyyyMMddHHmmss)) {
 
             stream.map(JvStringContent::getLine)
-                    .peek(log::info)
-                    .map(ByteUtil::toByte);
+                    .map(ByteUtil::toByte)
+                    .peek(i -> log.info(Arrays.toString(i)))
+                    .forEach(data -> {
+                        //Kafkaに突っ込むか。。。
+
+                        log.info("OK");
 
 
-        }finally {
-            log.info("完了");
+                    });
+        } catch (RuntimeException e) {
+            log.error("セットアップ中に、エラーが発生しました。", e);
+
         }
-
 
     }
 

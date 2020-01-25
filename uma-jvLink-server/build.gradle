@@ -13,8 +13,8 @@ bootRun {
 
 
 dependencies {
+    implementation project(':uma-jvLink-client')
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation project(':uma-jvLink-core')
     implementation 'com.google.guava:guava:28.1-jre'
 
 }

@@ -72,7 +72,7 @@
 
 
     <!-- JvLink Client ロガー -->
-    <logger name="org.uma.jvLink.core.JvLinkWrapper" level="debug" additivity="false">
+    <logger name="org.uma.jvLink.client.JvLinkWrapper" level="debug" additivity="false">
         <appender-ref ref="APPLICATION_LOG_JVLINK"/>
     </logger>
 
