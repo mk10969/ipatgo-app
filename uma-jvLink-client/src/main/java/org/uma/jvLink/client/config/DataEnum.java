@@ -1,6 +1,8 @@
 package org.uma.jvLink.client.config;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface DataEnum<T, E extends Enum<E>> {
@@ -18,17 +20,17 @@ public interface DataEnum<T, E extends Enum<E>> {
     }
 
     /**
-     * [staticメソッド] 指定されたCodeEnumを実装したEnumを表示順にソートしたリストを返却する
+     * Enumを表示順にソートしたリストを返却する。
      */
-//    static <T, E extends Enum<E>> List<E> getOrderedList(Class<? extends SingleValueEnum<T, E>> enumClazz) {
-//        return Stream.of(enumClazz.getEnumConstants())
-//                .sorted(Comparator.comparing(CodeEnum::getOrder))
-//                .map(SingleValueEnum::toEnum)
-//                .collect(Collectors.toList());
-//    }
+    static <T, E extends Enum<E>> List<E> getOrderedList(Class<? extends DataEnum<T, E>> enumClazz) {
+        return Stream.of(enumClazz.getEnumConstants())
+                .sorted()
+                .map(DataEnum::toEnum)
+                .collect(Collectors.toList());
+    }
 
     /**
-     * 指定されたCodeから逆引きして、Enumを返却する。
+     * Codeから逆引きして、Enumを返却する。
      */
     static <T, E extends Enum<E>> E reversibleFindOne(T code, Class<? extends DataEnum<T, E>> enumClazz) {
         return Stream.of(enumClazz.getEnumConstants())
