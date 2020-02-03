@@ -76,8 +76,8 @@
         <appender-ref ref="APPLICATION_LOG_JVLINK"/>
     </logger>
 
-    <!-- JvLink raw data ロガー -->
-    <logger name="org.uma.jvLink.setup.SetupRunner" level="info" additivity="false">
+    <!-- data ロガー -->
+    <logger name="org.uma.jvLink.setup.SetupConfiguration" level="info" additivity="false">
         <appender-ref ref="APPLICATION_LOG_JVLINK_RAW_DATA"/>
     </logger>
 

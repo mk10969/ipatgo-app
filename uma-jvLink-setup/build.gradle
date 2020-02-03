@@ -14,5 +14,6 @@ bootRun {
 
 dependencies {
     implementation project(':uma-jvLink-client')
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
