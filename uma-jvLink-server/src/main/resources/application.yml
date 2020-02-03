@@ -3,3 +3,6 @@
 spring:
   profiles:
     active: dev
+
+
+# actuatorの設定入れますか！
