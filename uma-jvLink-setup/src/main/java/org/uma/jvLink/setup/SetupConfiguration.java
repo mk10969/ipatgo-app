@@ -1,10 +1,11 @@
 package org.uma.jvLink.setup;
 
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
 import org.uma.jvLink.client.JvLinkClient;
 import org.uma.jvLink.client.response.JvStringContent;
 import org.uma.jvLink.client.util.ByteUtil;
@@ -15,18 +16,20 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.stream.Stream;
 
-import static org.uma.jvLink.client.JvStored.BLOD_ALL;
-import static org.uma.jvLink.client.JvStored.DIFF_ALL;
-import static org.uma.jvLink.client.JvStored.RACE_ALL;
+import static org.uma.jvLink.client.property.JvStored.BLOD_ALL;
+import static org.uma.jvLink.client.property.JvStored.DIFF_ALL;
+import static org.uma.jvLink.client.property.JvStored.RACE_ALL;
+
 
 @Slf4j
-@Component
+@Configuration
+@ConfigurationProperties(prefix = "setup")
 public class SetupConfiguration {
 
     /**
      * 現在から設定した日付までのデータをセットアップする。
      */
-    @Value("setup.yyyyMMddHHmmss")
+    @Setter
     @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private LocalDateTime yyyyMMddHHmmss;
 

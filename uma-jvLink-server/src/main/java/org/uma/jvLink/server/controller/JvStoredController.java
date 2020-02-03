@@ -12,7 +12,7 @@ import org.uma.jvLink.client.util.DateUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.uma.jvLink.client.JvStored.*;
+import static org.uma.jvLink.client.property.JvStored.*;
 
 
 @Controller

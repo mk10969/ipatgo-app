@@ -9,7 +9,7 @@ import org.uma.jvLink.client.JvLinkClient;
 
 import java.util.List;
 
-import static org.uma.jvLink.client.JvRealTime.*;
+import static org.uma.jvLink.client.property.JvRealTime.*;
 
 
 @Controller

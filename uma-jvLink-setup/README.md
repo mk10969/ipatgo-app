@@ -24,8 +24,7 @@ java ^
  -Xloggc:./log/gc.log ^
  -XX:+PrintGCDetails ^
  -XX:+PrintGCTimeStamps ^
- -jar uma-jvLink-setup.jar ^
- --spring.profiles.active=setup
+ -jar uma-jvLink-setup.jar
 ```
 
  - jstat

@@ -1,4 +1,4 @@
-package org.uma.jvLink.client;
+package org.uma.jvLink.client.property;
 
 import org.uma.jvLink.client.config.condition.StoredOpenCondition;
 

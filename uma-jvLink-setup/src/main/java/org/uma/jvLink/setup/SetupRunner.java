@@ -17,6 +17,6 @@ public class SetupRunner implements CommandLineRunner {
         setupConfiguration.setupRACE();
         setupConfiguration.setupBLOD();
         setupConfiguration.setupDIFF();
-
     }
+
 }
