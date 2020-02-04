@@ -3,6 +3,7 @@ apply plugin: 'java-library'
 
 dependencies {
     implementation files('lib/jacob.jar')
+    implementation 'io.projectreactor:reactor-core:3.3.0.RELEASE'
 
     // logback
     implementation 'ch.qos.logback:logback-classic:1.2.3'

@@ -5,8 +5,13 @@ import org.uma.jvLink.client.exception.JvLinkErrorCode;
 import org.uma.jvLink.client.exception.JvLinkRuntimeException;
 import org.uma.jvLink.client.response.JvResult;
 import org.uma.jvLink.client.util.ThreadUtil;
+import reactor.core.publisher.Flux;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -28,6 +33,15 @@ class JvLinkReader<T extends JvResult> implements Iterable<T> {
         return StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(iterator(), Spliterator.NONNULL),
                 false);
+    }
+
+    /**
+     * Iterator to Flux
+     *
+     * @return Flux(Publisher) オブジェクト
+     */
+    Flux<T> publish() {
+        return Flux.fromIterable(this);
     }
 
     @NonNull

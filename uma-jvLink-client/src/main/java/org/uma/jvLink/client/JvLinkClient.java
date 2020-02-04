@@ -6,6 +6,8 @@ import org.uma.jvLink.client.config.option.Option;
 import org.uma.jvLink.client.config.option.RealTimeKey;
 import org.uma.jvLink.client.response.JvContent;
 import org.uma.jvLink.client.response.JvStringContent;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -65,13 +67,20 @@ public abstract class JvLinkClient {
         );
     }
 
-
-    public static JvLinkReader<JvStringContent> readForSetup(
+    /**
+     * Publisherオブジェクトを生成する。
+     * このPublisherの処理が終わると、closeする
+     */
+    public static Flux<JvStringContent> readForSetup(
             final StoredOpenCondition condition,
             final LocalDateTime fromTime) {
         return JvLink.init()
                 .open(condition, fromTime, Option.SETUP_WITHOUT_DIALOG)
-                .read(condition);
+                .read(condition)
+                .publish()
+                .publishOn(Schedulers.immediate()) //内部読み取り処理はシングルスレッド
+                .doOnCancel(JvLink::close)
+                .doOnTerminate(JvLink::close); // completion or error;
     }
 
 }

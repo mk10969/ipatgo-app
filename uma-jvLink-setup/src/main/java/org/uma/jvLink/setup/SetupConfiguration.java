@@ -9,14 +9,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.uma.jvLink.client.JvLinkClient;
 import org.uma.jvLink.client.response.JvStringContent;
 import org.uma.jvLink.client.util.ByteUtil;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
 
-import static org.uma.jvLink.client.property.JvStored.*;
+import static org.uma.jvLink.client.property.JvStored.BLOD_ALL;
+import static org.uma.jvLink.client.property.JvStored.DIFF_ALL;
+import static org.uma.jvLink.client.property.JvStored.RACE_ALL;
 
 
 @Slf4j
@@ -32,14 +32,9 @@ public class SetupConfiguration {
     private LocalDateTime yyyyMMddHHmmss;
 
 
-    /**
-     * セットアップデータをひたすらファイルに書き込む。
-     */
     public Mono<String> setupRACE() {
-        return Flux.fromIterable(JvLinkClient
-                .readForSetup(RACE_ALL.get(), yyyyMMddHHmmss))
+        return JvLinkClient.readForSetup(RACE_ALL.get(), yyyyMMddHHmmss)
                 .doOnNext(i -> log.info("<< RACE START"))
-                .publishOn(Schedulers.single())
                 .map(JvStringContent::getLine)
                 .map(ByteUtil::toByte)
                 .map(bytes -> Base64.getEncoder().encodeToString(bytes))
@@ -48,10 +43,8 @@ public class SetupConfiguration {
     }
 
     public Mono<String> setupBLOD() {
-        return Flux.fromIterable(JvLinkClient
-                .readForSetup(BLOD_ALL.get(), yyyyMMddHHmmss))
+        return JvLinkClient.readForSetup(BLOD_ALL.get(), yyyyMMddHHmmss)
                 .doOnNext(i -> log.info("<< BLOD START"))
-                .publishOn(Schedulers.single())
                 .map(JvStringContent::getLine)
                 .map(ByteUtil::toByte)
                 .map(bytes -> Base64.getEncoder().encodeToString(bytes))
@@ -60,10 +53,8 @@ public class SetupConfiguration {
     }
 
     public Mono<String> setupDIFF() {
-        return Flux.fromIterable(JvLinkClient
-                .readForSetup(DIFF_ALL.get(), yyyyMMddHHmmss))
+        return JvLinkClient.readForSetup(DIFF_ALL.get(), yyyyMMddHHmmss)
                 .doOnNext(i -> log.info("<< DIFF START"))
-                .publishOn(Schedulers.single())
                 .map(JvStringContent::getLine)
                 .map(ByteUtil::toByte)
                 .map(bytes -> Base64.getEncoder().encodeToString(bytes))
