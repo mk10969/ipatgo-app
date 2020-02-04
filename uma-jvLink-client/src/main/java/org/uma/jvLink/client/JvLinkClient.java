@@ -66,14 +66,12 @@ public abstract class JvLinkClient {
     }
 
 
-    public static Stream<JvStringContent> readForSetup(
+    public static JvLinkReader<JvStringContent> readForSetup(
             final StoredOpenCondition condition,
             final LocalDateTime fromTime) {
         return JvLink.init()
                 .open(condition, fromTime, Option.SETUP_WITHOUT_DIALOG)
-                .read(condition)
-                .stream()
-                .onClose(JvLink::close);
+                .read(condition);
     }
 
 }

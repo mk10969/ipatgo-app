@@ -10,15 +10,13 @@ import org.uma.jvLink.client.JvLinkClient;
 import org.uma.jvLink.client.response.JvStringContent;
 import org.uma.jvLink.client.util.ByteUtil;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
-import java.util.stream.Stream;
 
-import static org.uma.jvLink.client.property.JvStored.BLOD_ALL;
-import static org.uma.jvLink.client.property.JvStored.DIFF_ALL;
-import static org.uma.jvLink.client.property.JvStored.RACE_ALL;
+import static org.uma.jvLink.client.property.JvStored.*;
 
 
 @Slf4j
@@ -37,61 +35,40 @@ public class SetupConfiguration {
     /**
      * セットアップデータをひたすらファイルに書き込む。
      */
-    public void setupRACE() {
-        try (Stream<JvStringContent> stream = JvLinkClient
-                .readForSetup(RACE_ALL.get(), yyyyMMddHHmmss)) {
-            Flux.fromStream(stream)
-                    .doOnNext(i -> log.info("<< START"))
-                    .publishOn(Schedulers.single())
-                    .map(JvStringContent::getLine)
-                    .map(ByteUtil::toByte)
-                    .map(bytes -> Base64.getEncoder()
-                            .encodeToString(bytes))
-                    .subscribeOn(Schedulers.parallel())
-                    .subscribe(
-                            log::info,
-                            e -> log.error("ERROR: ", e),
-                            () -> log.info("<< EOL")
-                    );
-        }
+    public Mono<String> setupRACE() {
+        return Flux.fromIterable(JvLinkClient
+                .readForSetup(RACE_ALL.get(), yyyyMMddHHmmss))
+                .doOnNext(i -> log.info("<< RACE START"))
+                .publishOn(Schedulers.single())
+                .map(JvStringContent::getLine)
+                .map(ByteUtil::toByte)
+                .map(bytes -> Base64.getEncoder().encodeToString(bytes))
+                .doOnNext(log::info)
+                .then(Mono.just("OK"));
     }
 
-    public void setupBLOD() {
-        try (Stream<JvStringContent> stream = JvLinkClient
-                .readForSetup(BLOD_ALL.get(), yyyyMMddHHmmss)) {
-            Flux.fromStream(stream)
-                    .doOnNext(i -> log.info("<< START"))
-                    .publishOn(Schedulers.single())
-                    .map(JvStringContent::getLine)
-                    .map(ByteUtil::toByte)
-                    .map(bytes -> Base64.getEncoder()
-                            .encodeToString(bytes))
-                    .subscribeOn(Schedulers.parallel())
-                    .subscribe(
-                            log::info,
-                            e -> log.error("ERROR: ", e),
-                            () -> log.info("<< EOL")
-                    );
-        }
+    public Mono<String> setupBLOD() {
+        return Flux.fromIterable(JvLinkClient
+                .readForSetup(BLOD_ALL.get(), yyyyMMddHHmmss))
+                .doOnNext(i -> log.info("<< BLOD START"))
+                .publishOn(Schedulers.single())
+                .map(JvStringContent::getLine)
+                .map(ByteUtil::toByte)
+                .map(bytes -> Base64.getEncoder().encodeToString(bytes))
+                .doOnNext(log::info)
+                .then(Mono.just("OK"));
     }
 
-    public void setupDIFF() {
-        try (Stream<JvStringContent> stream = JvLinkClient
-                .readForSetup(DIFF_ALL.get(), yyyyMMddHHmmss)) {
-            Flux.fromStream(stream)
-                    .doOnNext(i -> log.info("<< START"))
-                    .publishOn(Schedulers.single())
-                    .map(JvStringContent::getLine)
-                    .map(ByteUtil::toByte)
-                    .map(bytes -> Base64.getEncoder()
-                            .encodeToString(bytes))
-                    .subscribeOn(Schedulers.parallel())
-                    .subscribe(
-                            log::info,
-                            e -> log.error("ERROR: ", e),
-                            () -> log.info("<< EOL")
-                    );
-        }
+    public Mono<String> setupDIFF() {
+        return Flux.fromIterable(JvLinkClient
+                .readForSetup(DIFF_ALL.get(), yyyyMMddHHmmss))
+                .doOnNext(i -> log.info("<< DIFF START"))
+                .publishOn(Schedulers.single())
+                .map(JvStringContent::getLine)
+                .map(ByteUtil::toByte)
+                .map(bytes -> Base64.getEncoder().encodeToString(bytes))
+                .doOnNext(log::info)
+                .then(Mono.just("OK"));
     }
 
 }

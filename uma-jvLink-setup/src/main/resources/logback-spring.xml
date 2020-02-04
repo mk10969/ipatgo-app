@@ -10,7 +10,7 @@
 
 
     <!-- ローカル用設定 -->
-    <springProfile name="dev">
+    <springProfile name="default">
         <property name="logFilePath" value="./log/"/>
     </springProfile>
 
@@ -71,6 +71,12 @@
     </appender>
 
 
+    <!-- 非同期書き込み -->
+    <appender name="ASYNC_APPLICATION_LOG_JVLINK_DATA" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="APPLICATION_LOG_JVLINK_DATA"/>
+    </appender>
+
+
     <!-- JvLink Client ロガー -->
     <logger name="org.uma.jvLink.client.JvLinkWrapper" level="debug" additivity="false">
         <appender-ref ref="APPLICATION_LOG_JVLINK"/>
@@ -78,7 +84,7 @@
 
     <!-- data ロガー -->
     <logger name="org.uma.jvLink.setup.SetupConfiguration" level="info" additivity="false">
-        <appender-ref ref="APPLICATION_LOG_JVLINK_DATA"/>
+        <appender-ref ref="ASYNC_APPLICATION_LOG_JVLINK_DATA"/>
     </logger>
 
     <!-- root ロガー -->
