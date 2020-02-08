@@ -13,7 +13,7 @@ class IPatGoConfigurationTest {
     void test() {
         List<String> actual = new IPatGoConfiguration.Builder(ipatGoProperties)
                 .setMode(IPatGoConfiguration.Mode.data)
-                .setVoteData("aaa,aaaa,aaaa,aaaaaa")
+                .setArgument("aaa,aaaa,aaaa,aaaaaa")
                 .setNoSplash()
                 .build();
         actual.forEach(System.out::println);

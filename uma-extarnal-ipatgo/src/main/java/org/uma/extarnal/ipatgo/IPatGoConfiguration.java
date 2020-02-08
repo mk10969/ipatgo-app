@@ -8,6 +8,9 @@ import java.util.Objects;
 
 public class IPatGoConfiguration {
 
+    /**
+     * ipatgo.exeのフルパス
+     */
     private static final String ipatgoExe = "ipatgo.exe";
 
     public enum Mode {data, file, stat, history, deposit, withdraw}
@@ -30,10 +33,8 @@ public class IPatGoConfiguration {
     public static class Builder {
         private Mode mode;
         private final IPatGoProperties ipatGoProperties;
-
-        private String voteData;
+        private String argument;
         private String noSplash;
-
         private String timeSeries;
 
         public Builder(IPatGoProperties ipatGoProperties) {
@@ -46,9 +47,9 @@ public class IPatGoConfiguration {
             return this;
         }
 
-        public Builder setVoteData(String voteData) {
-            Objects.requireNonNull(voteData);
-            this.voteData = voteData;
+        public Builder setArgument(String argument) {
+            Objects.requireNonNull(argument);
+            this.argument = argument;
             return this;
         }
 
@@ -63,7 +64,6 @@ public class IPatGoConfiguration {
             return this;
         }
 
-
         public List<String> build() {
             List<String> command = new ArrayList<>();
             command.add(ipatgoExe);
@@ -72,7 +72,7 @@ public class IPatGoConfiguration {
             command.add(ipatGoProperties.getSubscriberNo());
             command.add(ipatGoProperties.getPassword());
             command.add(ipatGoProperties.getPArsNo());
-            command.add(voteData);
+            command.add(argument);
             command.add(noSplash);
             command.add(timeSeries);
             command.removeIf(Objects::isNull);
