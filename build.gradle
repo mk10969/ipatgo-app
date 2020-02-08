@@ -11,7 +11,7 @@ allprojects {
 }
 
 subprojects {
-    group 'org.uma.jvLink'
+    group 'org.uma.extarnal'
     version '1.0.0.RELEASE'
 
     apply plugin: 'java'
@@ -29,8 +29,6 @@ subprojects {
     }
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
         // lombok
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'

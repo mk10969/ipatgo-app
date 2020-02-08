@@ -1,4 +1,9 @@
-# uma-jvLink
+# uma-jvLink-app
+
+## uma-ipatgo-executor
+ - IPATGOをJavaから呼び出して利用する。
+ - 
+
 
 ## uma-jvLink-client
  - JvLinkと接続するためのクライアントライブラリ
@@ -12,10 +17,8 @@
  - endpoint 一覧
 
 
-## uma-JvLink-setup
- - データをセットアップするためのサーバ。
- - JvLinkセットアップデータを、ファイルに出力する。
-
-
 ## uma-jvLink-service
  - uma-jvLink-serverを、サービス化するための設定群。
+
+
+

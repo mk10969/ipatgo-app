@@ -1,0 +1,18 @@
+apply plugin: 'org.springframework.boot'
+
+
+bootJar {
+    launchScript()
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+}
+
+
+bootRun {
+    jvmArgs = ['-Dspring.profiles.active=dev']
+}
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+}

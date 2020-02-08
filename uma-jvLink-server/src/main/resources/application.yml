@@ -1,8 +1,0 @@
-
-# 指定がない場合のデフォルト
-spring:
-  profiles:
-    active: dev
-
-
-# actuatorの設定入れますか！

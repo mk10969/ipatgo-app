@@ -1,3 +1,3 @@
-include 'uma-jvLink-client'
-include 'uma-jvLink-server'
-include 'uma-jvLink-setup'
+include 'uma-extarnal-ipatgo'
+include 'uma-extarnal-jvlink-client'
+include 'uma-extarnal-jvlink-server'
