@@ -35,7 +35,6 @@ public class IPatGoController {
      * 6.【withdrawモード】 即パット出金指示
      */
 
-
     private final IPatGoProperties iPatGoProperties;
 
     private static Mono<ServerResponse> errorHandle(Throwable throwable) {

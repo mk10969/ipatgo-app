@@ -9,7 +9,7 @@ import java.util.Objects;
 public class IPatGoConfiguration {
 
     /**
-     * ipatgo.exeのフルパス
+     * TODO: ipatgo.exeのフルパス
      */
     private static final String ipatgoExe = "ipatgo.exe";
 
@@ -71,7 +71,7 @@ public class IPatGoConfiguration {
             command.add(ipatGoProperties.getINetId());
             command.add(ipatGoProperties.getSubscriberNo());
             command.add(ipatGoProperties.getPassword());
-            command.add(ipatGoProperties.getPArsNo());
+            command.add(ipatGoProperties.getParsNo());
             command.add(argument);
             command.add(noSplash);
             command.add(timeSeries);

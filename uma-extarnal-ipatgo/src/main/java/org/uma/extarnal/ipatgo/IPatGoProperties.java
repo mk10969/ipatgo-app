@@ -1,39 +1,29 @@
 package org.uma.extarnal.ipatgo;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-import java.util.Objects;
-
-
-@ConfigurationProperties
+@Configuration
+@ConfigurationProperties(prefix = "ipatgo.authentication")
 public class IPatGoProperties {
 
-    private final String INetId;
-    private final String subscriberNo;
-    private final String password;
-    private final String pArsNo;
+    @Getter
+    @Setter
+    private String INetId;
 
-    public IPatGoProperties(String INetId, String subscriberNo, String password, String pArsNo) {
-        this.INetId = Objects.requireNonNull(INetId);
-        this.subscriberNo = Objects.requireNonNull(subscriberNo);
-        this.password = Objects.requireNonNull(password);
-        this.pArsNo = Objects.requireNonNull(pArsNo);
-    }
+    @Getter
+    @Setter
+    private String subscriberNo;
 
-    public String getINetId() {
-        return this.INetId;
-    }
+    @Getter
+    @Setter
+    private String password;
 
-    public String getSubscriberNo() {
-        return this.subscriberNo;
-    }
+    @Getter
+    @Setter
+    private String parsNo;
 
-    public String getPassword() {
-        return this.password;
-    }
-
-    public String getPArsNo() {
-        return this.pArsNo;
-    }
 }

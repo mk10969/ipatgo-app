@@ -1,17 +1,21 @@
 package org.uma.extarnal.ipatgo;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+
+@SpringBootTest
 class IPatGoConfigurationTest {
 
-    private IPatGoProperties ipatGoProperties = new IPatGoProperties(
-            "111", "aaaa", "aaa", "111");
+    @Autowired
+    private IPatGoProperties iPatGoProperties;
 
     @Test
     void test() {
-        List<String> actual = new IPatGoConfiguration.Builder(ipatGoProperties)
+        List<String> actual = new IPatGoConfiguration.Builder(iPatGoProperties)
                 .setMode(IPatGoConfiguration.Mode.data)
                 .setArgument("aaa,aaaa,aaaa,aaaaaa")
                 .setNoSplash()
@@ -21,7 +25,7 @@ class IPatGoConfigurationTest {
 
     @Test
     void test2() {
-        List<String> actual = new IPatGoConfiguration.Builder(ipatGoProperties)
+        List<String> actual = new IPatGoConfiguration.Builder(iPatGoProperties)
                 .setMode(IPatGoConfiguration.Mode.history)
                 .setTimeSeries(IPatGoConfiguration.TimeSeries.before)
                 .build();

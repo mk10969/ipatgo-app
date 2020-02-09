@@ -1,4 +1,11 @@
 server:
   port: 8787
 
+ipatgo:
+  authentication:
+    INetId: XXXXXXX
+    subscriberNo: XXXXXX
+    password: XXXXXX
+    parsNo: XXXXX
+
 
