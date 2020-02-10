@@ -5,22 +5,22 @@ class JvLinkError(Exception):
     
     def __repr__(self):
         return self.build()
-
+    
     @property
     def error_code(self):
         return self.__error_code
-
+    
     @property
     def error_message(self):
         return self.__error_message
-
+    
     def build(self):
         return {
-            "Error Code"    : self.error_code,
-            "Error Message" : self.error_message
+            "Error Code"   : self.error_code,
+            "Error Message": self.error_message
         }
-        
-        
+
+
 class JvLinkParameterError(JvLinkError):
     def __init__(self, jvlink_error_code):
         super().__init__(jvlink_error_code)
@@ -103,6 +103,6 @@ if __name__ == '__main__':
     
     e = JvLinkDownloadFileError(JvLinkErrorCode._402, "once.txt")
     print(e.__repr__())
-
+    
     e1 = JvLinkParameterError(JvLinkErrorCode._100)
     print(e1.__repr__())

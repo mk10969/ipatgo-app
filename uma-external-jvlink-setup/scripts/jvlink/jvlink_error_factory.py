@@ -1,6 +1,6 @@
+from .config.utils import SingletonType
 from .exception import *
 from .jvlink_result import JvLinkResult
-from ..common import SingletonType
 
 
 class JvLinkErrorFactory(object, metaclass=SingletonType):

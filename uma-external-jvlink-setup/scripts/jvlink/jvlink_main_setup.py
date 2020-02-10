@@ -1,8 +1,8 @@
 import base64
 from logging import getLogger
 
-from scripts.common.helper import execution_time
 from .config import KeyManage, create_condition
+from .config.utils import execution_time
 from .exception import JvLinkError
 from .jvlink_manage import JvLinkManage
 
@@ -64,10 +64,8 @@ class JvLinkSetup(object):
                 for i in self.generator():
                     f.write(base64.b64encode(i.encode("MS932")).decode())
                     f.write('\n')
-                    
+        
         except (JvLinkError, UnicodeEncodeError) as e:
             logger.error("書き込みが失敗しました。", e)
         else:
             logger.info("書き込み完了しました。")
-            
-

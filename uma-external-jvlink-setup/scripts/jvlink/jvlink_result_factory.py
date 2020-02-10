@@ -1,5 +1,5 @@
+from .config.utils import SingletonType
 from .jvlink_result import JvLinkResult, JvOpenResult, JvReadResult
-from ..common import SingletonType
 
 
 class JvLinkResultFactory(object, metaclass=SingletonType):

@@ -1,12 +1,8 @@
+# 再起処理の上限を上げる。
+import sys
 from logging import DEBUG, INFO, config
 from pathlib import Path
 
-from .jvlink.config import KeyManage
-from .jvlink.jvlink_main_setup import JvLinkSetup
-
-
-# 再起処理の上限を上げる。
-import sys
 sys.setrecursionlimit(10000)
 
 log_dir = Path(Path(__file__).parent, "../log")

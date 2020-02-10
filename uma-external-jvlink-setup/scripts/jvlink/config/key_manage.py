@@ -4,8 +4,8 @@ from pathlib import Path
 import pandas as pd
 from pandas import DataFrame
 
-from scripts.common import SingletonType
 from .keys import ConverterKey, DataRecordKey
+from .utils import SingletonType
 
 
 class KeyManage(object, metaclass=SingletonType):
@@ -41,11 +41,11 @@ class KeyManage(object, metaclass=SingletonType):
              self.converter_key.code],
             drop=True
         )
-
+        
         # levelは、MultiIndexの指定されたIndexの階層の値でソート
         self._data_record_df.sort_index(level=0, inplace=True)
         self._converter_df.sort_index(level=0, inplace=True)
-
+        
         # 欠損データ(nan)を、設定する関数 fillna()
         # df.fillna({'name': 'XXX', 'age': 20, 'point': 0})
         # self._data_record_df = self._data_record_df.fillna(
@@ -53,7 +53,7 @@ class KeyManage(object, metaclass=SingletonType):
         #      self.data_record_key.child_item  : "",
         #      self.data_record_key.child_index : 0}
         # )
-        
+    
     @property
     def data_record_df(self) -> DataFrame:
         return self._data_record_df
@@ -135,7 +135,7 @@ class KeyManage(object, metaclass=SingletonType):
              items[self.data_record_key.record])
             for index, items in self.data_df.iterrows()
         ]
-
+    
     def get_multi_index_filter(self, n=1):
         ok_list = [0, 1, 2, 4]
         if n in ok_list:

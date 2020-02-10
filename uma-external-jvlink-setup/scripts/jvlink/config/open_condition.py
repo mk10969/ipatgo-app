@@ -109,4 +109,3 @@ if __name__ == '__main__':
     print(a)
     aa = StoreOpenCondition(1, "aaaa", "aa", 111)
     print(aa)
-    

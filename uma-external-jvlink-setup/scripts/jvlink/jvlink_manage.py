@@ -2,10 +2,10 @@ import contextlib
 from logging import getLogger
 
 from .config import OpenCondition
+from .config.utils import deco_NotNone
 from .jvlink_adapter import JvLinkAdapter
 from .jvlink_error_handler import JvLinkErrorHandler
 from .jvlink_reader import JvLinkReader
-from ..common.helper import deco_NotNone
 
 logger = getLogger("jvlink")
 
@@ -78,4 +78,3 @@ class JvLinkManage(object):
             self.close()
             del self.jvlink
             logger.debug({"status": "クローズ", "条件": condition, "racing_key": key})
-

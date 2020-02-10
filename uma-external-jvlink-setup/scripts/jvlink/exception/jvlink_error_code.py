@@ -1,4 +1,5 @@
 from enum import Enum, unique
+
 from ..jvlink_result_factory import JvLinkResult
 
 
@@ -35,16 +36,15 @@ class JvLinkErrorCode(Enum):
     _502 = ("ダウンロード失敗（通信エラーやディスクエラーなど）", -502)
     _503 = ("ファイルが見つからない", -503)
     _504 = ("サーバーメンテナンス中", -504)
-
+    
     def get_message(self):
         return self.value[0]
-
+    
     def get_error_code(self):
         return self.value[1]
-
+    
     def is_same_error_code(self, result: JvLinkResult) -> bool:
         return result.return_code == self.get_error_code()
-
 
 # if __name__ == '__main__':
 #     for m in JvLinkErrorCode:
