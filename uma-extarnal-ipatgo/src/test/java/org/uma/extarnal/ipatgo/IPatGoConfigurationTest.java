@@ -15,7 +15,7 @@ class IPatGoConfigurationTest {
 
     @Test
     void test() {
-        List<String> actual = new IPatGoConfiguration.Builder(iPatGoProperties)
+        List<String> actual = new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
                 .setMode(IPatGoConfiguration.Mode.data)
                 .setArgument("aaa,aaaa,aaaa,aaaaaa")
                 .setNoSplash()
@@ -25,7 +25,7 @@ class IPatGoConfigurationTest {
 
     @Test
     void test2() {
-        List<String> actual = new IPatGoConfiguration.Builder(iPatGoProperties)
+        List<String> actual = new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
                 .setMode(IPatGoConfiguration.Mode.history)
                 .setTimeSeries(IPatGoConfiguration.TimeSeries.before)
                 .build();

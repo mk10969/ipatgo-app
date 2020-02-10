@@ -11,7 +11,7 @@ public class IPatGoConfiguration {
     /**
      * TODO: ipatgo.exeのフルパス
      */
-    private static final String ipatgoExe = "ipatgo.exe";
+    private static final String ipatgoExe = "C:\\umagen\\ipatgo\\ipatgo.exe";
 
     public enum Mode {data, file, stat, history, deposit, withdraw}
 
@@ -19,48 +19,48 @@ public class IPatGoConfiguration {
         before("--before"),
         latest("--latest")
         ;
-        private String arg;
+        private String option;
 
-        TimeSeries(String arg) {
-            this.arg = arg;
+        TimeSeries(String option) {
+            this.option = option;
         }
 
-        public String getArg() {
-            return this.arg;
+        public String getOption() {
+            return this.option;
         }
     }
 
-    public static class Builder {
+    public static class CommandBuilder {
         private Mode mode;
         private final IPatGoProperties ipatGoProperties;
         private String argument;
         private String noSplash;
         private String timeSeries;
 
-        public Builder(IPatGoProperties ipatGoProperties) {
+        public CommandBuilder(IPatGoProperties ipatGoProperties) {
             this.ipatGoProperties = ipatGoProperties;
         }
 
-        public Builder setMode(Mode mode) {
+        public CommandBuilder setMode(Mode mode) {
             Objects.requireNonNull(mode);
             this.mode = mode;
             return this;
         }
 
-        public Builder setArgument(String argument) {
+        public CommandBuilder setArgument(String argument) {
             Objects.requireNonNull(argument);
             this.argument = argument;
             return this;
         }
 
-        public Builder setNoSplash() {
+        public CommandBuilder setNoSplash() {
             this.noSplash = "--nosplash";
             return this;
         }
 
-        public Builder setTimeSeries(TimeSeries timeSeries) {
+        public CommandBuilder setTimeSeries(TimeSeries timeSeries) {
             Objects.requireNonNull(timeSeries);
-            this.timeSeries = timeSeries.getArg();
+            this.timeSeries = timeSeries.getOption();
             return this;
         }
 
