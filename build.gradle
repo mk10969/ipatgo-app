@@ -11,7 +11,7 @@ allprojects {
 }
 
 subprojects {
-    group 'org.uma.extarnal'
+    group 'org.uma.external'
     version '1.0.0.RELEASE'
 
     apply plugin: 'java'
