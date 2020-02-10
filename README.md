@@ -3,7 +3,7 @@
 
 ## uma-external-ipatgo
  - IPATGOをJavaから呼び出して利用する。
- - 
+ - endpoint 一覧
 
 
 ## uma-external-jvlink-client
@@ -17,12 +17,13 @@
  - JvLinkから得られたデータを、HTTPで返すサーバ。
  - endpoint 一覧
 
+
 ## uma-external-jvlink-setup
- - setup専用スクリプト
+ - setup専用Pythonスクリプト
+ - 丸一日かかる。。。
 
 
-## uma-jvLink-service
- - uma-jvLink-serverを、サービス化するための設定群。
-
-
+## windows-service
+ - uma-external-ipatgoを、サービス化するための設定群。
+ - uma-external-jvlink-serverを、サービス化するための設定群。
 

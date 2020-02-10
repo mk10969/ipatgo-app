@@ -1,5 +1,5 @@
 <configuration>
-    <id>UMA-EXTERNAL-JVLINK-SERVER</id>
+    <id>UMA-EXTERNAL-IPATGO</id>
     <name>MyApp Service (powered by WinSW)</name>
     <description>This service is a service cratead from a minimal configuration</description>
 
@@ -8,8 +8,11 @@
     <argument>-XX:+PrintGCDetails</argument>
     <argument>-XX:+PrintGCTimeStamps</argument>
     <argument>-jar</argument>
-    <argument>Z:\uma-external-jvlink-server.jar</argument>
-    <argument>--spring.profiles.active=prd</argument>
+    <argument>Z:\uma-external-ipatgo.jar</argument>
+    <argument>--ipatgo.authentication.INetId=XXXXXX</argument>
+    <argument>--ipatgo.authentication.subscriberNo=XXXXXX</argument>
+    <argument>--ipatgo.authentication.password=XXXXXX</argument>
+    <argument>--ipatgo.authentication.parsNo=XXXXXX</argument>
 
     <logpath>%BASE%\log</logpath>
 
