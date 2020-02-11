@@ -2,7 +2,7 @@ from functools import wraps
 from logging import getLogger
 from pathlib import Path
 
-from .scripts.jvlink.jvlink_main_setup import JvLinkSetup
+from scripts.jvlink.jvlink_main_setup import JvLinkSetup
 
 logger = getLogger(__name__)
 
@@ -95,9 +95,9 @@ def other_info_setup():
 
 if __name__ == '__main__':
     ### RUN SETUP ###
-    
+    print("start setup")
     # race_info_setup()
     # blood_info_setup()
     # master_info_setup()
-    race_info2_setup()
+    # race_info2_setup()
     # other_info_setup()

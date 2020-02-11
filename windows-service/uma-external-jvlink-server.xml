@@ -8,7 +8,7 @@
     <argument>-XX:+PrintGCDetails</argument>
     <argument>-XX:+PrintGCTimeStamps</argument>
     <argument>-jar</argument>
-    <argument>Z:\uma-external-jvlink-server.jar</argument>
+    <argument>Y:\uma-external-jvlink-server.jar</argument>
     <argument>--spring.profiles.active=prd</argument>
 
     <logpath>%BASE%\log</logpath>

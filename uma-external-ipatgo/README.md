@@ -14,7 +14,7 @@ java ^
  -Xloggc:./log/gc.log ^
  -XX:+PrintGCDetails ^
  -XX:+PrintGCTimeStamps ^
- -jar uma-extarnal-ipatgo.jar ^
+ -jar uma-external-ipatgo.jar ^
  --ipatgo.authentication.INetId=XXXXXX ^
  --ipatgo.authentication.subscriberNo=XXXXXX ^
  --ipatgo.authentication.password=XXXXXX ^

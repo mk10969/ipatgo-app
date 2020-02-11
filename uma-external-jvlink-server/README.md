@@ -9,7 +9,7 @@
    - 送信port開放 27017
   
  - app service化
-   - winsw[https://github.com/kohsuke/winsw]
+   - [winsw](https://github.com/kohsuke/winsw)
    
  - OpenSSH service化
    - 管理者でPowerShell login
@@ -42,7 +42,7 @@ java ^
  -Xloggc:./log/gc.log ^
  -XX:+PrintGCDetails ^
  -XX:+PrintGCTimeStamps ^
- -jar uma-jvLink-server.jar ^
+ -jar uma-external-jvlink-server.jar ^
  --spring.profiles.active=prd
 ```
 
