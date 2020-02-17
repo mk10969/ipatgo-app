@@ -1,3 +1,2 @@
-include 'uma-external-ipatgo'
+include 'uma-external-app'
 include 'uma-external-jvlink-client'
-include 'uma-external-jvlink-server'
