@@ -25,7 +25,7 @@ public class DateUtil {
         return LocalDateTime.of(LocalDate.parse(yyyyMMdd, df), LocalTime.of(0, 0));
     }
 
-    public static LocalDateTime tolocalDateTime(long epochSecond) {
+    public static LocalDateTime toLocalDateTime(long epochSecond) {
         return LocalDateTime.ofEpochSecond(epochSecond, 0, ZoneOffset.UTC);
     }
     
