@@ -35,9 +35,10 @@ out/
 # jenv
 .java-version
 
-# log
+# log and jarfile
 *.log
 *.log.zip
+*.jar
 
 # mac
 .DS_Store
