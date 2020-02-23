@@ -54,6 +54,14 @@ test {
 }
 
 
+task publish(type: Copy, dependsOn: build) {
+    from  ("${buildDir}/libs") {
+        include '*.jar'
+    }
+    into "${projectDir}/windows-service"
+}
+
+
 compileJava.options.encoding = 'UTF-8'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8

@@ -4,14 +4,15 @@ spring:
     active: dev
 
 server:
-  port: 8888
+  port: 8080
 
 # spring actuator config
 management:
   server:
-    port: 8080
+    port: 8888
   endpoints:
     web:
+      # default
       base-path: /actuator
       exposure:
         include: beans,health,env,metrics,mappings,configprops

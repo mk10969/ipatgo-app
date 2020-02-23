@@ -2,11 +2,10 @@
  - Install
    - java 8 32bit
    - JvLink
-   - OpenSSH
+   - OpenSSH (optional)
  
  - environment
    - 受信port開放 8080
-   - 送信port開放 27017
   
  - app service化
    - [winsw](https://github.com/kohsuke/winsw)
@@ -16,7 +15,6 @@
    - $ Start-Service sshd
    - $ Set-Service -Name sshd -StartupType 'Automatic'
  
-
 
  - ssh接続
 ```
