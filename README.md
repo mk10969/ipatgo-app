@@ -1,29 +1,19 @@
-# uma-external-app
+# uma-monolith-app-starters
 
 
-## uma-external-ipatgo
- - IPATGOをJavaから呼び出して利用する。
- - endpoint 一覧
+## uma-external-app
+ - IPATGOをJavaから呼び出して利用できる。
 
-
-## uma-external-jvlink-client
  - JvLinkと接続するためのクライアントライブラリ
  - JvLinkをマルチスレッド上で動作させるために、
  クライアントで、ロックをかけて排他制御を行っている。
 
-
-## uma-external-jvlink-server
- - boot Jar型 Web server (tomcat内包)  
+ - boot Jar型 Web server  
  - JvLinkから得られたデータを、HTTPで返すサーバ。
  - endpoint 一覧
 
 
-## uma-external-jvlink-setup
+## uma-external-setup
  - setup専用Pythonスクリプト
  - 丸一日かかる。。。
-
-
-## windows-service
- - uma-external-ipatgoを、サービス化するための設定群。
- - uma-external-jvlink-serverを、サービス化するための設定群。
 

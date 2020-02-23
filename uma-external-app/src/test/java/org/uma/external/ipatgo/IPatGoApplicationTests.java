@@ -18,12 +18,12 @@ class IPatGoApplicationTests {
         Assertions.assertEquals(result.get(), 0);
     }
 
-    @Test
-    void test_cmd2() throws ExecutionException, InterruptedException {
-        List<String> cmd = Arrays.asList("/tmp/jarfile/once.sh");
-        CompletableFuture<Integer> result = IPatGoCommandRunner.execute(cmd);
-        Assertions.assertEquals(result.get(), 0);
-    }
+//    @Test
+//    void test_cmd2() throws ExecutionException, InterruptedException {
+//        List<String> cmd = Arrays.asList("/tmp/jarfile/once.sh");
+//        CompletableFuture<Integer> result = IPatGoCommandRunner.execute(cmd);
+//        Assertions.assertEquals(result.get(), 0);
+//    }
 
 
 }

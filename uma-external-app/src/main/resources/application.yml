@@ -14,7 +14,8 @@ management:
     web:
       base-path: /actuator
       exposure:
-        include: auditevents,beans,health,env,metrics,mappings,configprops,scheduledtasks
+        include: beans,health,env,metrics,mappings,configprops
+#        include: auditevents,beans,health,env,metrics,mappings,configprops,scheduledtasks
 
 
 ipatgo:

@@ -7,7 +7,6 @@
     <property name="stdout" value="stdout"/>
     <property name="jvLink" value="jvLink"/>
     <property name="ipatgo" value="ipatgo"/>
-    <property name="jvLinkRawData" value="jvLinkRawData"/>
 
 
     <!-- ローカル用設定 -->
@@ -21,15 +20,27 @@
     </springProfile>
 
 
-    <!-- コンソール出力 -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <target>System.out</target>
+    <!--    &lt;!&ndash; コンソール出力 &ndash;&gt;-->
+    <!--    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+    <!--        <target>System.out</target>-->
+    <!--        <encoder>-->
+    <!--            <charset>UTF-8</charset>-->
+    <!--            <pattern>%d{yyyy/MM/dd HH:mm:ss} %-5level [%thread] - %msg%n</pattern>-->
+    <!--        </encoder>-->
+    <!--    </appender>-->
+
+    <!-- stdout ログファイル書き出し -->
+    <appender name="APPLICATION_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}${stdout}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}${stdout}-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
         <encoder>
             <charset>UTF-8</charset>
             <pattern>%d{yyyy/MM/dd HH:mm:ss} %-5level [%thread] - %msg%n</pattern>
         </encoder>
     </appender>
-
 
     <!-- JvLink Client ログファイル書き出し -->
     <appender name="APPLICATION_LOG_JVLINK" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -45,41 +56,9 @@
     </appender>
 
 
-    <!-- JvLink raw data ログファイル書き出し -->
-    <appender name="APPLICATION_LOG_JVLINK_RAW_DATA" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logFilePath}${jvLinkRawData}.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logFilePath}${jvLinkRawData}-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
-        </rollingPolicy>
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d{yyyy/MM/dd HH:mm:ss} %-5level [%thread] - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-
-    <!-- ログファイル書き出し -->
-    <appender name="APPLICATION_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logFilePath}${stdout}.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logFilePath}${stdout}-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
-            <maxHistory>3</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d{yyyy/MM/dd HH:mm:ss} %-5level [%thread] - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-
     <!-- JvLink Client ロガー -->
-    <logger name="org.uma.external.jvlink.client.JvLinkWrapper" level="debug" additivity="false">
+    <logger name="org.uma.external.jvlink.JvLinkWrapper" level="debug" additivity="false">
         <appender-ref ref="APPLICATION_LOG_JVLINK"/>
-    </logger>
-
-    <!-- JvLink Raw Data ロガー -->
-    <logger name="org.uma.external.jvlink.BaseController" level="info" additivity="false">
-        <appender-ref ref="APPLICATION_LOG_JVLINK_RAW_DATA"/>
     </logger>
 
 

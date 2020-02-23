@@ -1,4 +1,17 @@
-apply plugin: 'org.springframework.boot'
+plugins {
+    id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
+
+group 'org.uma.external'
+version '1.0.0.RELEASE'
+
+
+repositories {
+    mavenCentral()
+}
 
 
 bootJar {
@@ -12,11 +25,35 @@ bootRun {
 }
 
 
+configurations {
+    testImplementation.extendsFrom compileOnly
+    testAnnotationProcessor.extendsFrom annotationProcessor
+}
+
+
 dependencies {
-    implementation project(':uma-external-jvlink-client')
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation files('lib/jacob.jar')
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     implementation 'com.google.guava:guava:28.1-jre'
 
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'io.projectreactor:reactor-test'
 }
+
+
+test {
+    useJUnitPlatform()
+}
+
+
+compileJava.options.encoding = 'UTF-8'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
