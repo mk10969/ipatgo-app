@@ -19,6 +19,8 @@ import static org.uma.external.jvlink.property.JvRealTime.OB33_O3;
 import static org.uma.external.jvlink.property.JvRealTime.OB34_O4;
 import static org.uma.external.jvlink.property.JvRealTime.OB35_O5;
 import static org.uma.external.jvlink.property.JvRealTime.OB36_O6;
+import static org.uma.external.jvlink.property.JvRealTime.OB41_O1;
+import static org.uma.external.jvlink.property.JvRealTime.OB42_O2;
 
 
 @Controller
@@ -124,5 +126,28 @@ public class JvRealTimeController extends BaseController {
                 .readLines(OB36_O6.get(), () -> raceId)
                 .stream());
     }
+
+    /**
+     * 単勝・複勝・枠 時系列オッズ
+     */
+    @GetMapping("/timeseries/winsPlaceBracketQuinella")
+    @ResponseBody
+    public List<String> findTimeseriesWinsPlaceBracketQuinella(@RequestParam("raceId") String raceId) {
+        return converter(() -> JvLinkClient
+                .readLines(OB41_O1.get(), () -> raceId)
+                .stream());
+    }
+
+    /**
+     * 馬連 時系列オッズ
+     */
+    @GetMapping("/timeseries/quinella")
+    @ResponseBody
+    public List<String> findTimeseriesQuinella(@RequestParam("raceId") String raceId) {
+        return converter(() -> JvLinkClient
+                .readLines(OB42_O2.get(), () -> raceId)
+                .stream());
+    }
+
 
 }
