@@ -1,10 +1,10 @@
 package org.uma.external.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.uma.external.jvlink.JvLinkClient;
 import org.uma.external.jvlink.config.option.Option;
 import org.uma.external.jvlink.util.DateUtil;
@@ -33,12 +33,11 @@ import static org.uma.external.jvlink.property.JvStored.RACE_RA;
 import static org.uma.external.jvlink.property.JvStored.RACE_SE;
 
 
-@Controller
+@RestController
 public class JvStoredController extends BaseController {
 
 
     @GetMapping("/racingDetails/thisWeek")
-    @ResponseBody
     public List<String> findRacingDetailsOnThisWeek() {
         LocalDateTime dateTime = LocalDateTime.now().minusWeeks(1L);
         return converter(() -> JvLinkClient
@@ -47,7 +46,6 @@ public class JvStoredController extends BaseController {
     }
 
     @GetMapping("/horseRacingDetails/thisWeek")
-    @ResponseBody
     public List<String> findHorseRacingDetailsOnThisWeek() {
         LocalDateTime dateTime = LocalDateTime.now().minusWeeks(1L);
         return converter(() -> JvLinkClient
@@ -60,7 +58,6 @@ public class JvStoredController extends BaseController {
      * レース情報
      */
     @GetMapping("/racingDetails/{epochSecond}")
-    @ResponseBody
     public List<String> findRacingDetails(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -69,7 +66,6 @@ public class JvStoredController extends BaseController {
     }
 
     @GetMapping("/horseRacingDetails/{epochSecond}")
-    @ResponseBody
     public List<String> findHorseRacingDetails(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -78,7 +74,6 @@ public class JvStoredController extends BaseController {
     }
 
     @GetMapping("/raceRefund/{epochSecond}")
-    @ResponseBody
     public List<String> findRaceRefund(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -87,7 +82,6 @@ public class JvStoredController extends BaseController {
     }
 
     @GetMapping("/voteCount/{epochSecond}")
-    @ResponseBody
     public List<String> findVoteCount(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -99,7 +93,6 @@ public class JvStoredController extends BaseController {
      * 単勝・複勝・枠連
      */
     @GetMapping("/winsPlaceBracketQuinella/{epochSecond}")
-    @ResponseBody
     public List<String> findWinsPlaceBracketQuinella(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -111,7 +104,6 @@ public class JvStoredController extends BaseController {
      * 馬連
      */
     @GetMapping("/quinella/{epochSecond}")
-    @ResponseBody
     public List<String> findQuinella(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -123,7 +115,6 @@ public class JvStoredController extends BaseController {
      * ワイド
      */
     @GetMapping("/quinellaPlace/{epochSecond}")
-    @ResponseBody
     public List<String> findQuinellaPlace(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -135,7 +126,6 @@ public class JvStoredController extends BaseController {
      * 馬単
      */
     @GetMapping("/exacta/{epochSecond}")
-    @ResponseBody
     public List<String> findExacta(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -147,7 +137,6 @@ public class JvStoredController extends BaseController {
      * 三連複
      */
     @GetMapping("/trio/{epochSecond}")
-    @ResponseBody
     public List<String> findTrio(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -159,7 +148,6 @@ public class JvStoredController extends BaseController {
      * 三連単
      */
     @GetMapping("/trifecta/{epochSecond}")
-    @ResponseBody
     public List<String> findTrifecta(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -171,7 +159,6 @@ public class JvStoredController extends BaseController {
      * 血統情報
      */
     @GetMapping("/ancestry/{epochSecond}")
-    @ResponseBody
     public List<String> findAncestry(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -180,7 +167,6 @@ public class JvStoredController extends BaseController {
     }
 
     @GetMapping("/breedingHorse/{epochSecond}")
-    @ResponseBody
     public List<String> findBreedingHorse(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -189,7 +175,6 @@ public class JvStoredController extends BaseController {
     }
 
     @GetMapping("/offspring/{epochSecond}")
-    @ResponseBody
     public List<String> findOffspring(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -201,7 +186,6 @@ public class JvStoredController extends BaseController {
      * 競走馬、騎手、調教師、生産者、馬主
      */
     @GetMapping("/raceHorse/{epochSecond}")
-    @ResponseBody
     public List<String> findRaceHorse(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -210,7 +194,6 @@ public class JvStoredController extends BaseController {
     }
 
     @GetMapping("/jockey/{epochSecond}")
-    @ResponseBody
     public List<String> findJockey(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -219,7 +202,6 @@ public class JvStoredController extends BaseController {
     }
 
     @GetMapping("/trainer/{epochSecond}")
-    @ResponseBody
     public List<String> findTrainer(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -228,7 +210,6 @@ public class JvStoredController extends BaseController {
     }
 
     @GetMapping("/owner/{epochSecond}")
-    @ResponseBody
     public List<String> findOwner(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -237,7 +218,6 @@ public class JvStoredController extends BaseController {
     }
 
     @GetMapping("/breeder/{epochSecond}")
-    @ResponseBody
     public List<String> findBreeder(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient
@@ -249,7 +229,6 @@ public class JvStoredController extends BaseController {
      * コース情報
      */
     @GetMapping("/course/{epochSecond}")
-    @ResponseBody
     public List<String> findCourse(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
         return converter(() -> JvLinkClient

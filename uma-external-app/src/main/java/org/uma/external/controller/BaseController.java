@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.uma.external.jvlink.response.JvStringContent;
 import org.uma.external.jvlink.util.ByteUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class BaseController {
                 .map(JvStringContent::getLine)
                 .map(ByteUtil::toByte)
                 .map(bytes -> Base64.getEncoder().encode(bytes))
-                .map(String::new)
+                .map(encoded -> new String(encoded, StandardCharsets.ISO_8859_1))
                 .peek(log::info)
                 .collect(ImmutableList.toImmutableList());
     }
