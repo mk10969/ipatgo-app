@@ -3,7 +3,6 @@ package org.uma.external.controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.uma.external.jvlink.JvLinkClient;
 import org.uma.external.jvlink.config.option.Option;
@@ -40,7 +39,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/racingDetails/thisWeek")
     public List<String> findRacingDetailsOnThisWeek() {
         LocalDateTime dateTime = LocalDateTime.now().minusWeeks(1L);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_RA.get(), dateTime, Option.THIS_WEEK)
                 .stream());
     }
@@ -48,7 +47,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/horseRacingDetails/thisWeek")
     public List<String> findHorseRacingDetailsOnThisWeek() {
         LocalDateTime dateTime = LocalDateTime.now().minusWeeks(1L);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_SE.get(), dateTime, Option.THIS_WEEK)
                 .stream());
     }
@@ -60,7 +59,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/racingDetails/{epochSecond}")
     public List<String> findRacingDetails(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_RA.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -68,7 +67,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/horseRacingDetails/{epochSecond}")
     public List<String> findHorseRacingDetails(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_SE.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -76,7 +75,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/raceRefund/{epochSecond}")
     public List<String> findRaceRefund(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_HR.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -84,7 +83,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/voteCount/{epochSecond}")
     public List<String> findVoteCount(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_H1.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -95,7 +94,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/winsPlaceBracketQuinella/{epochSecond}")
     public List<String> findWinsPlaceBracketQuinella(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_O1.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -106,7 +105,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/quinella/{epochSecond}")
     public List<String> findQuinella(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_O2.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -117,7 +116,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/quinellaPlace/{epochSecond}")
     public List<String> findQuinellaPlace(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_O3.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -128,7 +127,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/exacta/{epochSecond}")
     public List<String> findExacta(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_O4.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -139,7 +138,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/trio/{epochSecond}")
     public List<String> findTrio(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_O5.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -150,7 +149,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/trifecta/{epochSecond}")
     public List<String> findTrifecta(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(RACE_O6.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -161,7 +160,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/ancestry/{epochSecond}")
     public List<String> findAncestry(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(BLOD_BT.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -169,7 +168,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/breedingHorse/{epochSecond}")
     public List<String> findBreedingHorse(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(BLOD_HN.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -177,7 +176,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/offspring/{epochSecond}")
     public List<String> findOffspring(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(BLOD_SK.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -188,7 +187,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/raceHorse/{epochSecond}")
     public List<String> findRaceHorse(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(DIFF_UM.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -196,7 +195,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/jockey/{epochSecond}")
     public List<String> findJockey(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(DIFF_KS.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -204,7 +203,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/trainer/{epochSecond}")
     public List<String> findTrainer(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(DIFF_CH.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -212,7 +211,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/owner/{epochSecond}")
     public List<String> findOwner(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(DIFF_BN.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -220,7 +219,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/breeder/{epochSecond}")
     public List<String> findBreeder(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(DIFF_BR.get(), dateTime, Option.STANDARD)
                 .stream());
     }
@@ -231,7 +230,7 @@ public class JvStoredController extends BaseController {
     @GetMapping("/course/{epochSecond}")
     public List<String> findCourse(@Validated @PathVariable Long epochSecond) {
         LocalDateTime dateTime = DateUtil.toLocalDateTime(epochSecond);
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(COMM_CS.get(), dateTime, Option.STANDARD)
                 .stream());
     }

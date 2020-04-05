@@ -26,32 +26,31 @@ import static org.uma.external.jvlink.property.JvRealTime.OB42_O2;
 public class JvRealTimeController extends BaseController {
 
     /**
-     * レース情報
+     * レース詳細情報
      */
     @GetMapping("/racingDetails")
-    public List<String> findRacingDetails(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
+    public String findRacingDetails(@RequestParam("raceId") String raceId) {
+        return getOne(() -> JvLinkClient
                 .readLines(OB15_RA.get(), () -> raceId)
                 .stream());
     }
 
-    @GetMapping("/horseRacingDetails")
-    public List<String> findHorseRacingDetails(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
-                .readLines(OB15_SE.get(), () -> raceId)
-                .stream());
-    }
-
+    /**
+     * レース払戻
+     */
     @GetMapping("/raceRefund")
-    public List<String> findRaceRefund(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
+    public String findRaceRefund(@RequestParam("raceId") String raceId) {
+        return getOne(() -> JvLinkClient
                 .readLines(OB15_HR.get(), () -> raceId)
                 .stream());
     }
 
+    /**
+     * レース票数
+     */
     @GetMapping("/voteCount")
-    public List<String> findVoteCount(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
+    public String mono(@RequestParam("raceId") String raceId) {
+        return getOne(() -> JvLinkClient
                 .readLines(OB20_H1.get(), () -> raceId)
                 .stream());
     }
@@ -60,8 +59,8 @@ public class JvRealTimeController extends BaseController {
      * 単勝・複勝・枠連
      */
     @GetMapping("/winsPlaceBracketQuinella")
-    public List<String> findWinsPlaceBracketQuinella(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
+    public String findWinsPlaceBracketQuinella(@RequestParam("raceId") String raceId) {
+        return getOne(() -> JvLinkClient
                 .readLines(OB31_O1.get(), () -> raceId)
                 .stream());
     }
@@ -70,8 +69,8 @@ public class JvRealTimeController extends BaseController {
      * 馬連
      */
     @GetMapping("/quinella")
-    public List<String> findQuinella(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
+    public String findQuinella(@RequestParam("raceId") String raceId) {
+        return getOne(() -> JvLinkClient
                 .readLines(OB32_O2.get(), () -> raceId)
                 .stream());
     }
@@ -80,8 +79,8 @@ public class JvRealTimeController extends BaseController {
      * ワイド
      */
     @GetMapping("/quinellaPlace")
-    public List<String> findQuinellaPlace(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
+    public String findQuinellaPlace(@RequestParam("raceId") String raceId) {
+        return getOne(() -> JvLinkClient
                 .readLines(OB33_O3.get(), () -> raceId)
                 .stream());
     }
@@ -90,8 +89,8 @@ public class JvRealTimeController extends BaseController {
      * 馬単
      */
     @GetMapping("/exacta")
-    public List<String> findExacta(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
+    public String findExacta(@RequestParam("raceId") String raceId) {
+        return getOne(() -> JvLinkClient
                 .readLines(OB34_O4.get(), () -> raceId)
                 .stream());
     }
@@ -100,8 +99,8 @@ public class JvRealTimeController extends BaseController {
      * 三連複
      */
     @GetMapping("/trio")
-    public List<String> findTrio(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
+    public String findTrio(@RequestParam("raceId") String raceId) {
+        return getOne(() -> JvLinkClient
                 .readLines(OB35_O5.get(), () -> raceId)
                 .stream());
     }
@@ -110,9 +109,19 @@ public class JvRealTimeController extends BaseController {
      * 三連単
      */
     @GetMapping("/trifecta")
-    public List<String> findTrifecta(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
+    public String findTrifecta(@RequestParam("raceId") String raceId) {
+        return getOne(() -> JvLinkClient
                 .readLines(OB36_O6.get(), () -> raceId)
+                .stream());
+    }
+
+    /**
+     * 競走馬ごとのレース詳細
+     */
+    @GetMapping("/horseRacingDetails")
+    public List<String> findHorseRacingDetails(@RequestParam("raceId") String raceId) {
+        return getAll(() -> JvLinkClient
+                .readLines(OB15_SE.get(), () -> raceId)
                 .stream());
     }
 
@@ -121,7 +130,7 @@ public class JvRealTimeController extends BaseController {
      */
     @GetMapping("/timeseries/winsPlaceBracketQuinella")
     public List<String> findTimeseriesWinsPlaceBracketQuinella(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(OB41_O1.get(), () -> raceId)
                 .stream());
     }
@@ -131,7 +140,7 @@ public class JvRealTimeController extends BaseController {
      */
     @GetMapping("/timeseries/quinella")
     public List<String> findTimeseriesQuinella(@RequestParam("raceId") String raceId) {
-        return converter(() -> JvLinkClient
+        return getAll(() -> JvLinkClient
                 .readLines(OB42_O2.get(), () -> raceId)
                 .stream());
     }

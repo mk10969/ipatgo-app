@@ -16,10 +16,9 @@ import java.util.stream.Stream;
 @Slf4j
 public class BaseController {
 
-    protected List<String> converter(Supplier<Stream<JvStringContent>> supplier) {
+    protected List<String> getAll(Supplier<Stream<JvStringContent>> supplier) {
         Objects.requireNonNull(supplier);
 
-        // TODO: byteArrayとStringどっちをログに吐くか。。
         return supplier.get()
                 .map(JvStringContent::getLine)
                 .map(ByteUtil::toByte)
@@ -27,6 +26,16 @@ public class BaseController {
                 .map(encoded -> new String(encoded, StandardCharsets.ISO_8859_1))
                 .peek(log::info)
                 .collect(ImmutableList.toImmutableList());
+    }
+
+    protected String getOne(Supplier<Stream<JvStringContent>> supplier) {
+        List<String> mono = getAll(supplier);
+
+        if (mono.size() == 1) {
+            return mono.get(0);
+        } else {
+            throw new IllegalStateException("Sizeが、1ではありません。 data: " + mono);
+        }
     }
 
 }

@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 public class DateUtil {
 
     private static final String timeZone = "Asia/Tokyo";
-    
+
 
     private DateUtil() {
     }
@@ -27,6 +27,9 @@ public class DateUtil {
 //    }
 
     public static LocalDateTime toLocalDateTime(long epochSecond) {
+        if (String.valueOf(epochSecond).length() != 13) {
+            throw new IllegalArgumentException("milliseconds にしてください。");
+        }
         return Instant.ofEpochMilli(epochSecond)
                 .atZone(ZoneId.of(timeZone))
                 .toLocalDateTime();
