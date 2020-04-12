@@ -22,12 +22,9 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import static org.uma.external.jvlink.exception.JvLinkErrorCode._1;
-import static org.uma.external.jvlink.exception.JvLinkErrorCode._401;
 
 @Slf4j
 public class BaseHandler {
@@ -49,13 +46,16 @@ public class BaseHandler {
 
     @NonNull
     protected static Mono<ServerResponse> okMono(Supplier<List<JvStringContent>> supplier) {
-        List<ExternalResponse> responses = toPublisher(supplier).toStream().collect(Collectors.toList());
-        if (responses.size() != 1) {
-            throw new JvLinkRuntimeException(_401);
+        try {
+            return ServerResponse.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(BodyInserters.fromPublisher(toPublisher(supplier).single(), ExternalResponse.class));
+
+            // Monoに変換するの失敗したら。
+        } catch (IndexOutOfBoundsException | NoSuchElementException e) {
+            log.error("Mono convert Error:", e);
+            throw new JvLinkRuntimeException(JvLinkErrorCode._401);
         }
-        return ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromPublisher(Mono.just(responses.get(0)), ExternalResponse.class));
     }
 
     @NonNull
