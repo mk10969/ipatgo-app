@@ -66,88 +66,82 @@ public class JvLinkRealTimeHandler extends BaseHandler {
         }
     }
 
+    /**
+     * Mono
+     */
     @NonNull
     private Mono<ServerResponse> racingDetails(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB15_RA.get(), () -> raceId));
+        return okMono(() -> JvLinkClient.readLines(OB15_RA.get(), () -> raceId));
     }
 
     @NonNull
     private Mono<ServerResponse> raceRefund(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB15_HR.get(), () -> raceId));
+        return okMono(() -> JvLinkClient.readLines(OB15_HR.get(), () -> raceId));
     }
 
     @NonNull
     private Mono<ServerResponse> voteCount(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB20_H1.get(), () -> raceId));
+        return okMono(() -> JvLinkClient.readLines(OB20_H1.get(), () -> raceId));
     }
 
     @NonNull
     private Mono<ServerResponse> winsPlaceBracketQuinella(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB31_O1.get(), () -> raceId));
+        return okMono(() -> JvLinkClient.readLines(OB31_O1.get(), () -> raceId));
     }
 
     @NonNull
     private Mono<ServerResponse> quinella(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB32_O2.get(), () -> raceId));
+        return okMono(() -> JvLinkClient.readLines(OB32_O2.get(), () -> raceId));
     }
 
     @NonNull
     private Mono<ServerResponse> quinellaPlace(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB33_O3.get(), () -> raceId));
+        return okMono(() -> JvLinkClient.readLines(OB33_O3.get(), () -> raceId));
     }
 
     @NonNull
     private Mono<ServerResponse> exacta(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB34_O4.get(), () -> raceId));
+        return okMono(() -> JvLinkClient.readLines(OB34_O4.get(), () -> raceId));
     }
 
     @NonNull
     private Mono<ServerResponse> trio(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB35_O5.get(), () -> raceId));
+        return okMono(() -> JvLinkClient.readLines(OB35_O5.get(), () -> raceId));
     }
 
     @NonNull
     private Mono<ServerResponse> trifecta(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB36_O6.get(), () -> raceId));
+        return okMono(() -> JvLinkClient.readLines(OB36_O6.get(), () -> raceId));
     }
 
+    /**
+     * Flux
+     */
     @NonNull
     private Mono<ServerResponse> horseRacingDetails(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB15_SE.get(), () -> raceId));
+        return okFlux(() -> JvLinkClient.readLines(OB15_SE.get(), () -> raceId));
     }
 
     @NonNull
     private Mono<ServerResponse> timeseriesWinsPlaceBracketQuinella(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB41_O1.get(), () -> raceId));
+        return okFlux(() -> JvLinkClient.readLines(OB41_O1.get(), () -> raceId));
     }
 
     @NonNull
     private Mono<ServerResponse> timeseriesQuinella(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
-        return okPublisher(() ->
-                JvLinkClient.readLines(OB42_O2.get(), () -> raceId));
+        return okFlux(() -> JvLinkClient.readLines(OB42_O2.get(), () -> raceId));
     }
 
 }

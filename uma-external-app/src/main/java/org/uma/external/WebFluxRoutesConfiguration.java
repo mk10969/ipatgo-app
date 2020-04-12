@@ -46,6 +46,7 @@ public class WebFluxRoutesConfiguration {
                         return next.handle(request);
                     } catch (Exception e) {
                         log.error("Server Error: ", e);
+                        // 500
                         return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
                     }
                 });

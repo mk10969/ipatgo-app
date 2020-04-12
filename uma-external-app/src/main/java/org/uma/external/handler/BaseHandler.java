@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import org.uma.external.jvlink.exception.JvLinkErrorCode;
 import org.uma.external.jvlink.exception.JvLinkRuntimeException;
 import org.uma.external.jvlink.response.JvStringContent;
 import org.uma.external.jvlink.util.ByteUtil;
@@ -23,6 +24,10 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import static org.uma.external.jvlink.exception.JvLinkErrorCode._1;
+import static org.uma.external.jvlink.exception.JvLinkErrorCode._401;
 
 @Slf4j
 public class BaseHandler {
@@ -30,22 +35,34 @@ public class BaseHandler {
     protected static final String OK = "OK";
 
 
-    @NonNull
-    protected static Mono<ServerResponse> okPublisher(Supplier<List<JvStringContent>> supplier) {
+    private static Flux<ExternalResponse> toPublisher(Supplier<List<JvStringContent>> supplier) {
         // blockingする
         List<JvStringContent> jvStringContents = Objects.requireNonNull(supplier).get();
 
-        Flux<ExternalResponse> flux = Flux.fromIterable(jvStringContents)
+        return Flux.fromIterable(jvStringContents)
                 .map(JvStringContent::getLine)
                 .map(ByteUtil::toByte)
                 .map(bytes -> Base64.getEncoder().encode(bytes))
                 .map(encoded -> new String(encoded, StandardCharsets.ISO_8859_1))
                 .map(data -> ExternalResponse.builder().data(data).message(OK).build());
+    }
 
+    @NonNull
+    protected static Mono<ServerResponse> okMono(Supplier<List<JvStringContent>> supplier) {
+        List<ExternalResponse> responses = toPublisher(supplier).toStream().collect(Collectors.toList());
+        if (responses.size() != 1) {
+            throw new JvLinkRuntimeException(_401);
+        }
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromPublisher(flux, ExternalResponse.class));
+                .body(BodyInserters.fromPublisher(Mono.just(responses.get(0)), ExternalResponse.class));
+    }
 
+    @NonNull
+    protected static Mono<ServerResponse> okFlux(Supplier<List<JvStringContent>> supplier) {
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromPublisher(toPublisher(supplier), ExternalResponse.class));
     }
 
     @NonNull
@@ -68,8 +85,19 @@ public class BaseHandler {
 
         } catch (JvLinkRuntimeException e) {
             log.error("JvLink Error: ", e);
-            // TODO: error codeで分けるか・・・
-            return errorPublisher(HttpStatus.BAD_REQUEST, e.getMessage());
+            JvLinkErrorCode code = JvLinkErrorCode.of(e.getErrorCode());
+
+            switch (code) {
+                case _1:
+                    // 404
+                    return errorPublisher(HttpStatus.NOT_FOUND, e.getMessage());
+                case _504:
+                    // 503
+                    return errorPublisher(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
+                default:
+                    // 400
+                    return errorPublisher(HttpStatus.BAD_REQUEST, e.getMessage());
+            }
         }
     }
 

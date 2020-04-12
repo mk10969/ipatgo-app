@@ -9,11 +9,8 @@ public class JvLinkRuntimeException extends RuntimeException implements Serializ
     /**
      * JV-Linkのメソッドが返す戻り値です。
      */
-    private int errorCode;
+    private final int errorCode;
 
-    public JvLinkRuntimeException() {
-        super();
-    }
 
     public JvLinkRuntimeException(JvLinkErrorCode jvLinkErrorCode) {
         this(jvLinkErrorCode.getCode(), jvLinkErrorCode.getName());
@@ -22,6 +19,10 @@ public class JvLinkRuntimeException extends RuntimeException implements Serializ
     public JvLinkRuntimeException(int errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
+    }
+
+    public int getErrorCode() {
+        return this.errorCode;
     }
 
     @Override
