@@ -25,8 +25,12 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class IPatGoHandler extends BaseHandler {
 
-    private final IPatGoProperties iPatGoProperties;
+    private static final String VOTE_DATA = "voteData";
 
+    private static final String MONEY = "money";
+
+
+    private final IPatGoProperties iPatGoProperties;
 
     /**
      * IPATGOの機能一覧
@@ -52,7 +56,6 @@ public class IPatGoHandler extends BaseHandler {
                 .andRoute(RequestPredicates.GET("/history/latest"), this::historyLatest)
                 .andRoute(RequestPredicates.POST("/deposit/{money}"), this::deposit)
                 .andRoute(RequestPredicates.POST("/withdraw"), this::withdraw)
-                .filter(BaseHandler::errorHandle)
                 .filter(IPatGoHandler::iPatGoErrorHandle);
     }
 
@@ -72,7 +75,7 @@ public class IPatGoHandler extends BaseHandler {
     @NonNull
     private static Mono<ServerResponse> okIPatGoPublisher(Integer exitCode) {
         Mono<ExternalResponse> mono = Mono.just(ExternalResponse.builder()
-                .data(String.valueOf(exitCode)).message("OK").build());
+                .data(String.valueOf(exitCode)).message(OK).build());
 
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -81,7 +84,7 @@ public class IPatGoHandler extends BaseHandler {
 
     @NonNull
     private Mono<ServerResponse> vote(ServerRequest request) {
-        String voteData = request.pathVariable("voteData");
+        String voteData = request.pathVariable(VOTE_DATA);
         return Mono.fromFuture(IPatGoCommandRunner
                 .execute(new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
                         .setMode(IPatGoConfiguration.Mode.data)
@@ -131,7 +134,7 @@ public class IPatGoHandler extends BaseHandler {
 
     @NonNull
     private Mono<ServerResponse> deposit(ServerRequest request) {
-        String money = request.pathVariable("money");
+        String money = request.pathVariable(MONEY);
         return Mono.fromFuture(IPatGoCommandRunner
                 .execute(new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
                         .setMode(IPatGoConfiguration.Mode.deposit)

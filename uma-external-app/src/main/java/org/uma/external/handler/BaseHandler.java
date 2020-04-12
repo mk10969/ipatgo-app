@@ -27,9 +27,11 @@ import java.util.function.Supplier;
 @Slf4j
 public class BaseHandler {
 
+    protected static final String OK = "OK";
+
+
     @NonNull
-    protected static Mono<ServerResponse> okPublisher(
-            Supplier<List<JvStringContent>> supplier) {
+    protected static Mono<ServerResponse> okPublisher(Supplier<List<JvStringContent>> supplier) {
         // blockingする
         List<JvStringContent> jvStringContents = Objects.requireNonNull(supplier).get();
 
@@ -38,7 +40,7 @@ public class BaseHandler {
                 .map(ByteUtil::toByte)
                 .map(bytes -> Base64.getEncoder().encode(bytes))
                 .map(encoded -> new String(encoded, StandardCharsets.ISO_8859_1))
-                .map(data -> ExternalResponse.builder().data(data).message("OK").build());
+                .map(data -> ExternalResponse.builder().data(data).message(OK).build());
 
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -58,9 +60,8 @@ public class BaseHandler {
                 .body(BodyInserters.fromPublisher(mono, ExternalResponse.class));
     }
 
-
     @NonNull
-    protected static Mono<ServerResponse> errorHandle(
+    protected static Mono<ServerResponse> jvLinkErrorHandle(
             ServerRequest request, HandlerFunction<ServerResponse> next) {
         try {
             return next.handle(request);
@@ -69,15 +70,10 @@ public class BaseHandler {
             log.error("JvLink Error: ", e);
             // TODO: error codeで分けるか・・・
             return errorPublisher(HttpStatus.BAD_REQUEST, e.getMessage());
-
-        } catch (Exception e) {
-            log.error("Server Error", e);
-            return errorPublisher(HttpStatus.INTERNAL_SERVER_ERROR, "internal server error");
         }
-
     }
 
-    
+
     @Getter
     @ToString
     protected static class ExternalResponse {

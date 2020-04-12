@@ -4,10 +4,13 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.function.Supplier;
 
 public class DateUtil {
 
     private static final String timeZone = "Asia/Tokyo";
+
+    private static final Supplier<Long> now = System::currentTimeMillis;
 
 
     private DateUtil() {
@@ -34,4 +37,9 @@ public class DateUtil {
                 .atZone(ZoneId.of(timeZone))
                 .toLocalDateTime();
     }
+
+    public static LocalDateTime lastWeek() {
+        return toLocalDateTime(now.get()).minusWeeks(1L);
+    }
+
 }

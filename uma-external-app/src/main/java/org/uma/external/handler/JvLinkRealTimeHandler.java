@@ -49,13 +49,13 @@ public class JvLinkRealTimeHandler extends BaseHandler {
                 .andRoute(RequestPredicates.GET("/horseRacingDetails"), this::horseRacingDetails)
                 .andRoute(RequestPredicates.GET("/timeseries/winsPlaceBracketQuinella"), this::timeseriesWinsPlaceBracketQuinella)
                 .andRoute(RequestPredicates.GET("/timeseries/quinella"), this::timeseriesQuinella)
-                .filter(BaseHandler::errorHandle)
-                .filter(JvLinkRealTimeHandler::JvLinkRealTimeErrorHandle);
+                .filter(JvLinkRealTimeHandler::JvLinkRealTimeErrorHandle)
+                .filter(BaseHandler::jvLinkErrorHandle);
     }
 
 
     @NonNull
-    protected static Mono<ServerResponse> JvLinkRealTimeErrorHandle(
+    private static Mono<ServerResponse> JvLinkRealTimeErrorHandle(
             ServerRequest request, HandlerFunction<ServerResponse> next) {
         try {
             return next.handle(request);
