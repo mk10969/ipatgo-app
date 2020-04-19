@@ -3,6 +3,7 @@ package org.uma.external.handler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
@@ -14,14 +15,15 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import org.uma.external.ipatgo.IPatGoCommandRunner;
-import org.uma.external.ipatgo.IPatGoConfiguration;
+import org.uma.external.ipatgo.IPatGoClient;
 import org.uma.external.ipatgo.IPatGoException;
+import org.uma.external.ipatgo.IPatGoExe;
 import org.uma.external.ipatgo.IPatGoProperties;
 import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
+@EnableConfigurationProperties(IPatGoProperties.class)
 @RequiredArgsConstructor
 public class IPatGoHandler extends BaseHandler {
 
@@ -85,9 +87,9 @@ public class IPatGoHandler extends BaseHandler {
     @NonNull
     private Mono<ServerResponse> vote(ServerRequest request) {
         String voteData = request.pathVariable(VOTE_DATA);
-        return Mono.fromFuture(IPatGoCommandRunner
-                .execute(new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
-                        .setMode(IPatGoConfiguration.Mode.data)
+        return Mono.fromFuture(IPatGoClient.execute(
+                new IPatGoExe.CommandBuilder(iPatGoProperties)
+                        .setMode(IPatGoExe.Mode.data)
                         .setArgument(voteData)
                         .setNoSplash()
                         .build()))
@@ -96,38 +98,38 @@ public class IPatGoHandler extends BaseHandler {
 
     @NonNull
     private Mono<ServerResponse> stat(ServerRequest request) {
-        return Mono.fromFuture(IPatGoCommandRunner
-                .execute(new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
-                        .setMode(IPatGoConfiguration.Mode.stat)
+        return Mono.fromFuture(IPatGoClient.execute(
+                new IPatGoExe.CommandBuilder(iPatGoProperties)
+                        .setMode(IPatGoExe.Mode.stat)
                         .build()))
                 .flatMap(IPatGoHandler::okIPatGoPublisher);
     }
 
     @NonNull
     private Mono<ServerResponse> history(ServerRequest request) {
-        return Mono.fromFuture(IPatGoCommandRunner
-                .execute(new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
-                        .setMode(IPatGoConfiguration.Mode.history)
+        return Mono.fromFuture(IPatGoClient.execute(
+                new IPatGoExe.CommandBuilder(iPatGoProperties)
+                        .setMode(IPatGoExe.Mode.history)
                         .build()))
                 .flatMap(IPatGoHandler::okIPatGoPublisher);
     }
 
     @NonNull
     private Mono<ServerResponse> historyBefore(ServerRequest request) {
-        return Mono.fromFuture(IPatGoCommandRunner
-                .execute(new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
-                        .setMode(IPatGoConfiguration.Mode.history)
-                        .setTimeSeries(IPatGoConfiguration.TimeSeries.before)
+        return Mono.fromFuture(IPatGoClient.execute(
+                new IPatGoExe.CommandBuilder(iPatGoProperties)
+                        .setMode(IPatGoExe.Mode.history)
+                        .setTimeSeries(IPatGoExe.TimeSeries.before)
                         .build()))
                 .flatMap(IPatGoHandler::okIPatGoPublisher);
     }
 
     @NonNull
     private Mono<ServerResponse> historyLatest(ServerRequest request) {
-        return Mono.fromFuture(IPatGoCommandRunner
-                .execute(new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
-                        .setMode(IPatGoConfiguration.Mode.history)
-                        .setTimeSeries(IPatGoConfiguration.TimeSeries.latest)
+        return Mono.fromFuture(IPatGoClient.execute(
+                new IPatGoExe.CommandBuilder(iPatGoProperties)
+                        .setMode(IPatGoExe.Mode.history)
+                        .setTimeSeries(IPatGoExe.TimeSeries.latest)
                         .build()))
                 .flatMap(IPatGoHandler::okIPatGoPublisher);
     }
@@ -135,9 +137,9 @@ public class IPatGoHandler extends BaseHandler {
     @NonNull
     private Mono<ServerResponse> deposit(ServerRequest request) {
         String money = request.pathVariable(MONEY);
-        return Mono.fromFuture(IPatGoCommandRunner
-                .execute(new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
-                        .setMode(IPatGoConfiguration.Mode.deposit)
+        return Mono.fromFuture(IPatGoClient.execute(
+                new IPatGoExe.CommandBuilder(iPatGoProperties)
+                        .setMode(IPatGoExe.Mode.deposit)
                         .setArgument(money)
                         .build()))
                 .flatMap(IPatGoHandler::okIPatGoPublisher);
@@ -145,9 +147,9 @@ public class IPatGoHandler extends BaseHandler {
 
     @NonNull
     private Mono<ServerResponse> withdraw(ServerRequest request) {
-        return Mono.fromFuture(IPatGoCommandRunner
-                .execute(new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
-                        .setMode(IPatGoConfiguration.Mode.withdraw)
+        return Mono.fromFuture(IPatGoClient.execute(
+                new IPatGoExe.CommandBuilder(iPatGoProperties)
+                        .setMode(IPatGoExe.Mode.withdraw)
                         .build()))
                 .flatMap(IPatGoHandler::okIPatGoPublisher);
     }

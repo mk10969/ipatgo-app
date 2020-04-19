@@ -9,12 +9,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 
-class IPatGoApplicationTests {
+class IPatGoClientApplicationTests {
 
     @Test
     void test_cmd() throws ExecutionException, InterruptedException {
         List<String> cmd = Arrays.asList("java", "-version");
-        CompletableFuture<Integer> result = IPatGoCommandRunner.execute(cmd);
+        CompletableFuture<Integer> result = IPatGoClient.execute(cmd);
         Assertions.assertEquals(result.get(), 0);
     }
 

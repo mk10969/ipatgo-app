@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-public class IPatGoCommandRunner {
+public abstract class IPatGoClient {
 
     private static final int timeout = 5;
 

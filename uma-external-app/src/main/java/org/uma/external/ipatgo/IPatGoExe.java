@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class IPatGoConfiguration {
+public class IPatGoExe {
 
     /**
      * TODO: ipatgo.exeのフルパス
@@ -19,7 +19,7 @@ public class IPatGoConfiguration {
         before("--before"),
         latest("--latest")
         ;
-        private String option;
+        private final String option;
 
         TimeSeries(String option) {
             this.option = option;

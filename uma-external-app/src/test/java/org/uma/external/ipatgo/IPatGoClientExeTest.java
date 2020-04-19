@@ -8,15 +8,15 @@ import java.util.List;
 
 
 @SpringBootTest
-class IPatGoConfigurationTest {
+class IPatGoClientExeTest {
 
     @Autowired
     private IPatGoProperties iPatGoProperties;
 
     @Test
     void test() {
-        List<String> actual = new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
-                .setMode(IPatGoConfiguration.Mode.data)
+        List<String> actual = new IPatGoExe.CommandBuilder(iPatGoProperties)
+                .setMode(IPatGoExe.Mode.data)
                 .setArgument("aaa,aaaa,aaaa,aaaaaa")
                 .setNoSplash()
                 .build();
@@ -25,9 +25,9 @@ class IPatGoConfigurationTest {
 
     @Test
     void test2() {
-        List<String> actual = new IPatGoConfiguration.CommandBuilder(iPatGoProperties)
-                .setMode(IPatGoConfiguration.Mode.history)
-                .setTimeSeries(IPatGoConfiguration.TimeSeries.before)
+        List<String> actual = new IPatGoExe.CommandBuilder(iPatGoProperties)
+                .setMode(IPatGoExe.Mode.history)
+                .setTimeSeries(IPatGoExe.TimeSeries.before)
                 .build();
         actual.forEach(System.out::println);
     }
