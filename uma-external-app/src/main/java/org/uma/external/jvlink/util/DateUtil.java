@@ -38,6 +38,7 @@ public class DateUtil {
                 .toLocalDateTime();
     }
 
+    @Deprecated
     public static LocalDateTime lastWeek() {
         return toLocalDateTime(now.get()).minusWeeks(1L);
     }

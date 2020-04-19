@@ -18,10 +18,10 @@ public enum JvRealTime {
      */
     OB15_SE(new RealTimeOpenCondition(RealTimeDataSpec.OB15, RecordSpec.SE)),
 
-    /**
-     * 出走馬名表 払戻
-     */
-    OB15_HR(new RealTimeOpenCondition(RealTimeDataSpec.OB15, RecordSpec.HR)),
+//    /**
+//     * 出走馬名表 払戻
+//     */
+//    OB15_HR(new RealTimeOpenCondition(RealTimeDataSpec.OB15, RecordSpec.HR)),
 
     /**
      * 速報オッズ（単複枠）
@@ -63,10 +63,6 @@ public enum JvRealTime {
      */
     OB20_H6(new RealTimeOpenCondition(RealTimeDataSpec.OB20, RecordSpec.H6)),
 
-    /**
-     * 馬体重
-     */
-    OB11_WH(new RealTimeOpenCondition(RealTimeDataSpec.OB11, RecordSpec.WH)),
 
     /**
      * 時系列オッズ（単複枠）
@@ -84,17 +80,20 @@ public enum JvRealTime {
     OB51_WF(new RealTimeOpenCondition(RealTimeDataSpec.OB51, RecordSpec.WF)),
 
 
-    ///// イベント通知系データ /////
+    ///// イベント通知系データ "YYYYMMDDJJRR"  /////
 
     /**
-     * 天候馬場状態
+     * 払戻（イベント専用）
      */
-    OB16_WE(new RealTimeOpenCondition(RealTimeDataSpec.OB16, RecordSpec.WE)),
+    OB12_HR(new RealTimeOpenCondition(RealTimeDataSpec.OB12, RecordSpec.HR)),
 
     /**
-     * 出走取り消し・競争除外
+     * 馬体重
      */
-    OB16_AV(new RealTimeOpenCondition(RealTimeDataSpec.OB16, RecordSpec.AV)),
+    OB11_WH(new RealTimeOpenCondition(RealTimeDataSpec.OB11, RecordSpec.WH)),
+
+
+    ///// イベント通知系データ "TTYYYYMMDDJJRRNNNNNNNNNNNNNN"  /////
 
     /**
      * 騎手変更
@@ -102,14 +101,24 @@ public enum JvRealTime {
     OB16_JC(new RealTimeOpenCondition(RealTimeDataSpec.OB16, RecordSpec.JC)),
 
     /**
-     * 発走時刻変更
+     * 天候馬場状態
      */
-    OB16_TC(new RealTimeOpenCondition(RealTimeDataSpec.OB16, RecordSpec.TC)),
+    OB16_WE(new RealTimeOpenCondition(RealTimeDataSpec.OB16, RecordSpec.WE)),
 
     /**
      * コース変更
      */
     OB16_CC(new RealTimeOpenCondition(RealTimeDataSpec.OB16, RecordSpec.CC)),
+
+    /**
+     * 出走取り消し・競争除外
+     */
+    OB16_AV(new RealTimeOpenCondition(RealTimeDataSpec.OB16, RecordSpec.AV)),
+
+    /**
+     * 発走時刻変更
+     */
+    OB16_TC(new RealTimeOpenCondition(RealTimeDataSpec.OB16, RecordSpec.TC)),
 
     ;
 

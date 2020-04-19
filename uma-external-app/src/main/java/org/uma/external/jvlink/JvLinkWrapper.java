@@ -16,9 +16,8 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-
 @Slf4j
-public class JvLinkWrapper {
+class JvLinkWrapper {
     /**
      * UserAgentの最大バイト長
      */
@@ -131,6 +130,18 @@ public class JvLinkWrapper {
     public void close() {
         log.info("close");
         jvLinkDataLab.jvClose();
+        this.destroy();
+    }
+
+    public void watchEvent(JvLinkDataLab.JvLinkEventHandler jvLinkEventHandler) {
+        Objects.requireNonNull(jvLinkEventHandler, "handlerがnullです。");
+        log.info("watch event!");
+        jvLinkDataLab.jvWatchEvent(jvLinkEventHandler);
+    }
+
+    public void closeWatchEvent() {
+        log.info("close event!");
+        JvLinkHandler.handle(() -> jvLinkDataLab.jvWatchEventClose());
         this.destroy();
     }
 
