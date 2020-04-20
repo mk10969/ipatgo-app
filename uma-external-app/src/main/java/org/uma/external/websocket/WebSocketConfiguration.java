@@ -21,12 +21,14 @@ import java.util.stream.Collectors;
 @Configuration
 public class WebSocketConfiguration {
 
-    @Autowired
-    private Map<String, WebSocketHandler> webSocketHandlers;
+    @Bean
+    public WebSocketHandlerAdapter webSocketHandlerAdapter() {
+        return new WebSocketHandlerAdapter();
+    }
 
 
     @Bean
-    public HandlerMapping webSocketHandlerMapping() {
+    public HandlerMapping webSocketHandlerMapping(Map<String, WebSocketHandler> webSocketHandlers) {
         // bean名で、Mappingする
         Map<String, WebSocketHandler> map = webSocketHandlers.entrySet().stream()
                 .collect(Collectors.toMap(d -> "/" + d.getKey(), Map.Entry::getValue));
@@ -37,29 +39,22 @@ public class WebSocketConfiguration {
         return handlerMapping;
     }
 
-    @Bean
-    public WebSocketHandlerAdapter webSocketHandlerAdapter() {
-        return new WebSocketHandlerAdapter();
-    }
-
 
     @Slf4j
     @Component("jvWatchEvent")
     public static class JvLinkWebSocketHandler implements WebSocketHandler {
 
+        private static final long DELAY_INTERVAL = 200;
+
         @Autowired
         private Flux<String> hotPublisher;
 
-        /**
-         * 遅延時間: second
-         */
-        private static final Integer DELAY_INTERVAL = 1;
 
         @NonNull
         @Override
         public Mono<Void> handle(WebSocketSession session) {
             return session.send(hotPublisher
-                    .delayElements(Duration.ofSeconds(DELAY_INTERVAL))
+                    .delayElements(Duration.ofMillis(DELAY_INTERVAL))
                     .doOnNext(message -> log.info("Event Message: {}", message))
                     .map(session::textMessage))
                     .doOnSubscribe(i -> log.info("Subscribe On WebSocket SessionId: {}",

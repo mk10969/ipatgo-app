@@ -1,8 +1,6 @@
 package org.uma.external.websocket;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -10,45 +8,13 @@ import org.uma.external.jvlink.JvLinkDataLab;
 import org.uma.external.jvlink.JvLinkWatch;
 import reactor.core.publisher.UnicastProcessor;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
-@Slf4j
 @Configuration
-public class JvLinkWatchEventConfiguration {
-
-    /**
-     * JvLinkイベント通知
-     */
-    private JvLinkWatch jvLinkWatch;
-
-    @Autowired
-    private JvLinkDataLab.JvLinkEventHandler jvLinkEventHandler;
-
-
-    /**
-     * アプリ起動時、JvLinkからのイベント通知を始める。
-     */
-    @PostConstruct
-    void init() {
-        this.jvLinkWatch = new JvLinkWatch(jvLinkEventHandler);
-        this.jvLinkWatch.start();
-    }
-
-    /**
-     * アプリ終了時、JvLinkからのイベント通知を終わる。
-     */
-    @PreDestroy
-    void end() {
-        this.jvLinkWatch.stop();
-    }
-
+public class JvLinkWatchConfiguration {
 
     @Bean
-    public CommandLineRunner commandLineRunner() {
-        return args -> log.info("JvLink Watch Event start!!!");
+    public JvLinkWatch jvLinkWatch(JvLinkDataLab.JvLinkEventHandler jvLinkEventHandler) {
+        return new JvLinkWatch(jvLinkEventHandler);
     }
-
 
     @Component
     public static class JvLinkEventHandlerImpl implements JvLinkDataLab.JvLinkEventHandler {

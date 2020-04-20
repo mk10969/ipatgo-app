@@ -2,11 +2,13 @@
 spring:
   profiles:
     active: dev
+  init:
+    enabled: false
 
 server:
   port: 8888
 
-# spring actuator config
+## spring actuator config
 management:
   server:
     port: 9999

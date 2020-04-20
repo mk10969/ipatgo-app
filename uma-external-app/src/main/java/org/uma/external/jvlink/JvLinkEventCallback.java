@@ -4,7 +4,7 @@ import com.jacob.com.Variant;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-class JvLinkEventCallback {
+public class JvLinkEventCallback {
 
     private final JvLinkDataLab.JvLinkEventHandler jvLinkEventHandler;
 

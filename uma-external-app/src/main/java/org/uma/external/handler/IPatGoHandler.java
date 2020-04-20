@@ -1,8 +1,7 @@
 package org.uma.external.handler;
 
-
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,15 +23,14 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Component
 @EnableConfigurationProperties(IPatGoProperties.class)
-@RequiredArgsConstructor
 public class IPatGoHandler extends BaseHandler {
 
     private static final String VOTE_DATA = "voteData";
 
     private static final String MONEY = "money";
 
-
-    private final IPatGoProperties iPatGoProperties;
+    @Autowired
+    private IPatGoProperties iPatGoProperties;
 
     /**
      * IPATGOの機能一覧
