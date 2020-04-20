@@ -61,6 +61,10 @@
         <appender-ref ref="APPLICATION_LOG_JVLINK"/>
     </logger>
 
+    <!-- JvLink Event CallBack ロガー -->
+    <logger name="org.uma.external.jvlink.JvLinkEventCallback" level="info" additivity="false">
+        <appender-ref ref="APPLICATION_LOG_JVLINK"/>
+    </logger>
 
     <!-- root ロガー -->
     <root level="INFO">

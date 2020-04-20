@@ -35,10 +35,13 @@ dependencies {
     // lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
+    // jacob
     implementation files('lib/jacob.jar')
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    // spring
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    // http and websocket
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-integration'
 
     implementation 'com.google.guava:guava:28.1-jre'
 
@@ -46,6 +49,7 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.springframework.integration:spring-integration-test'
 }
 
 
@@ -55,7 +59,7 @@ test {
 
 
 task publish(type: Copy, dependsOn: build) {
-    from  ("${buildDir}/libs") {
+    from("${buildDir}/libs") {
         include '*.jar'
     }
     into "${projectDir}/windows-service"
