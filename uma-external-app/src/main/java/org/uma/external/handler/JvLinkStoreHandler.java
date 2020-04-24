@@ -28,6 +28,7 @@ import static org.uma.external.jvlink.property.JvStored.DIFF_KS;
 import static org.uma.external.jvlink.property.JvStored.DIFF_UM;
 import static org.uma.external.jvlink.property.JvStored.RACE_H1;
 import static org.uma.external.jvlink.property.JvStored.RACE_HR;
+import static org.uma.external.jvlink.property.JvStored.RACE_JG;
 import static org.uma.external.jvlink.property.JvStored.RACE_O1;
 import static org.uma.external.jvlink.property.JvStored.RACE_O2;
 import static org.uma.external.jvlink.property.JvStored.RACE_O3;
@@ -46,25 +47,31 @@ public class JvLinkStoreHandler extends BaseHandler {
 
     public RouterFunction<ServerResponse> routes() {
         return RouterFunctions
-                .route(RequestPredicates.GET("/racingDetails/{epochSecond}"), this::racingDetails)
-                .andRoute(RequestPredicates.GET("/horseRacingDetails/{epochSecond}"), this::horseRacingDetails)
-                .andRoute(RequestPredicates.GET("/raceRefund/{epochSecond}"), this::raceRefund)
-                .andRoute(RequestPredicates.GET("/voteCount/{epochSecond}"), this::voteCount)
-                .andRoute(RequestPredicates.GET("/winsPlaceBracketQuinella/{epochSecond}"), this::winsPlaceBracketQuinella)
+                // racing
+                .route(RequestPredicates.GET("/racingDetail/{epochSecond}"), this::racingDetail)
+                .andRoute(RequestPredicates.GET("/racingHorseDetail/{epochSecond}"), this::racingHorseDetail)
+                .andRoute(RequestPredicates.GET("/racingRefund/{epochSecond}"), this::racingRefund)
+                .andRoute(RequestPredicates.GET("/racingVote/{epochSecond}"), this::racingVote)
+                .andRoute(RequestPredicates.GET("/racingHorseExclusion/{epochSecond}"), this::racingHorseExclusion)
+                // odds
+                .andRoute(RequestPredicates.GET("/winsShowBracketQ/{epochSecond}"), this::winsShowBracketQ)
                 .andRoute(RequestPredicates.GET("/quinella/{epochSecond}"), this::quinella)
                 .andRoute(RequestPredicates.GET("/quinellaPlace/{epochSecond}"), this::quinellaPlace)
                 .andRoute(RequestPredicates.GET("/exacta/{epochSecond}"), this::exacta)
                 .andRoute(RequestPredicates.GET("/trio/{epochSecond}"), this::trio)
                 .andRoute(RequestPredicates.GET("/trifecta/{epochSecond}"), this::trifecta)
-                .andRoute(RequestPredicates.GET("/ancestry/{epochSecond}"), this::ancestry)
-                .andRoute(RequestPredicates.GET("/breedingHorse/{epochSecond}"), this::breedingHorse)
-                .andRoute(RequestPredicates.GET("/offspring/{epochSecond}"), this::offspring)
+                // blood
+                .andRoute(RequestPredicates.GET("/bloodAncestry/{epochSecond}"), this::bloodAncestry)
+                .andRoute(RequestPredicates.GET("/bloodBreeding/{epochSecond}"), this::bloodBreeding)
+                .andRoute(RequestPredicates.GET("/bloodLine/{epochSecond}"), this::bloodLine)
+                // uma
                 .andRoute(RequestPredicates.GET("/raceHorse/{epochSecond}"), this::raceHorse)
                 .andRoute(RequestPredicates.GET("/jockey/{epochSecond}"), this::jockey)
                 .andRoute(RequestPredicates.GET("/trainer/{epochSecond}"), this::trainer)
                 .andRoute(RequestPredicates.GET("/owner/{epochSecond}"), this::owner)
                 .andRoute(RequestPredicates.GET("/breeder/{epochSecond}"), this::breeder)
                 .andRoute(RequestPredicates.GET("/course/{epochSecond}"), this::course)
+//               @Deprecated
 //                .andRoute(RequestPredicates.GET("/racingDetails/thisWeek"), this::racingDetailsOnThisWeek)
 //                .andRoute(RequestPredicates.GET("/horseRacingDetails/thisWeek"), this::horseRacingDetailsOnThisWeek)
                 .filter(JvLinkStoreHandler::JvLinkStoreErrorHandle)
@@ -104,27 +111,32 @@ public class JvLinkStoreHandler extends BaseHandler {
 //        return okFlux(() -> JvLinkClient.readLines(RACE_SE.get(), lastWeek, Option.THIS_WEEK));
 //    }
 
-    private Mono<ServerResponse> racingDetails(ServerRequest request) {
+    private Mono<ServerResponse> racingDetail(ServerRequest request) {
         LocalDateTime baseDate = Validate(request.pathVariable(EPOCH_SECOND));
         return okFlux(() -> JvLinkClient.readLines(RACE_RA.get(), baseDate, Option.STANDARD));
     }
 
-    private Mono<ServerResponse> horseRacingDetails(ServerRequest request) {
+    private Mono<ServerResponse> racingHorseDetail(ServerRequest request) {
         LocalDateTime baseDate = Validate(request.pathVariable(EPOCH_SECOND));
         return okFlux(() -> JvLinkClient.readLines(RACE_SE.get(), baseDate, Option.STANDARD));
     }
 
-    private Mono<ServerResponse> raceRefund(ServerRequest request) {
+    private Mono<ServerResponse> racingRefund(ServerRequest request) {
         LocalDateTime baseDate = Validate(request.pathVariable(EPOCH_SECOND));
         return okFlux(() -> JvLinkClient.readLines(RACE_HR.get(), baseDate, Option.STANDARD));
     }
 
-    private Mono<ServerResponse> voteCount(ServerRequest request) {
+    private Mono<ServerResponse> racingVote(ServerRequest request) {
         LocalDateTime baseDate = Validate(request.pathVariable(EPOCH_SECOND));
         return okFlux(() -> JvLinkClient.readLines(RACE_H1.get(), baseDate, Option.STANDARD));
     }
 
-    private Mono<ServerResponse> winsPlaceBracketQuinella(ServerRequest request) {
+    private Mono<ServerResponse> racingHorseExclusion(ServerRequest request) {
+        LocalDateTime baseDate = Validate(request.pathVariable(EPOCH_SECOND));
+        return okFlux(() -> JvLinkClient.readLines(RACE_JG.get(), baseDate, Option.STANDARD));
+    }
+
+    private Mono<ServerResponse> winsShowBracketQ(ServerRequest request) {
         LocalDateTime baseDate = Validate(request.pathVariable(EPOCH_SECOND));
         return okFlux(() -> JvLinkClient.readLines(RACE_O1.get(), baseDate, Option.STANDARD));
     }
@@ -154,17 +166,17 @@ public class JvLinkStoreHandler extends BaseHandler {
         return okFlux(() -> JvLinkClient.readLines(RACE_O6.get(), baseDate, Option.STANDARD));
     }
 
-    private Mono<ServerResponse> ancestry(ServerRequest request) {
+    private Mono<ServerResponse> bloodAncestry(ServerRequest request) {
         LocalDateTime baseDate = Validate(request.pathVariable(EPOCH_SECOND));
         return okFlux(() -> JvLinkClient.readLines(BLOD_BT.get(), baseDate, Option.STANDARD));
     }
 
-    private Mono<ServerResponse> breedingHorse(ServerRequest request) {
+    private Mono<ServerResponse> bloodBreeding(ServerRequest request) {
         LocalDateTime baseDate = Validate(request.pathVariable(EPOCH_SECOND));
         return okFlux(() -> JvLinkClient.readLines(BLOD_HN.get(), baseDate, Option.STANDARD));
     }
 
-    private Mono<ServerResponse> offspring(ServerRequest request) {
+    private Mono<ServerResponse> bloodLine(ServerRequest request) {
         LocalDateTime baseDate = Validate(request.pathVariable(EPOCH_SECOND));
         return okFlux(() -> JvLinkClient.readLines(BLOD_SK.get(), baseDate, Option.STANDARD));
     }

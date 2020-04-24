@@ -49,13 +49,13 @@ public class IPatGoHandler extends BaseHandler {
      */
     public RouterFunction<ServerResponse> routes() {
         return RouterFunctions
-                .route(RequestPredicates.POST("/data/{voteData}"), this::vote)
-                .andRoute(RequestPredicates.GET("/stat"), this::stat)
-                .andRoute(RequestPredicates.GET("/history"), this::history)
-                .andRoute(RequestPredicates.GET("/history/before"), this::historyBefore)
-                .andRoute(RequestPredicates.GET("/history/latest"), this::historyLatest)
-                .andRoute(RequestPredicates.POST("/deposit/{money}"), this::deposit)
-                .andRoute(RequestPredicates.POST("/withdraw"), this::withdraw)
+                .route(RequestPredicates.POST("/ipatgo/data/{voteData}"), this::vote)
+                .andRoute(RequestPredicates.GET("/ipatgo/stat"), this::stat)
+                .andRoute(RequestPredicates.GET("/ipatgo/history"), this::history)
+                .andRoute(RequestPredicates.GET("/ipatgo/history/before"), this::historyBefore)
+                .andRoute(RequestPredicates.GET("/ipatgo/history/latest"), this::historyLatest)
+                .andRoute(RequestPredicates.POST("/ipatgo/deposit/{money}"), this::deposit)
+                .andRoute(RequestPredicates.POST("/ipatgo/withdraw"), this::withdraw)
                 .filter(IPatGoHandler::iPatGoErrorHandle);
     }
 

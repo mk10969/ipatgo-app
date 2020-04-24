@@ -44,26 +44,26 @@ public class JvLinkRealTimeHandler extends BaseHandler {
     public RouterFunction<ServerResponse> routes() {
         return RouterFunctions
                 // mono
-                .route(RequestPredicates.GET("/racingDetails"), this::racingDetails)
-                .andRoute(RequestPredicates.GET("/voteCount"), this::voteCount)
-                .andRoute(RequestPredicates.GET("/winsPlaceBracketQuinella"), this::winsPlaceBracketQuinella)
+                .route(RequestPredicates.GET("/racingDetail"), this::racingDetail)
+                .andRoute(RequestPredicates.GET("/racingVote"), this::racingVote)
+                .andRoute(RequestPredicates.GET("/winsShowBracketQ"), this::winsShowBracketQ)
                 .andRoute(RequestPredicates.GET("/quinella"), this::quinella)
                 .andRoute(RequestPredicates.GET("/quinellaPlace"), this::quinellaPlace)
                 .andRoute(RequestPredicates.GET("/exacta"), this::exacta)
                 .andRoute(RequestPredicates.GET("/trio"), this::trio)
                 .andRoute(RequestPredicates.GET("/trifecta"), this::trifecta)
                 // flux
-                .andRoute(RequestPredicates.GET("/horseRacingDetails"), this::horseRacingDetails)
-                .andRoute(RequestPredicates.GET("/timeseries/winsPlaceBracketQuinella"), this::timeseriesWinsPlaceBracketQuinella)
+                .andRoute(RequestPredicates.GET("/racingHorseDetail"), this::racingHorseDetail)
+                .andRoute(RequestPredicates.GET("/timeseries/winsShowBracketQ"), this::timeseriesWinsShowBracketQ)
                 .andRoute(RequestPredicates.GET("/timeseries/quinella"), this::timeseriesQuinella)
                 // event
-                .andRoute(RequestPredicates.GET("/raceRefund"), this::raceRefund)
-                .andRoute(RequestPredicates.GET("/weight"), this::weight)
-                .andRoute(RequestPredicates.GET("/jockeyChange"), this::jockeyChange)
-                .andRoute(RequestPredicates.GET("/weather"), this::weather)
-                .andRoute(RequestPredicates.GET("/courseChange"), this::courseChange)
-                .andRoute(RequestPredicates.GET("/avoid"), this::avoid)
-                .andRoute(RequestPredicates.GET("/timeChange"), this::timeChange)
+                .andRoute(RequestPredicates.GET("/event/racingRefund"), this::racingRefund)
+                .andRoute(RequestPredicates.GET("/event/weight"), this::weight)
+                .andRoute(RequestPredicates.GET("/event/jockeyChange"), this::jockeyChange)
+                .andRoute(RequestPredicates.GET("/event/weather"), this::weather)
+                .andRoute(RequestPredicates.GET("/event/courseChange"), this::courseChange)
+                .andRoute(RequestPredicates.GET("/event/avoid"), this::avoid)
+                .andRoute(RequestPredicates.GET("/event/timeChange"), this::timeChange)
                 .filter(JvLinkRealTimeHandler::JvLinkRealTimeErrorHandle)
                 .filter(BaseHandler::jvLinkErrorHandle);
     }
@@ -85,19 +85,19 @@ public class JvLinkRealTimeHandler extends BaseHandler {
      * Mono 16桁「raceId」でデータ取得
      */
     @NonNull
-    private Mono<ServerResponse> racingDetails(ServerRequest request) {
+    private Mono<ServerResponse> racingDetail(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
         return okMono(() -> JvLinkClient.readLines(OB15_RA.get(), () -> raceId));
     }
 
     @NonNull
-    private Mono<ServerResponse> voteCount(ServerRequest request) {
+    private Mono<ServerResponse> racingVote(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
         return okMono(() -> JvLinkClient.readLines(OB20_H1.get(), () -> raceId));
     }
 
     @NonNull
-    private Mono<ServerResponse> winsPlaceBracketQuinella(ServerRequest request) {
+    private Mono<ServerResponse> winsShowBracketQ(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
         return okMono(() -> JvLinkClient.readLines(OB31_O1.get(), () -> raceId));
     }
@@ -136,13 +136,13 @@ public class JvLinkRealTimeHandler extends BaseHandler {
      * Flux 16桁「raceId」でデータ取得
      */
     @NonNull
-    private Mono<ServerResponse> horseRacingDetails(ServerRequest request) {
+    private Mono<ServerResponse> racingHorseDetail(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
         return okFlux(() -> JvLinkClient.readLines(OB15_SE.get(), () -> raceId));
     }
 
     @NonNull
-    private Mono<ServerResponse> timeseriesWinsPlaceBracketQuinella(ServerRequest request) {
+    private Mono<ServerResponse> timeseriesWinsShowBracketQ(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
         return okFlux(() -> JvLinkClient.readLines(OB41_O1.get(), () -> raceId));
     }
@@ -160,7 +160,7 @@ public class JvLinkRealTimeHandler extends BaseHandler {
      * raceIdの文字列長さバリデーションは行わず、JvLinkに問い合わせた結果で判断。
      */
     @NonNull
-    private Mono<ServerResponse> raceRefund(ServerRequest request) {
+    private Mono<ServerResponse> racingRefund(ServerRequest request) {
         String raceId = request.queryParam(RACE_ID).orElseThrow(NoSuchElementException::new);
         return okMono(() -> JvLinkClient.readLines(OB12_HR.get(), () -> raceId));
     }
