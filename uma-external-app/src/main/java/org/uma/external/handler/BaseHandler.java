@@ -84,18 +84,20 @@ public class BaseHandler {
             return next.handle(request);
 
         } catch (JvLinkRuntimeException e) {
-            log.error("JvLink Error: ", e);
             JvLinkErrorCode code = JvLinkErrorCode.of(e.getErrorCode());
 
             switch (code) {
                 case _1:
                     // 404
+                    log.warn("JvLink 該当データなし");
                     return errorPublisher(HttpStatus.NOT_FOUND, e.getMessage());
                 case _504:
                     // 503
+                    log.warn("JvLink サーバメンテナス中");
                     return errorPublisher(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
                 default:
                     // 400
+                    log.error("JvLink Error: ", e);
                     return errorPublisher(HttpStatus.BAD_REQUEST, e.getMessage());
             }
         }
