@@ -56,13 +56,13 @@
     </appender>
 
 
-    <!-- JvLink Client ロガー -->
+    <!-- JvLink Wrapper ロガー -->
     <logger name="org.uma.external.jvlink.JvLinkWrapper" level="debug" additivity="false">
         <appender-ref ref="APPLICATION_LOG_JVLINK"/>
     </logger>
 
-    <!-- JvLink Event CallBack ロガー -->
-    <logger name="org.uma.external.jvlink.JvLinkEventCallback" level="info" additivity="false">
+    <!-- JvLink Watch ロガー -->
+    <logger name="org.uma.external.jvlink.JvLinkWatch" level="info" additivity="false">
         <appender-ref ref="APPLICATION_LOG_JVLINK"/>
     </logger>
 

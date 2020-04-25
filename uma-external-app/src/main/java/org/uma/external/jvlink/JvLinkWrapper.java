@@ -36,7 +36,6 @@ class JvLinkWrapper {
     JvLinkWrapper() {
     }
 
-
     /**
      * COMを使うごとに、JvLinkDataLabImplを都度生成する
      */
@@ -54,8 +53,8 @@ class JvLinkWrapper {
 
     public JvLinkWrapper init() {
         this.create();
-        log.info("init");
         JvLinkHandler.handle(() -> jvLinkDataLab.jvInit(userAgent));
+        log.info("init");
         return this;
     }
 
@@ -95,20 +94,20 @@ class JvLinkWrapper {
 
     public JvLinkWrapper open(StoredOpenCondition condition, String fromTime, Option option) {
         Objects.requireNonNull(condition, "データ検索条件がnullになっています。");
-        log.info("open: {}", condition);
         JvLinkHandler.handle(() ->
                 jvLinkDataLab.jvOpen(condition.getDataSpec().getCode(), fromTime, option.getCode())
         );
+        log.info("open: {}", condition);
         return this;
     }
 
     public JvLinkWrapper rtOpen(RealTimeOpenCondition condition, RealTimeKey rtKey) {
         Objects.requireNonNull(condition, "データ検索条件がnullになっています。");
         Objects.requireNonNull(rtKey, "keyがnullになっています。");
-        log.info("rtOpen: {}", condition);
         JvLinkHandler.handle(() ->
                 jvLinkDataLab.jvRtOpen(condition.getDataSpec().getCode(), rtKey.get())
         );
+        log.info("rtOpen: {}", condition);
         return this;
     }
 
@@ -128,20 +127,8 @@ class JvLinkWrapper {
     }
 
     public void close() {
-        log.info("close");
         jvLinkDataLab.jvClose();
-        this.destroy();
-    }
-
-    public void watchEvent(JvLinkDataLab.JvLinkEventHandler jvLinkEventHandler) {
-        Objects.requireNonNull(jvLinkEventHandler, "handlerがnullです。");
-        log.info("watch event!");
-        jvLinkDataLab.jvWatchEvent(jvLinkEventHandler);
-    }
-
-    public void closeWatchEvent() {
-        log.info("close event!");
-        JvLinkHandler.handle(() -> jvLinkDataLab.jvWatchEventClose());
+        log.info("close");
         this.destroy();
     }
 

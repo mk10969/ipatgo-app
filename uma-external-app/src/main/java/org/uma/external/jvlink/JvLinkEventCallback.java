@@ -18,12 +18,12 @@ public class JvLinkEventCallback {
      * 渡されるパラメータ： "YYYYMMDDJJRR"
      */
     public void JVEvtPay(Variant[] variants) {
-        log.info("caught JV-Link event 'JVEvtPay'!");
+        log.debug("caught JV-Link event 'JVEvtPay'!");
         jvLinkEventHandler.handlePay(getParameter(variants));
     }
 
     public void JVEvtWeight(Variant[] variants) {
-        log.info("caught JV-Link event 'JVEvtWeight'!");
+        log.debug("caught JV-Link event 'JVEvtWeight'!");
         jvLinkEventHandler.handleWeight(getParameter(variants));
     }
 
@@ -32,30 +32,29 @@ public class JvLinkEventCallback {
      * 渡されるパラメータ： "TTYYYYMMDDJJRRNNNNNNNNNNNNNN"
      */
     public void JVEvtJockeyChange(Variant[] variants) {
-        log.info("caught JV-Link event 'JVEvtJockeyChange'!");
+        log.debug("caught JV-Link event 'JVEvtJockeyChange'!");
         jvLinkEventHandler.handleJockeyChange(getParameter(variants));
     }
 
     public void JVEvtWeather(Variant[] variants) {
-        log.info("caught JV-Link event 'JVEvtWeather'!");
+        log.debug("caught JV-Link event 'JVEvtWeather'!");
         jvLinkEventHandler.handleWeather(getParameter(variants));
     }
 
     public void JVEvtCourseChange(Variant[] variants) {
-        log.info("caught JV-Link event 'JVEvtCourseChange'!");
+        log.debug("caught JV-Link event 'JVEvtCourseChange'!");
         jvLinkEventHandler.handleCourseChange(getParameter(variants));
     }
 
     public void JVEvtAvoid(Variant[] variants) {
-        log.info("caught JV-Link event 'JVEvtAvoid'!");
+        log.debug("caught JV-Link event 'JVEvtAvoid'!");
         jvLinkEventHandler.handleAvoid(getParameter(variants));
     }
 
     public void JVEvtTimeChange(Variant[] variants) {
-        log.info("caught JV-Link event 'JVEvtTimeChange'!");
+        log.debug("caught JV-Link event 'JVEvtTimeChange'!");
         jvLinkEventHandler.handleTimeChange(getParameter(variants));
     }
-
 
     private String getParameter(Variant[] variants) {
         return variants[0].getString();

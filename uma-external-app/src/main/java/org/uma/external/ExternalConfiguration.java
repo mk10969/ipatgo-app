@@ -85,7 +85,7 @@ public class ExternalConfiguration {
         }
 
         private void start() {
-            log.info("JvLink Watch Event start!!!");
+            log.info("JvLink Watch Event start !!!");
             jvLinkWatch.start();
         }
 

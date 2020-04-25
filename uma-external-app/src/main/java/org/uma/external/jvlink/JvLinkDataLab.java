@@ -33,7 +33,7 @@ public interface JvLinkDataLab {
 
     void jvClose();
 
-    void jvWatchEvent(JvLinkEventHandler eventHandler);
+    JvSimpleResult jvWatchEvent(JvLinkEventHandler eventHandler);
 
     JvSimpleResult jvWatchEventClose();
 

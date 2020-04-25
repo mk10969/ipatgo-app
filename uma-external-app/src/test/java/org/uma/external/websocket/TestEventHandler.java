@@ -1,8 +1,8 @@
 package org.uma.external.websocket;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import reactor.core.publisher.UnicastProcessor;
 
 import javax.annotation.PostConstruct;
@@ -10,8 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Profile("dev")
 @Configuration
-@ConditionalOnProperty(prefix = "spring.testEvent", name = "enabled", havingValue = "true")
 public class TestEventHandler {
 
     @Autowired
@@ -22,7 +22,7 @@ public class TestEventHandler {
     @PostConstruct
     void init() {
         service.scheduleAtFixedRate(() ->
-                hotSource.onNext("AAAAAAAAA"), 2, 1, TimeUnit.SECONDS);
+                hotSource.onNext("TEST:AAAAAAAAA"), 10, 1, TimeUnit.SECONDS);
     }
 
 }

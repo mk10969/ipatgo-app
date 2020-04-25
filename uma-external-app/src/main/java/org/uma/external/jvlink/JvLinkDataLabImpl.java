@@ -11,10 +11,19 @@ import org.uma.external.jvlink.response.JvStringContent;
 
 class JvLinkDataLabImpl implements JvLinkDataLab {
 
-    private final ActiveXComponent activeXComponent;
-
+    /**
+     * JvLink COM
+     */
     private static final String JVLINK_DLL = "JVDTLab.JVLink.1";
 
+    /**
+     * ActiveXComponent instance
+     */
+    private final ActiveXComponent activeXComponent;
+
+    /**
+     * Event instance
+     */
     private DispatchEvents dispatchEvents;
 
 
@@ -113,10 +122,10 @@ class JvLinkDataLabImpl implements JvLinkDataLab {
 
 
     @Override
-    public void jvWatchEvent(JvLinkEventHandler jvLinkEventHandler) {
-        Dispatch jvLinkInterface = activeXComponent.getObject();
-        dispatchEvents = new DispatchEvents(jvLinkInterface, new JvLinkEventCallback(jvLinkEventHandler), JVLINK_DLL);
-        Dispatch.callSub(jvLinkInterface, "JVWatchEvent");
+    public JvSimpleResult jvWatchEvent(JvLinkEventHandler jvLinkEventHandler) {
+        dispatchEvents = new DispatchEvents(activeXComponent, new JvLinkEventCallback(jvLinkEventHandler), JVLINK_DLL);
+        Variant variant = Dispatch.call(activeXComponent, "JVWatchEvent");
+        return JvSimpleResult.create(variant.getInt()).build();
     }
 
     @Override
