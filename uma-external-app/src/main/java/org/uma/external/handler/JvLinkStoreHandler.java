@@ -71,8 +71,8 @@ public class JvLinkStoreHandler extends BaseHandler {
                 .andRoute(RequestPredicates.GET("/owner/{epochSecond}"), this::owner)
                 .andRoute(RequestPredicates.GET("/breeder/{epochSecond}"), this::breeder)
                 .andRoute(RequestPredicates.GET("/course/{epochSecond}"), this::course)
-//               @Deprecated
-//                .andRoute(RequestPredicates.GET("/racingDetails/thisWeek"), this::racingDetailsOnThisWeek)
+                // this week
+                .andRoute(RequestPredicates.GET("/racingDetailThisWeek"), this::racingDetailsOnThisWeek)
 //                .andRoute(RequestPredicates.GET("/horseRacingDetails/thisWeek"), this::horseRacingDetailsOnThisWeek)
                 .filter(JvLinkStoreHandler::JvLinkStoreErrorHandle)
                 .filter(BaseHandler::jvLinkErrorHandle);
@@ -99,13 +99,11 @@ public class JvLinkStoreHandler extends BaseHandler {
         return DateUtil.toLocalDateTime(Long.parseLong(pathValue));
     }
 
-//    @Deprecated
-//    private Mono<ServerResponse> racingDetailsOnThisWeek(ServerRequest request) {
-//        LocalDateTime lastWeek = DateUtil.lastWeek();
-//        return okFlux(() -> JvLinkClient.readLines(RACE_RA.get(), lastWeek, Option.THIS_WEEK));
-//    }
-//
-//    @Deprecated
+    private Mono<ServerResponse> racingDetailsOnThisWeek(ServerRequest request) {
+        LocalDateTime lastWeek = DateUtil.lastWeek();
+        return okFlux(() -> JvLinkClient.readLines(RACE_RA.get(), lastWeek, Option.THIS_WEEK));
+    }
+
 //    private Mono<ServerResponse> horseRacingDetailsOnThisWeek(ServerRequest request) {
 //        LocalDateTime lastWeek = DateUtil.lastWeek();
 //        return okFlux(() -> JvLinkClient.readLines(RACE_SE.get(), lastWeek, Option.THIS_WEEK));
